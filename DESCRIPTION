@@ -1,0 +1,24 @@
+Package: parmesan
+Title: Parametrized Shiny Apps... Neat!
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Juan Pablo",
+           family = "Marin Diaz",
+           role = c("aut", "cre"),
+           email = "jpmarindiaz@gmail.com")
+Maintainer: Juan Pablo Marin Diaz <jpmarindiaz@gmail.com>
+Description: Create shiny apps using configuration files to define
+  inputs. Configuration files work by providing a layout and shiny
+  inputs in plain text yaml files.
+URL: http://github.com/datasketch/parmesan
+Depends:
+    R (>= 3.1.2)
+Imports:
+    yaml
+Suggests:
+    rlang,
+    testthat (>= 2.1.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
