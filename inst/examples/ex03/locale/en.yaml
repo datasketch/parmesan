@@ -1,0 +1,16 @@
+hello: "Hello Parmesan!"
+app_intro_i18n: With Shiny Internationalization
+app_intro: This example shows a layout for input groups with custom container functions
+control_text:
+  first:
+    intro: Here start the first controls
+  second:
+    intro: Here start the 2nd group of controls
+a_text: A Text
+b_text: B Text
+c_text: C Text
+controls: Controls
+controls_dark: Controls Dark
+bins: Bins
+dataset: Dataset
+column: Column

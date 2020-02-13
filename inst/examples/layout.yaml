@@ -1,0 +1,31 @@
+---
+Colors:
+- color_palette
+- color_table
+Mosaic method:
+- method
+- dithering
+Image properties:
+- brightness
+- contrast
+Image size:
+- width
+- height
+Generate:
+- generate
+
+# ---
+# Mosaic:
+# - generate
+# Image size:
+# - width
+# - height
+# Image properties:
+# - brightness
+# - contrast
+# Mosaic method:
+# - method
+# - dithering
+# Colors:
+# - color_palette
+# - color_table

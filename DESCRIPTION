@@ -14,7 +14,8 @@ URL: http://github.com/datasketch/parmesan
 Depends:
     R (>= 3.1.2)
 Imports:
-    yaml
+    yaml,
+    shiny
 Suggests:
     rlang,
     testthat (>= 2.1.0)

@@ -1,3 +1,35 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+context("Parmesan Configuration")
+
+test_that("Config files are ok", {
+
+  library(shiny)
+
+  config_path <- system.file("examples", "ex01", "parmesan", package = "parmesan")
+  cfg <- parmesan_config(config_path = config_path)
+  expect_equal(names(cfg), c("layout", "params"))
+  html <- parmesan_render_ui(config_path = config_path)
+
+  expect_equal(parmesan_input_ids(config_path = config_path), c("dataset", "column", "bins"))
+
 })
+
+test_that("Sections work", {
+
+  config_path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
+  parmesan_render_ui(section = "Controls", config_path = config_path)
+
+  config_path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
+  parmesan_render_ui(section = "Controls Dark", config_path = config_path)
+})
+
+test_that("Sections work", {
+
+
+  config_path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
+  parmesan_render_ui(section = "Controls", config_path = config_path)
+
+  config_path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
+  parmesan_render_ui(section = "Controls Dark", config_path = config_path)
+})
+
+

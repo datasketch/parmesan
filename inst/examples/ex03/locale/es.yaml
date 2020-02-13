@@ -1,0 +1,16 @@
+hello: "¡Hola Parmesan!"
+app_intro_i18n: Con Internacionlización para Shiny
+app_intro: Este ejemplo muestra el layout para grupos con contenedores personalizados
+control_text:
+  first:
+    intro: Aquí comienzan los primeros controles
+  second:
+    intro: Aquí el 2do grupo de controles
+a_text: Texto A
+b_text: Texto B
+c_text: Texto C
+controls: Controles
+controls_dark: Controles Oscuros
+bins: Compartimentos
+dataset: Datos
+column: Columna
