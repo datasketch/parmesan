@@ -1,0 +1,47 @@
+---
+Chart titles:
+- title
+- subtitle
+- caption
+Axis names:
+- horLabel
+- verLabel
+Chart styles:
+- theme
+- orientation
+- graph_type
+- background
+- border_color
+- border_width
+- color_hover
+- text_show
+- fill_opacity
+- null_color
+Data settings:
+- agg
+- drop_na
+- percentage
+- sort
+- label_wrap
+- order
+- order1
+- order2
+- sliceN
+Number format:
+- marks
+- nDigits
+- prefix
+- suffix
+- agg_text
+Highligth:
+- highlight_value
+- highlight_valueColor
+Lines:
+- horLine
+- horLine_label
+- verLine   
+- verLine_label
+Regression:
+- regression
+- regression_color
+- regression_equation

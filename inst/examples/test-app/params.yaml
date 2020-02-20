@@ -1,0 +1,444 @@
+---
+title:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: title_viz
+      label: Title
+      value: ''
+  update_param: value
+subtitle:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: subtitle_viz
+      label: Subtitle
+      value: ''
+  update_param: value
+caption:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: caption_viz
+      label: Caption
+      value: ''
+  update_param: value
+theme:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: theme_viz
+      label: Theme
+      choices:
+        Clasic:
+        - clasic
+        Dark:
+        - dark
+        Gray:
+        - gray
+      selected: clasic
+  update_param: selected
+border_color:
+  show: true
+  input_info:
+    input: colourInput
+    input_params:
+      inputId: border_color_viz
+      label: Border color
+      value: "#000000"
+  update_param: value
+background:
+  show: true
+  input_info:
+    input: colourInput
+    input_params:
+      inputId: background_viz
+      label: Background
+      value: "#ffffff"
+      allowTransparent: true
+  update_param: value
+border_width:
+  show: true
+  input_info:
+    input: sliderInput
+    input_params:
+      inputId: border_width_viz
+      label: Border width
+      min: 0
+      max: 5
+      value: 1
+      step: 0.3
+  update_param: value
+color_hover:
+  show: true
+  input_info:
+    input: colourInput
+    input_params:
+      inputId: color_hover_viz
+      label: Hover color
+      value: "#000000"
+      allowTransparent: true
+  update_param: value
+color_opacity:
+  show: true
+  input_info:
+    input: sliderInput
+    input_params:
+      inputId: color_opacity_viz
+      label:  Color opacity
+      min: 0
+      max: 1
+      value: 1
+      step: 0.1
+  update_param: value
+fill_opacity:
+  show: true
+  input_info:
+    input: sliderInput
+    input_params:
+      inputId: fill_opacity_viz
+      label: Fill opacity
+      min: 0
+      max: 1
+      value: 1
+      step: 0.1
+  update_param: value
+drop_na:
+  show: true
+  input_info:
+    input: checkboxInput
+    input_params:
+      inputId: drop_na_viz
+      label: Drop na
+      value: true
+  update_param: value
+text_show:
+  show: true
+  input_info:
+    input: checkboxInput
+    input_params:
+      inputId: text_show_viz
+      label: Show text
+      value: true
+  update_param: value
+graph_type:
+  show: true
+  input_info:
+    input: radioButtons
+    input_params:
+      inputId: graph_type_viz
+      label: Graph type
+      choices:
+        Grouped:
+        - grouped
+        Stacked:
+        - stacked
+      inline: true
+  update_param: select
+highlight_value:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: highlight_value_viz
+      label: Highlight category
+      choices: 
+      selected: 
+      multiple: true
+      options: 
+  update_param: selected
+highlight_valueColor:
+  show: true
+  input_info:
+    input: colourInput
+    input_params:
+      inputId: highlight_valueColor_viz
+      label: highlight color
+      value: "#FFFFFF"
+  update_param: value
+horLabel:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: horLabel_viz
+      label: X axis label
+      value: null 
+  update_param: value
+verLabel:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: verLabel_viz
+      label: Y axis label
+      value: null
+  update_param: value
+nDigits:
+  show: true
+  input_info:
+    input: numericInput
+    input_params:
+      inputId: nDigits_viz
+      label: Number digits
+      value: 2
+      min: 1
+      max: 13
+  update_param: value
+horLine:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: horLine_viz
+      label: X axix line
+      value: ''
+  update_param: value
+verLine:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: verLine_viz
+      label: Y axis line
+      value: ''
+  update_param: value
+label_wrap:
+  show: true
+  input_info:
+    input: sliderInput
+    input_params:
+      inputId: label_wrap_viz
+      label: Label wrap
+      min: 10
+      max: 100
+      value: 1
+      step: 5
+  update_param: value
+order:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: order_viz
+      label: Category order
+      choices: 
+      selected: 
+      multiple: true
+      options: 
+  update_param: selected
+order1:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: order1_viz
+      label: Legend order
+      choices: 
+      selected: 
+      multiple: true
+      options: 
+  update_param: selected
+order2:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: order2_viz
+      label:  X axis order
+      choices: 
+      selected: 
+      multiple: true
+      options: 
+  update_param: selected
+percentage:
+  show: true
+  input_info:
+    input: checkboxInput
+    input_params:
+      inputId: percentage_viz
+      label: Percentage
+      value: false
+  update_param: value
+suffix:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: suffix_viz
+      label: Suffix
+      value: ''
+  update_param: value
+prefix:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: prefix_viz
+      label: Prefix
+      value: ''
+  update_param: value
+regression:
+  show: true
+  input_info:
+    input: checkboxInput
+    input_params:
+      inputId: regression_viz
+      label: Regression
+      value: false
+  update_param: value
+regression_color:
+  show: true
+  child_info:
+    father: regression
+    other: false
+    type: boolean
+    compare: value
+    filter: true
+  input_info:
+    input: colourInput
+    input_params:
+      inputId: regression_color_viz
+      label: Regression line color
+      value: "#000000"
+  update_param: selected
+regression_equation:
+  show: true
+  child_info:
+    father: regression
+    other: false
+    type: boolean
+    compare: value
+    filter: true
+    input_info: 
+    input: checkboxInput
+    input_params:
+      inputId: regression_equation_viz
+      label: Regression equation
+      value: false
+  update_param: value
+marks:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: marks_viz
+      label: Number format
+      choices:
+        '12,345.00':
+        - ",&."
+        12.345.00:
+        - ".&,"
+        '12345.00':
+        - "&."
+        '12345,00':
+        - "&,"
+        12 345.00:
+        - " &."
+        12 345,00:
+        - " &,"
+      selected: ",&."
+  update_param: selected
+agg:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: agg_viz
+      label: Aggregation
+      choices:
+        Total:
+        - sum
+        Mean:
+        - mean
+        Median:
+        - median
+      selected: discrete
+  update_param: selected
+agg_text:
+  show: true
+  input_info:
+    input: textInput
+    input_params:
+      inputId: agg_text_viz
+      label: Tooltip label
+  update_param: value
+orientation:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: orientation_viz
+      label: Orientation
+      choices:
+        Vertical:
+        - ver
+        Horizotal:
+        - hor
+      selected: ver
+  update_param: selected
+sliceN:
+  show: true
+  input_info:
+    input: sliderInput
+    input_params:
+      inputId: sliceN_viz
+      label: Slice
+      min: 0
+      max: 5
+      value: 1
+      step: 1
+  update_param: value
+sort:
+  show: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: sort_viz
+      label: Sort
+      choices:
+        Without:
+        - nada
+        upward:
+        - asc
+        falling:
+        - desc
+      selected: false
+  update_param: selected
+legend_show:
+  show: true
+  input_info:
+    input: checkboxInput
+    input_params:
+      inputId: legend_show_viz
+      label: Show legend
+      value: true
+  update_param: value
+legend_position:
+  show: true
+  child_info:
+    father: legend_show
+    other: false
+    type: boolean
+    compare: value
+    filter: true
+  input_info:
+    input: selectizeInput
+    input_params:
+      inputId: legend_position_viz
+      label: Legend position
+      choices:
+        Bottom left:
+        - bottomleft
+        Bottom right:
+        - bottomright
+        Top left:
+        - topleft
+        Top right:
+        - topright
+      selected: bottomleft
+  update_param: selected
