@@ -10,7 +10,7 @@ parmesan_render_ui <- function(sections = NULL, parmesan = NULL, config_path = N
     parmesan <- parmesan_config(config_path = config_path)
   }
   inputs_layout <- parmesan$layout
-  inputs_params <- parmesan$params
+  inputs_params <- parmesan$inputs
 
   if(is.null(sections)){
     sections <- names(inputs_layout)
