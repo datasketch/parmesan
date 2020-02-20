@@ -1,6 +1,7 @@
 library(shiny)
 library(parmesan)
 library(shi18ny)
+library(shinyjs)
 
 ui <- fluidPage(
   titlePanel(ui_("hello")),
