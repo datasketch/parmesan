@@ -1,0 +1,14 @@
+# - reactive_name: whichplot
+#   - equals: Cat
+#     - 
+# - reactive_name: library
+#   - equals: highchart
+#     - reactive_name: chart_type
+#       - equals: bar
+#         - agg_text
+#         - background
+#         - caption
+#       - equals: pie
+#         - agg_text
+#         - background
+#         - caption

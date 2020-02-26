@@ -1,0 +1,15 @@
+shiny:
+	actionButton:
+    update_param: value
+	sliderInput:
+    update_param: value
+	selectInput:
+    update_param: selected
+	selectizeInput:
+    update_param: selected
+	checkboxInput:
+    update_param: value
+	radioButtons:
+    update_param: selected
+	numericInput:
+    update_param: value

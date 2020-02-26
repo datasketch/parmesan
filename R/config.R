@@ -26,6 +26,7 @@ parmesan_config <- function(inputs_params = NULL, inputs_layout = NULL, config_p
   list(layout = layout, inputs = inputs)
 }
 
+
 parmesan_input_ids <- function(section = NULL, config_path = "parmesan"){
   parmesan_config <- parmesan_config(config_path = config_path)
   if(is.null(section)){
@@ -37,3 +38,12 @@ parmesan_input_ids <- function(section = NULL, config_path = "parmesan"){
   }
   unlist(unname(parmesan_config$layout))
 }
+
+parmesan_inputs <- function(config_path = "parmesan"){
+  input_ids <- parmesan_input_ids(config_path = config_path)
+  lapply(input_ids, function(i){
+    list(input_name = i, input_value = NA)
+  })
+}
+
+

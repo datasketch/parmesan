@@ -4,7 +4,9 @@ parmesan_render_ui <- function(sections = NULL, parmesan = NULL, config_path = N
                                container_section = NULL,
                                container_title = NULL,
                                container_element = NULL,
-                               lang = NULL){
+                               lang = NULL,
+                               input = NULL,
+                               env = env){
 
   if(is.null(parmesan)){
     parmesan <- parmesan_config(config_path = config_path)
@@ -38,32 +40,92 @@ parmesan_render_ui <- function(sections = NULL, parmesan = NULL, config_path = N
     render_label <- function(x) x
   }
 
-  children <- names(inputs_params)[grep("child_info", inputs_params)]
+  #children <- names(inputs_params)[grep("child_info", inputs_params)]
   lapply(sections, function(section) {
     container_section(
       container_title(id = section, class = 'style_section',
                       render_label(section)),
-      lapply(inputs_layout[[section]], function(param_i) {
-        p_inf <- inputs_params[[param_i]]
-        if (is.null(p_inf)) return()
-        if(!p_inf$input_info$input_type %in% available_inputs())
-          stop(p_inf$input_info$input_type, " is not a registered input")
-        if (p_inf$show) {
-          if (param_i %in% children) {
-            p_inf$input_info$input_params$label <- render_label(p_inf$input_info$input_params$label)
-            div(id = paste0("shn-", p_inf$input_info$input_params$inputId),
-                do.call(p_inf$input_info$input_type, p_inf$input_info$input_params))
-          } else {
-            p_inf$input_info$input_params$label <- render_label(p_inf$input_info$input_params$label)
-            do.call(p_inf$input_info$input_type, p_inf$input_info$input_params)
-          }
-        } else {
-          return()
-        }
+      lapply(inputs_layout[[section]], function(input_id) {
+        input_list <- inputs_params[[input_id]]
+        input_list$name <- input_id
+        render_input(input_list, render_label, input = input, env = env)
       })
     )
   })
 
+}
+
+
+render_input <- function(input_list, render_label, input, env){
+  message("\nRendering input: ", input_list$name, "\n")
+  if (is.null(input_list)) return()
+  # if(shiny::is.reactive(lang)){
+  #   lang <- lang()
+  # }
+  if(!input_list$input_info$input_type %in% available_inputs())
+    stop(input$input_info$input_type, " is not a registered input")
+  if (input_list$show) {
+    if (is.null(input_list$depends_on)) {
+      # Has no dependencies
+      message("No dependencies: ", input_list$name)
+      input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
+      html <- div(id = paste0("shn-", input$input_info$input_params$inputId),
+                  do.call(input_list$input_info$input_type, input_list$input_info$input_params)
+      )
+    } else {
+      # Has dependencies
+      dependency <- list(
+        name = names(input_list$depends_on) %||% input_list$depends_on[[1]][[1]],
+        trigger = names(input_list$depends_on[[1]]),
+        value = input_list$depends_on[[1]][[1]]
+      )
+      str(dependency)
+      if(!is.null(input[[dependency$name]])){
+        dep_value <- input[[dependency$name]]
+      } else {
+        dep_value <- do.call(dependency$name, list()
+                             ,
+                             envir = env
+                             # envir = parent.frame()
+                             # envir = parent.env(parent.frame())
+                             # envir = parent.env(parent.env(parent.frame()))
+                             # envir = parent.env(parent.env(parent.env(parent.frame())))
+                             # envir = parent.env(parent.env(parent.env(parent.env(parent.frame()))))
+                             # envir = parent.env(parent.env(parent.env(parent.env(parent.env(parent.frame())))))
+                             # envir = parent.env(parent.env(parent.env(parent.env(parent.env(parent.env(parent.frame()))))))
+                             # envir = globalenv()
+                             # envir = pryr::where(dependency$name)
+                             #envir = parent.env(pryr::where(dependency$name))
+        )
+      }
+      message("Dep Value: ", dep_value)
+      str(dep_value)
+      # Single dependency case
+      if(is.null(dependency$trigger)){
+        input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
+        params <-  input_list$input_info$input_params
+        message("params")
+        str(params)
+        par <- names(Filter(function(x) x == dependency$value, params))
+        str(params[[par]])
+        params[[par]] <- dep_value
+        str(params)
+        html <- do.call(input_list$input_info$input_type, params)
+        return(html)
+      }
+      # Equals dependency case
+      if(dependency$trigger == "equals"){
+        if(dep_value == dependency$value){
+          input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
+          params <-  input_list$input_info$input_params
+          html <- do.call(input_list$input_info$input_type, params)
+          return(html)
+        }
+      }
+    }
+  } else {
+    return()
+  }
 }
 
 
