@@ -1,8 +1,10 @@
 ---
 Format plot:
-- library
+- viz_library
 Chart titles:
 - title
+- title_ggplot
+- title_highcharter
 - subtitle
 Axis Names:
 - hor_label

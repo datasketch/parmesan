@@ -9,12 +9,12 @@ viz_type:
      images: ftype_image_recommendation
      path: img/svg/
      format: svg
-library:
+viz_library:
   show: true
   input_info:
     input_type: radioButtons
     input_params:
-      inputId: library_viz
+      inputId: viz_library
       label: library
       choices:
         Highcharter:
@@ -30,6 +30,30 @@ title:
     input_params:
       inputId: title_viz
       label: Title
+      value: ''
+  update_param: value
+title_ggplot:
+  show: true
+  depends_on: 
+    viz_library:
+      equals: ggplot
+  input_info:
+    input_type: textInput
+    input_params:
+      inputId: title_viz
+      label: Title Ggplot
+      value: ''
+  update_param: value
+title_highcharter:
+  show: true
+  depends_on: 
+    viz_library:
+      equals: highcharter
+  input_info:
+    input_type: textInput
+    input_params:
+      inputId: title_viz
+      label: Title Highcharter
       value: ''
   update_param: value
 subtitle:

@@ -80,9 +80,13 @@ render_input <- function(input_list, render_label, input, env){
         value = input_list$depends_on[[1]][[1]]
       )
       str(dependency)
+      message("input[[",dependency$name,"]] is: ", input[[dependency$name]])
+      str(input[[dependency$name]])
       if(!is.null(input[[dependency$name]])){
+        message("Dependency on input: ", dependency$name)
         dep_value <- input[[dependency$name]]
       } else {
+        message("Dependency on reactive: ", dependency$name)
         dep_value <- do.call(dependency$name, list(), envir = env)
       }
       message("Dep Value: ", dep_value)
