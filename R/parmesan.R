@@ -83,20 +83,7 @@ render_input <- function(input_list, render_label, input, env){
       if(!is.null(input[[dependency$name]])){
         dep_value <- input[[dependency$name]]
       } else {
-        dep_value <- do.call(dependency$name, list()
-                             ,
-                             envir = env
-                             # envir = parent.frame()
-                             # envir = parent.env(parent.frame())
-                             # envir = parent.env(parent.env(parent.frame()))
-                             # envir = parent.env(parent.env(parent.env(parent.frame())))
-                             # envir = parent.env(parent.env(parent.env(parent.env(parent.frame()))))
-                             # envir = parent.env(parent.env(parent.env(parent.env(parent.env(parent.frame())))))
-                             # envir = parent.env(parent.env(parent.env(parent.env(parent.env(parent.env(parent.frame()))))))
-                             # envir = globalenv()
-                             # envir = pryr::where(dependency$name)
-                             #envir = parent.env(pryr::where(dependency$name))
-        )
+        dep_value <- do.call(dependency$name, list(), envir = env)
       }
       message("Dep Value: ", dep_value)
       str(dep_value)

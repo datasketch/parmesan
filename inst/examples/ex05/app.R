@@ -66,6 +66,14 @@ server <-  function(input, output, session) {
     input$selected_ftype
   })
 
+  ftype_image_recommendation <- reactive({
+    if(ftype() == "Cat"){
+      c("pie", "bar")
+    } else{
+      c("bar", "treemap")
+    }
+  }, env = react_env)
+
   output$vizView <- renderPlot({
     plot(cars[[1]])
   })

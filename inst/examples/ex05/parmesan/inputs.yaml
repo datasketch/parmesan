@@ -1,12 +1,12 @@
----
 viz_type:
   show: true
+  depends_on: ftype_image_recommendation
   input_info:
    input_type: buttonImageInput
    input_params: 
      inputId: test_viz
      label: ""
-     images: [line, bar]
+     images: ftype_image_recommendation
      path: img/svg/
      format: svg
 library:
