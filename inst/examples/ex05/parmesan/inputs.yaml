@@ -4,7 +4,6 @@ viz_type:
   input_info:
    input_type: buttonImageInput
    input_params: 
-     inputId: test_viz
      label: ""
      images: ftype_image_recommendation
      path: img/svg/
@@ -14,7 +13,6 @@ viz_library:
   input_info:
     input_type: radioButtons
     input_params:
-      inputId: viz_library
       label: library
       choices:
         Highcharter:
@@ -28,7 +26,6 @@ title:
   input_info:
     input_type: textInput
     input_params:
-      inputId: title_viz
       label: Title
       value: ''
   update_param: value
@@ -40,7 +37,6 @@ title_ggplot:
   input_info:
     input_type: textInput
     input_params:
-      inputId: title_viz
       label: Title Ggplot
       value: ''
   update_param: value
@@ -52,7 +48,6 @@ title_highcharter:
   input_info:
     input_type: textInput
     input_params:
-      inputId: title_viz
       label: Title Highcharter
       value: ''
   update_param: value
@@ -61,7 +56,6 @@ subtitle:
   input_info:
     input_type: textInput
     input_params:
-      inputId: subtitle_viz
       label: Subtitle
       value: ''
   update_param: value
@@ -70,7 +64,6 @@ caption:
   input_info:
     input_type: textInput
     input_params:
-      inputId: caption_viz
       label: Caption
       value: ''
   update_param: value
@@ -79,7 +72,6 @@ hor_label:
   input_info:
     input_type: textInput
     input_params:
-      inputId: horLabel_viz
       label: X axis label
       value: ''
   update_param: value
@@ -91,7 +83,6 @@ ver_label:
   input_info:
     input_type: textInput
     input_params:
-      inputId: verLabel_viz
       label: Y axis label
       value: ''
   update_param: value

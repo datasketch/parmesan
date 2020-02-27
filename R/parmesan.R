@@ -65,11 +65,12 @@ render_input <- function(input_list, render_label, input, env){
   if(!input_list$input_info$input_type %in% available_inputs())
     stop(input$input_info$input_type, " is not a registered input")
   if (input_list$show) {
+    input_list$input_info$input_params$inputId <- input_list$name
     if (is.null(input_list$depends_on)) {
       # Has no dependencies
       message("No dependencies: ", input_list$name)
       input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
-      html <- div(id = paste0("shn-", input$input_info$input_params$inputId),
+      html <- div(id = paste0("shn-", input_list$name),
                   do.call(input_list$input_info$input_type, input_list$input_info$input_params)
       )
     } else {

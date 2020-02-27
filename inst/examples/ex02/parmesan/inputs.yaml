@@ -4,7 +4,6 @@ bins:
   input_info:
     input_type: sliderInput
     input_params:
-      inputId: bins
       label: Bins
       min: 0
       max: 50
@@ -16,7 +15,6 @@ dataset:
   input_info:
     input_type: selectInput
     input_params:
-      inputId: dataset
       label: Dataset
       choices:
         - rock
@@ -29,7 +27,6 @@ column:
   input_info:
     input_type: numericInput
     input_params:
-      inputId: column
       label: Column
       value: 1
   update_param: value
