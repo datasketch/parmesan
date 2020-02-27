@@ -1,0 +1,11 @@
+---
+Format plot:
+- library
+Chart titles:
+- title
+- subtitle
+Axis Names:
+- hor_label
+- ver_label
+Viz types:
+- viz_type

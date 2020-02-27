@@ -130,7 +130,8 @@ render_input <- function(input_list, render_label, input, env){
 
 
 available_inputs <- function(){
-  c("actionButton", "sliderInput", "selectInput", "selectizeInput", "checkboxInput", "radioButtons", "numericInput")
+  l <- yaml::read_yaml(system.file("available_inputs.yaml", package = "parmesan"))
+  unlist(unname(lapply(l, names)))
 }
 
 

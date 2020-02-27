@@ -1,0 +1,73 @@
+---
+viz_type:
+  show: true
+  input_info:
+   input_type: buttonImageInput
+   input_params: 
+     inputId: test_viz
+     label: ""
+     images: [line, bar]
+     path: img/svg/
+     format: svg
+library:
+  show: true
+  input_info:
+    input_type: radioButtons
+    input_params:
+      inputId: library_viz
+      label: library
+      choices:
+        Highcharter:
+        - highcharter
+        Ggplot:
+        - ggplot
+      inline: true
+  update_param: select
+title:
+  show: true
+  input_info:
+    input_type: textInput
+    input_params:
+      inputId: title_viz
+      label: Title
+      value: ''
+  update_param: value
+subtitle:
+  show: true
+  input_info:
+    input_type: textInput
+    input_params:
+      inputId: subtitle_viz
+      label: Subtitle
+      value: ''
+  update_param: value
+caption:
+  show: true
+  input_info:
+    input_type: textInput
+    input_params:
+      inputId: caption_viz
+      label: Caption
+      value: ''
+  update_param: value
+hor_label:
+  show: true
+  input_info:
+    input_type: textInput
+    input_params:
+      inputId: horLabel_viz
+      label: X axis label
+      value: ''
+  update_param: value
+ver_label:
+  show: true
+  depends_on: 
+    library:
+      equals: Ggplot
+  input_info:
+    input_type: textInput
+    input_params:
+      inputId: verLabel_viz
+      label: Y axis label
+      value: ''
+  update_param: value
