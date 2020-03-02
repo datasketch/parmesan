@@ -63,6 +63,10 @@ server <-  function(input, output, session) {
     ncol(datasetInput())
   }, env = react_env)
 
+  datasetNColsLabel <- reactive({
+    paste0("Colums (max = ", datasetNCols(),")")
+  }, env = react_env)
+
   output$controls <- renderUI({
     parmesan_render_ui(section = "Controls", config_path = config_path, input = input, env = react_env)
   })

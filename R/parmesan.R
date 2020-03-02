@@ -84,11 +84,13 @@ render_input <- function(input_list, render_label, input, env){
       message("input[[",dependency$name,"]] is: ", input[[dependency$name]])
       str(input[[dependency$name]])
       if(!is.null(input[[dependency$name]])){
+        # Dependency on input
         message("Dependency on input: ", dependency$name)
         dep_value <- input[[dependency$name]]
       } else {
         message("Dependency on reactive: ", dependency$name)
-        dep_value <- do.call(dependency$name, list(), envir = env)
+        reactive_fun <- gsub("reactive_","", dependency$name)
+        dep_value <- do.call(reactive_fun, list(), envir = env)
       }
       message("Dep Value: ", dep_value)
       str(dep_value)
@@ -98,9 +100,21 @@ render_input <- function(input_list, render_label, input, env){
         params <-  input_list$input_info$input_params
         message("params")
         str(params)
-        par <- names(Filter(function(x) x == dependency$value, params))
-        str(params[[par]])
-        params[[par]] <- dep_value
+        pars <- names(Filter(function(x) grepl("reactive__", x), params))
+        message("pars")
+        str(pars)
+        params_reactive <- lapply(pars, function(par){
+          reactive_fun <- gsub("reactive__","", input_list$input_info$input_params[[par]])
+          message("reactive fun: ", reactive_fun)
+          dep_value_params <- do.call(reactive_fun, list(), envir = env)
+          str(dep_value_params)
+          dep_value_params
+        })
+        names(params_reactive) <- pars
+        # params[[par]] <- dep_value_params
+        params <- modifyList(params, params_reactive)
+        message("params reactive")
+        str(params_reactive)
         str(params)
         html <- do.call(input_list$input_info$input_type, params)
         return(html)

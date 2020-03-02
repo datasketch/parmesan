@@ -39,8 +39,8 @@ column:
   input_info:
     input_type: numericInput
     input_params:
-      label: Column
+      label: reactive__datasetNColsLabel
       value: 1
-      max: datasetNCols
+      max: reactive__datasetNCols
       min: 1
   update_param: value
