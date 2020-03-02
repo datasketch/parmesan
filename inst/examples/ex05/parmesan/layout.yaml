@@ -6,6 +6,7 @@ Chart titles:
 - title_ggplot
 - title_highcharter
 - subtitle
+- order
 Axis Names:
 - hor_label
 - ver_label

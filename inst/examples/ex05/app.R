@@ -73,6 +73,14 @@ server <-  function(input, output, session) {
     input$selected_ftype
   })
 
+  order <- reactive({
+    if(ftype() == "Cat"){
+      c("First Cat")
+    } else{
+      c("Second Cat", "Second Num")
+    }
+  })
+
   ftype_image_recommendation <- reactive({
     if(ftype() == "Cat"){
       c("pie", "bar")
