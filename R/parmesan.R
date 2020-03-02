@@ -106,8 +106,8 @@ render_input <- function(input_list, render_label, input, env){
         return(html)
       }
       # Equals dependency case
-      if(dependency$trigger == "equals"){
-        if(dep_value == dependency$value){
+      if(dependency$trigger %in% c("equals", "one_of")){
+        if(dep_value %in% dependency$value){
           input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
           params <-  input_list$input_info$input_params
           html <- do.call(input_list$input_info$input_type, params)
