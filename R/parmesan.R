@@ -1,6 +1,7 @@
 #' @importFrom shiny tags
 #' @export
-parmesan_render_ui <- function(sections = NULL, parmesan = NULL, config_path = NULL,
+parmesan_render_ui <- function(sections = NULL, parmesan = NULL,
+                               config_path = "parmesan",
                                container_section = NULL,
                                container_title = NULL,
                                container_element = NULL,
