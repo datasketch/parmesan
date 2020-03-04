@@ -53,6 +53,9 @@ title_highcharter:
   update_param: value
 subtitle:
   show: true
+  depends_on:
+    show_subtitle:
+      equals: TRUE
   input_info:
     input_type: textInput
     input_params:
@@ -98,3 +101,9 @@ order:
     input_params:
       label: Col order
       choices: reactive__order
+show_subtitle:
+  show: true
+  input_info:
+    input_type: checkboxInput
+    input_params:
+      label: Show subtitle

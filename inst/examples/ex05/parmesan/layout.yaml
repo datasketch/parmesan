@@ -1,6 +1,7 @@
 ---
 Format plot:
 - viz_library
+- show_subtitle
 Chart titles:
 - title
 - title_ggplot
