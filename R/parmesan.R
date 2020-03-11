@@ -7,7 +7,7 @@ parmesan_render_ui <- function(sections = NULL, parmesan = NULL,
                                container_element = NULL,
                                lang = NULL,
                                input = NULL,
-                               env = env){
+                               env = parent.frame()){
 
   if(is.null(parmesan)){
     parmesan <- parmesan_config(config_path = config_path)

@@ -16,6 +16,10 @@ test_that("Config files are ok", {
     "Controls"
   )
 
+  parmesan_input_ids()
+
+  # Parmesan files not found
+  # expect_error()
 
 
 })

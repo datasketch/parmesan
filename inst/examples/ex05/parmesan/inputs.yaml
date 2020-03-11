@@ -29,17 +29,17 @@ title:
       label: Title
       value: ''
   update_param: value
-title_ggplot:
-  show: true
-  depends_on: 
-    viz_library:
-      equals: ggplot
-  input_info:
-    input_type: textInput
-    input_params:
-      label: Title Ggplot
-      value: ''
-  update_param: value
+# title_ggplot:
+#   show: true
+#   depends_on: 
+#     viz_library:
+#       equals: ggplot
+#   input_info:
+#     input_type: textInput
+#     input_params:
+#       label: Title Ggplot
+#       value: ''
+#   update_param: value
 title_highcharter:
   show: true
   depends_on: 
