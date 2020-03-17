@@ -90,7 +90,7 @@ render_input <- function(input_list, render_label, input, env){
         dep_value <- input[[dependency$name]]
       } else {
         message("Dependency on reactive: ", dependency$name)
-        reactive_fun <- gsub("reactive_","", dependency$name)
+        reactive_fun <- gsub("reactive__","", dependency$name)
         dep_value <- do.call(reactive_fun, list(), envir = env)
       }
       message("Dep Value: ", dep_value)
