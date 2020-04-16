@@ -9,6 +9,8 @@ shiny:
     update_param: selected
   checkboxInput:
     update_param: value
+  checkboxGroupInput:
+    update_param: selected
   radioButtons:
     update_param: selected
   numericInput:
