@@ -57,83 +57,80 @@ parmesan_render_ui <- function(sections = NULL, parmesan = NULL,
 }
 
 
-render_input <- function(input_list, render_label, input, env){
-  message("\nRendering input: ", input_list$name, "\n")
-  if (is.null(input_list)) return()
-  # if(shiny::is.reactive(lang)){
-  #   lang <- lang()
-  # }
-  if(!input_list$input_info$input_type %in% available_inputs())
-    stop(input$input_info$input_type, " is not a registered input")
-  if (input_list$show) {
-    input_list$input_info$input_params$inputId <- input_list$name
-    if (is.null(input_list$depends_on)) {
-      # Has no dependencies
-      message("No dependencies: ", input_list$name)
-      input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
-      html <- div(id = paste0("shn-", input_list$name),
-                  do.call(input_list$input_info$input_type, input_list$input_info$input_params)
-      )
-    } else {
-      # Has dependencies
-      dependency <- list(
-        name = names(input_list$depends_on) %||% input_list$depends_on[[1]][[1]],
-        trigger = names(input_list$depends_on[[1]]),
-        value = input_list$depends_on[[1]][[1]]
-      )
-      str(dependency)
-      message("input[[",dependency$name,"]] is: ", input[[dependency$name]])
-      str(input[[dependency$name]])
-      if(!is.null(input[[dependency$name]])){
-        # Dependency on input
-        message("Dependency on input: ", dependency$name)
-        dep_value <- input[[dependency$name]]
-      } else {
-        message("Dependency on reactive: ", dependency$name)
-        reactive_fun <- gsub("reactive__","", dependency$name)
-        dep_value <- do.call(reactive_fun, list(), envir = env)
-      }
-      message("Dep Value: ", dep_value)
-      str(dep_value)
-      # Single dependency case
-      if(is.null(dependency$trigger)){
-        input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
-        params <- replace_reactives(input_list, env)
-        # message("params")
-        # str(params)
-        # pars <- names(Filter(function(x) grepl("reactive__", x), params))
-        # message("pars")
-        # str(pars)
-        # params_reactive <- lapply(pars, function(par){
-        #   reactive_fun <- gsub("reactive__","", input_list$input_info$input_params[[par]])
-        #   message("reactive fun: ", reactive_fun)
-        #   dep_value_params <- do.call(reactive_fun, list(), envir = env)
-        #   str(dep_value_params)
-        #   dep_value_params
-        # })
-        # names(params_reactive) <- pars
-        # # params[[par]] <- dep_value_params
-        # params <- modifyList(params, params_reactive)
-        # message("params reactive")
-        # str(params_reactive)
-        # str(params)
-        html <- do.call(input_list$input_info$input_type, params)
-        return(html)
-      }
-      # Equals dependency case
-      if(dependency$trigger %in% c("equals", "one_of")){
-        if(dep_value %in% dependency$value){
-          input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
-          params <- replace_reactives(input_list, env)
-          html <- do.call(input_list$input_info$input_type, params)
-          return(html)
-        }
-      }
-    }
-  } else {
-    return()
-  }
-}
+# render_input2 <- function(input_list, render_label, input, env){
+#   message("\nRendering input: ", input_list$name, "\n")
+#   if (is.null(input_list)) return()
+#   if(!input_list$input_info$input_type %in% available_inputs())
+#     stop(input$input_info$input_type, " is not a registered input")
+#   if (input_list$show) {
+#     input_list$input_info$input_params$inputId <- input_list$name
+#     if (is.null(input_list$depends_on)) {
+#       # Has no dependencies
+#       message("No dependencies: ", input_list$name)
+#       input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
+#       html <- div(id = paste0("shn-", input_list$name),
+#                   do.call(input_list$input_info$input_type, input_list$input_info$input_params)
+#       )
+#     } else {
+#       # Has dependencies
+#       dependency <- list(
+#         name = names(input_list$depends_on) %||% input_list$depends_on[[1]][[1]],
+#         trigger = names(input_list$depends_on[[1]]),
+#         value = input_list$depends_on[[1]][[1]]
+#       )
+#       str(dependency)
+#       message("input[[",dependency$name,"]] is: ", input[[dependency$name]])
+#       str(input[[dependency$name]])
+#       if(!is.null(input[[dependency$name]])){
+#         # Dependency on input
+#         message("Dependency on input: ", dependency$name)
+#         dep_value <- input[[dependency$name]]
+#       } else {
+#         message("Dependency on reactive: ", dependency$name)
+#         reactive_fun <- gsub("reactive__","", dependency$name)
+#         dep_value <- do.call(reactive_fun, list(), envir = env)
+#       }
+#       message("Dep Value: ", dep_value)
+#       str(dep_value)
+#       # Single dependency case
+#       if(is.null(dependency$trigger)){
+#         input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
+#         params <- replace_reactives(input_list, env)
+#         # message("params")
+#         # str(params)
+#         # pars <- names(Filter(function(x) grepl("reactive__", x), params))
+#         # message("pars")
+#         # str(pars)
+#         # params_reactive <- lapply(pars, function(par){
+#         #   reactive_fun <- gsub("reactive__","", input_list$input_info$input_params[[par]])
+#         #   message("reactive fun: ", reactive_fun)
+#         #   dep_value_params <- do.call(reactive_fun, list(), envir = env)
+#         #   str(dep_value_params)
+#         #   dep_value_params
+#         # })
+#         # names(params_reactive) <- pars
+#         # # params[[par]] <- dep_value_params
+#         # params <- modifyList(params, params_reactive)
+#         # message("params reactive")
+#         # str(params_reactive)
+#         # str(params)
+#         html <- do.call(input_list$input_info$input_type, params)
+#         return(html)
+#       }
+#       # Equals dependency case
+#       if(dependency$trigger %in% c("equals", "one_of")){
+#         if(dep_value %in% dependency$value){
+#           input_list$input_info$input_params$label <- render_label(input_list$input_info$input_params$label)
+#           params <- replace_reactives(input_list, env)
+#           html <- do.call(input_list$input_info$input_type, params)
+#           return(html)
+#         }
+#       }
+#     }
+#   } else {
+#     return()
+#   }
+# }
 
 
 replace_reactives <- function(input_list, env){
@@ -153,10 +150,5 @@ replace_reactives <- function(input_list, env){
   modifyList(params, params_reactive)
 }
 
-
-available_inputs <- function(){
-  l <- yaml::read_yaml(system.file("available_inputs.yaml", package = "parmesan"))
-  unlist(unname(lapply(l, names)))
-}
 
 

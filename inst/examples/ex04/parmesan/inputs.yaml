@@ -1,46 +1,42 @@
 plot_type:
   show: true
-  input_info:
-    input_type: radioButtons
-    input_params:
-      label: Plot Type
-      choices:
-        - Plot
-        - Histogram 
+  input_type: radioButtons
+  input_params:
+    label: Plot Type
+    choices:
+      - Plot
+      - Histogram
 bins:
   show: true
   depends_on: 
     plot_type:
       equals: Histogram
-  input_info:
-    input_type: sliderInput
-    input_params:
-      label: Bins
-      min: 0
-      max: 50
-      value: 10
-      step: 1
+  input_type: sliderInput
+  input_params:
+    label: Bins
+    min: 0
+    max: 50
+    value: 10
+    step: 1
   update_param: value
 dataset:
   show: true
-  input_info:
-    input_type: selectInput
-    input_params:
-      label: Dataset
-      choices:
-        - rock
-        - pressure
-        - cars
-      selected: rock
+  input_type: selectInput
+  input_params:
+    label: Dataset
+    choices:
+      - rock
+      - pressure
+      - cars
+    selected: rock
   update_param: selected
 column:
   show: true
-  depends_on: datasetNCols   
-  input_info:
-    input_type: numericInput
-    input_params:
-      label: reactive__datasetNColsLabel
-      value: 1
-      max: reactive__datasetNCols
-      min: 1
+  depends_on: datasetNCols 
+  input_type: numericInput
+  input_params:
+    label: reactive__datasetNColsLabel
+    min: 1
+    max: reactive__datasetNCols
+    value: 1
   update_param: value

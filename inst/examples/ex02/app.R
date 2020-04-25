@@ -22,10 +22,11 @@ div_dark <- function(...){
 
 server <-  function(input, output, session) {
 
+  path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+
   output$debug <- renderPrint({
-    config_path <- system.file("examples", "ex01", "parmesan", package = "parmesan")
-    psan_ids <- parmesan_input_ids(config_path = config_path)
-    psan_ids
+    parmesan_input_ids(parmesan = parmesan)
   })
 
   datasetInput <- reactive({
@@ -36,14 +37,12 @@ server <-  function(input, output, session) {
   })
 
   output$controls <- renderUI({
-    config_path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
-    parmesan_render_ui(section = "Controls", config_path = config_path)
+    render_section(section = "controls", parmesan = parmesan)
   })
 
   output$controls2 <- renderUI({
-    config_path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
-    parmesan_render_ui(section = "Controls Dark", config_path = config_path,
-                       container_section = div_dark)
+    render_section(section = "controls_dark", parmesan = parmesan,
+                   container_section = div_dark)
   })
 
   output$distPlot <- renderPlot({

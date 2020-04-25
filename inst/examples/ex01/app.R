@@ -6,7 +6,7 @@ ui <- fluidPage(
   h3("This example shows dynamic inputs loaded from a YAML config file."),
   sidebarLayout(
     sidebarPanel(
-      uiOutput("controls"),
+      uiOutput("controls_container"),
       verbatimTextOutput("debug")
     ),
     mainPanel(
@@ -17,10 +17,11 @@ ui <- fluidPage(
 
 server <-  function(input, output, session) {
 
+  path <- system.file("examples", "ex01", "parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+
   output$debug <- renderPrint({
-    config_path <- system.file("examples", "ex01", "parmesan", package = "parmesan")
-    psan_ids <- parmesan_input_ids(config_path = config_path)
-    psan_ids
+    parmesan_input_ids(parmesan = parmesan)
   })
 
   datasetInput <- reactive({
@@ -30,20 +31,8 @@ server <-  function(input, output, session) {
            "cars" = cars)
   })
 
-  output$controls <- renderUI({
-    # sliderInput(inputId = "bins",
-    #             label = "Number of bins:",
-    #             min = 1,
-    #             max = 50,
-    #             value = 30)
-    # selectInput(inputId = "dataset",
-    #             label = "Choose a dataset:",
-    #             choices = c("rock", "pressure", "cars")),
-    # numericInput(inputId = "obs",
-    #              label = "Number of observations to view:",
-    #              value = 10)
-    config_path <- system.file("examples", "ex01", "parmesan", package = "parmesan")
-    parmesan_render_ui(config_path = config_path)
+  output$controls_container <- renderUI({
+    render_section(parmesan = parmesan)
   })
 
   output$distPlot <- renderPlot({

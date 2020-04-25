@@ -34,6 +34,9 @@ server <-  function(input, output, session) {
   )
   lang <- callModule(langSelector,"lang", i18n = i18n, showSelector=TRUE)
 
+  path <- system.file("examples", "ex03", "parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+
   observeEvent(lang(),{
     uiLangUpdate(input$shi18ny_ui_classes, lang())
   })
@@ -55,19 +58,16 @@ server <-  function(input, output, session) {
 
     list(
       h3(i_("control_text.first.intro", lang())),
-      parmesan_render_ui(section = "controls", config_path = config_path,
-                         lang = lang())
+      render_section(section = "controls", parmesan = i_(parmesan, lang()))
     )
   })
 
   output$controls2 <- renderUI({
-    config_path <- system.file("examples", "ex03", "parmesan", package = "parmesan")
 
     list(
       h3(i_("control_text.second.intro", lang())),
-      parmesan_render_ui(section = "controls_dark", config_path = config_path,
-                         container_section = div_dark,
-                         lang = lang())
+      render_section(section = "controls_dark", parmesan = i_(parmesan, lang()),
+                     container_section = div_dark)
     )
   })
 

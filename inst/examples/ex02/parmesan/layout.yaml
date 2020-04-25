@@ -1,5 +1,9 @@
-Controls:
-- dataset
-Controls Dark:
-- column
-- bins
+controls:
+  label: Controls
+  inputs:
+    - dataset
+controls_dark:
+  label: Controls Dark
+  inputs:
+    - column
+    - bins
