@@ -1,98 +1,95 @@
-library(shinypanels)
+library(shiny)
 library(parmesan)
-library(shinyinvoer)
 
-
-ui <- panelsPage(
-  panel(
-    title = "Upload Data",
-    width = 300,
-    body =  h3("Upload data"),
-    collapsed = TRUE,
+ui <- fluidPage(
+  titlePanel("Hello Shiny!"),
+  h3("This example shows a layout for input groups with custom container functions
+     and children input elements."),
+  column(4,
+         uiOutput("controls"),
+         hr(),
+         uiOutput("controls2"),
+         hr(),
+         verbatimTextOutput("debug")
   ),
-  panel(
-    title = "Dataset",
-    width = 400,
-    collapsed = TRUE,
-    body =  h3("Dataset")
-  ),
-  panel(
-    title = "Edit viz",
-    width = 350,
-    body = div(
-      selectInput("selected_ftype", "Ftype", c("Cat", "Cat-Num")),
-      uiOutput("controls"),
-      uiOutput("controls2"),
-      verbatimTextOutput("debug")
-    )
-  ),
-  panel(
-    title = "Viz",
-    body = div(
-      plotOutput("vizView"),
-    ),
-    footer = uiOutput("viz_icons")
+  column(8,
+         plotOutput("distPlot")
   )
 )
 
-config_path <- "parmesan"
+div_dark <- function(...){
+  div(style="background-color:#DDD;border: 2px solid #CCC;border-radius:10px;padding:10px;", ...)
+}
 
-# Reactive part
-input_ids <- parmesan_input_ids(config_path = config_path)
-input_ids_values <- lapply(input_ids, function(i){
-  NA
-})
-names(input_ids_values) <- input_ids
+
 
 
 server <-  function(input, output, session) {
 
+  path <- system.file("examples", "ex04", "parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+  parmesan_env <- new.env()
+
+  # Put all parmesan inputs in reactive values
+  parmesan_input <- parmesan_watch(input, parmesan)
+
   output$debug <- renderPrint({
-    input[["viz_library"]]
+    # str(reactiveValuesToList(parmesan_inputs))
+    # datasetNCols()
+    # str(reactiveValuesToList(parmesan_inputs))
+    str(parmesan_input())
   })
 
-  react_env <- new.env()
+
+  datasetInput <- reactive({
+    req(input$dataset)
+    switch(
+      # parmesan_input()$dataset,
+      input$dataset,
+           "rock" = rock,
+           "pressure" = pressure,
+           "cars" = cars)
+  })
+
+  datasetNCols <- reactive({
+    req(datasetInput())
+    ncol(datasetInput())
+  }, env = parmesan_env)
+
+  datasetNColsLabel <- reactive({
+    paste0("Colums (max = ", datasetNCols(),")")
+  }, env = parmesan_env)
 
   output$controls <- renderUI({
-      parmesan_render_ui(section = c("Format plot"), config_path = config_path, input = input, env = react_env)
-
+    render_section(section = "controls", parmesan = parmesan)
   })
 
   output$controls2 <- renderUI({
-      parmesan_render_ui(section = "Chart titles", config_path = config_path, input = input, env = react_env)
-
+    # req(datasetNCols())
+    render_section(section = "controls_dark", parmesan = parmesan,
+                   container_section = div_dark,
+                   input = input, env = parmesan_env)
   })
 
-  output$viz_icons <- renderUI({
-    list(
-      parmesan_render_ui(section = c("Viz types"), config_path = config_path, input = input, env = react_env)
-    )
-  })
+  output$distPlot <- renderPlot({
+    req(input$dataset, input$column, datasetInput())
+    dataset  <- input$dataset
+    column <- input$column
+    x <- datasetInput()[, column]
+    column_name <- names(datasetInput())[column]
 
-  ftype <- reactive({
-    input$selected_ftype
-  })
-
-  order <- reactive({
-    if(ftype() == "Cat"){
-      c("First Cat")
-    } else{
-      c("Second Cat", "Second Num")
+    if(input$plot_type == "Plot"){
+      plot <- plot(x)
     }
-  })
-
-  ftype_image_recommendation <- reactive({
-    if(ftype() == "Cat"){
-      c("pie", "bar")
-    } else{
-      c("bar", "treemap")
+    if(input$plot_type == "Histogram"){
+      req(input$bins)
+      bins <- seq(min(x), max(x), length.out = input$bins + 1)
+      plot <- hist(x, breaks = bins, col = "#75AADB", border = "white",
+                   xlab = paste0("Values of ", column_name),
+                   main =  paste0("This is ", dataset, ", column ", column))
     }
-  }, env = react_env)
-
-  output$vizView <- renderPlot({
-    plot(cars[[1]])
+    plot
   })
-
 
 
 }

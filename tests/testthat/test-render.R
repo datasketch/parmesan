@@ -18,7 +18,7 @@ test_that("render works", {
   par_input <- parmesan[[1]]$inputs[[1]]
 
   # Input with no dependencies
-  expect_equal(render_input(par_input),
+  expect_equal(render_par_input(par_input),
                selectInput("dataset", "Dataset",
                            choices = c("rock","pressure","cars"),
                            selected = "rock"))
@@ -45,7 +45,7 @@ test_that("render works", {
 })
 
 
-test_that("render works", {
+test_that("show_if works", {
 
   path <- system.file("examples","ex04","parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
@@ -57,24 +57,12 @@ test_that("render works", {
   input <- list(plot_type = "XXXX")
   expect_false(validate_show_if(par_input, input))
 
+  # Include Bins only when plot_type equals Histogram
   input <- list(plot_type = "Histogram")
-  render_par_input(par_input, input)
-  render_section("controls_dark", parmesan = parmesan, input = input)
-
-  par_input <- parmesan[["controls_dark"]]$inputs[[1]]
-  expect_true(input_has_reactives(par_input))
-
+  expect_true(grepl("Bins", render_par_input(par_input, input)))
+  input <- list(plot_type = "XXXX")
+  expect_null(render_par_input(par_input, input))
 
 })
 
-test_that("reactives are replaced",{
-
-  fun <- function(x){
-    myenv <- new.env()
-    x
-  }
-
-
-
-})
 

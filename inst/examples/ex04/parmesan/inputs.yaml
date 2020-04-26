@@ -32,7 +32,6 @@ dataset:
   update_param: selected
 column:
   show: true
-  depends_on: datasetNCols 
   input_type: numericInput
   input_params:
     label: reactive__datasetNColsLabel

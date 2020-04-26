@@ -1,0 +1,15 @@
+---
+Format plot:
+- viz_library
+- show_subtitle
+Chart titles:
+- title
+#- title_ggplot
+- title_highcharter
+- subtitle
+- order
+Axis Names:
+- hor_label
+- ver_label
+Viz types:
+- viz_type

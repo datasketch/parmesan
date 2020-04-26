@@ -40,7 +40,7 @@ render_section <- function(section = NULL,
 
 
 render_par_input <- function(par_input, input, env){
-  message("\nRendering input: ", par_input$id, "\n")
+  # message("\nRendering input: ", par_input$id, "\n")
   if(!par_input$input_type %in% available_inputs())
     stop(par_input$input_type, " is not a registered input")
   if(!par_input$show) return()
@@ -71,16 +71,15 @@ render_par_input <- function(par_input, input, env){
 replace_reactives <- function(par_input, env){
   params <-  par_input$input_params
   pars <- names(Filter(function(x) grepl("reactive__", x), params))
-  message("pars")
-  str(pars)
+  # str(pars)
   params_reactive <- lapply(pars, function(par){
     inp <- par_input$input_params[[par]]
     # if(is.null(inp)) return()
     reactive_fun <- gsub("reactive__","", inp)
-    message("reactive fun: ", reactive_fun)
+    # message("reactive fun: ", reactive_fun)
     dep_value_params <- do.call(reactive_fun, list(), envir = env)
     # dep_value_params <- do.call(reactive_fun, list())
-    str(dep_value_params)
+    # str(dep_value_params)
     dep_value_params
   })
   names(params_reactive) <- pars
@@ -99,10 +98,10 @@ validate_show_if <- function(par_input, input){
     condition = names(par_input$show_if[[1]]),
     value = par_input$show_if[[1]][[1]]
   )
-  str(dep)
+  # str(dep)
   target_value <- input[[dep$id]]
   if(is.null(target_value)) return(FALSE)
-  str(target_value)
+  # str(target_value)
   if(dep$condition == "equals" && dep$value == target_value){
     return(TRUE)
   }

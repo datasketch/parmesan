@@ -26,8 +26,6 @@ div_dark <- function(...){
 
 server <-  function(input, output, session) {
 
-  message("server env", capture.output(environment()))
-
   path <- system.file("examples", "ex04", "parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
   parmesan_env <- new.env()
@@ -64,12 +62,12 @@ server <-  function(input, output, session) {
 
   output$controls <- renderUI({
     render_section(section = "controls", parmesan = parmesan)
-    # parmesan_render_ui(section = "Controls", config_path = config_path, input = input, env = react_env)
   })
 
   output$controls2 <- renderUI({
     # req(datasetNCols())
     render_section(section = "controls_dark", parmesan = parmesan,
+                   container_section = div_dark,
                    input = input, env = parmesan_env)
   })
 
