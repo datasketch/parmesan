@@ -15,6 +15,14 @@ parmesan_load <- function(path = "parmesan"){
   if(!all(inputs_in_layout %in% names(inputs)))
     stop("inputs in layout.yaml not defined in inputs.yaml: ",
             paste0(inputs_in_layout[!inputs_in_layout %in% names(inputs)], collapse = ", "))
+  if(!all(names(inputs) %in% inputs_in_layout))
+    warning("inputs in inputs.yaml not defined in layout.yaml: ",
+         paste0(names(inputs)[! names(inputs) %in% inputs_in_layout], collapse = ", "))
+  if(!is.empty(which_repeated(names(inputs))))
+     stop("Repeated inputs defined in inputs.yaml")
+  if(!is.empty(which_repeated(inputs_in_layout)))
+     stop("Repeated inputs defined in layout.yaml")
+
   parmesan <- layout
   section_ids <- names(layout)
   parmesan <- lapply(seq_along(layout), function(j){
@@ -35,4 +43,10 @@ parmesan_load <- function(path = "parmesan"){
   # parmesan$env <- new.env(parent = environment())
   parmesan
 }
+
+
+which_repeated <- function(x){
+  names(which(table(x) > 1))
+}
+
 

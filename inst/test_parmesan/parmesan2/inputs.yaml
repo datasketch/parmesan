@@ -26,3 +26,9 @@ column:
     label: Column
     value: 1
   update_param: value
+gender:
+  show: true
+  input_type: textInput
+  input_params:
+    label: Gender
+    value: TRUE

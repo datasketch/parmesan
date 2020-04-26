@@ -4,7 +4,3 @@ controls:
     - dataset
     - column
     - bins
-other:
-  label: Other inputs
-  inputs:
-    - checkbox
