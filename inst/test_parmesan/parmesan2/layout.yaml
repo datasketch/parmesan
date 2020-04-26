@@ -1,0 +1,10 @@
+controls:
+  label: Controls
+  inputs:
+    - dataset
+    - column
+    - bins
+other:
+  label: Other inputs
+  inputs:
+    - checkbox

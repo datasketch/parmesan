@@ -11,6 +11,10 @@ parmesan_load <- function(path = "parmesan"){
   }else{
     layout <- list(section = names(inputs))
   }
+  inputs_in_layout <- unlist(lapply(layout, function(x){x$inputs}))
+  if(!all(inputs_in_layout %in% names(inputs)))
+    stop("inputs in layout.yaml not defined in inputs.yaml: ",
+            paste0(inputs_in_layout[!inputs_in_layout %in% names(inputs)], collapse = ", "))
   parmesan <- layout
   section_ids <- names(layout)
   parmesan <- lapply(seq_along(layout), function(j){
