@@ -3,12 +3,13 @@ library(parmesan)
 
 ui <- fluidPage(
   titlePanel("Hello Shiny!"),
-  h3("This example shows a layout for input groups with custom container functions
-     and children input elements."),
+  h3("Children input elements do not need to be rendered as independent outputs."),
   column(4,
          uiOutput("controls"),
          hr(),
          uiOutput("controls2"),
+         hr(),
+         uiOutput("controls3"),
          hr(),
          verbatimTextOutput("debug")
   ),
@@ -26,7 +27,7 @@ div_dark <- function(...){
 
 server <-  function(input, output, session) {
 
-  path <- system.file("examples", "ex04", "parmesan", package = "parmesan")
+  path <- system.file("examples", "ex05", "parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
   parmesan_env <- new.env()
 
@@ -68,6 +69,12 @@ server <-  function(input, output, session) {
     # req(datasetNCols())
     render_section(section = "controls_dark", parmesan = parmesan,
                    container_section = div_dark,
+                   input = input, env = parmesan_env)
+  })
+
+  output$controls3 <- renderUI({
+    # req(datasetNCols())
+    render_section(section = "controls_empty", parmesan = parmesan,
                    input = input, env = parmesan_env)
   })
 

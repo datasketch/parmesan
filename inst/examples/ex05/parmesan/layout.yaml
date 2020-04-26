@@ -8,3 +8,6 @@ controls_dark:
   inputs:
     - column
     - bins
+controls_empty:
+  label: Controls Empty
+  inputs:
