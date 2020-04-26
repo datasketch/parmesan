@@ -43,3 +43,38 @@ test_that("render works", {
 
 
 })
+
+
+test_that("render works", {
+
+  path <- system.file("examples","ex04","parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+  render_section("controls", parmesan = parmesan)
+
+  par_input <- parmesan[["controls_dark"]]$inputs[[2]]
+  input <- list(plot_type = "Histogram")
+  expect_true(validate_show_if(par_input, input))
+  input <- list(plot_type = "XXXX")
+  expect_false(validate_show_if(par_input, input))
+
+  input <- list(plot_type = "Histogram")
+  render_par_input(par_input, input)
+  render_section("controls_dark", parmesan = parmesan, input = input)
+
+  par_input <- parmesan[["controls_dark"]]$inputs[[1]]
+  expect_true(input_has_reactives(par_input))
+
+
+})
+
+test_that("reactives are replaced",{
+
+  fun <- function(x){
+    myenv <- new.env()
+    x
+  }
+
+
+
+})
+

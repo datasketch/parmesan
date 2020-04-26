@@ -2,6 +2,6 @@
 
 export(parmesan_config)
 export(parmesan_input_ids)
-export(parmesan_inputs)
 export(parmesan_render_ui)
+export(parmesan_watch)
 importFrom(shiny,tags)

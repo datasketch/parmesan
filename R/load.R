@@ -1,5 +1,10 @@
 
 parmesan_load <- function(path = "parmesan"){
+
+  message("parmesan load parent.frame 4", capture.output(parent.frame(n = 4)))
+  message("parmesan load parent.frame 5", capture.output(parent.frame(n = 5)))
+
+
   if(!dir.exists(path)){
     stop("Parmesan folder not found")
   }
@@ -25,6 +30,9 @@ parmesan_load <- function(path = "parmesan"){
     x
   })
   names(parmesan) <- section_ids
+  # parmesan$env <- new.env(parent = parent.frame(5))
+  # parmesan$env <- new.env(parent = .GlobalEnv)
+  parmesan$env <- new.env(parent = environment())
   parmesan
 }
 

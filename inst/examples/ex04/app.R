@@ -22,37 +22,32 @@ div_dark <- function(...){
 }
 
 
-config_path <- system.file("examples", "ex04", "parmesan", package = "parmesan")
-input_ids <- parmesan_input_ids(config_path = config_path)
-input_ids_values <- lapply(input_ids, function(i){
-  NA
-})
-names(input_ids_values) <- input_ids
 
 
 server <-  function(input, output, session) {
 
-  vals <- reactiveValues()
-  vals$inputs <- input_ids_values
-  react_env <- new.env()
+  message("server env", capture.output(environment()))
 
-  observe({
-    lapply(input_ids, function(i){
-      vals$inputs[[i]] <- input[[i]]
-      vals
-    })
-  })
+  path <- system.file("examples", "ex04", "parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+  parmesan_env <- new.env()
 
+  # Put all parmesan inputs in reactive values
+  parmesan_input <- parmesan_watch(input, parmesan)
 
   output$debug <- renderPrint({
-    psan_ids <- parmesan_input_ids(config_path = config_path)
-    psan_ids
-    datasetNCols()
-    str(reactiveValuesToList(vals)$inputs)
+    # str(reactiveValuesToList(parmesan_inputs))
+    # datasetNCols()
+    # str(reactiveValuesToList(parmesan_inputs))
+    str(parmesan_input())
   })
 
+
   datasetInput <- reactive({
-    switch(input$dataset,
+    req(input$dataset)
+    switch(
+      # parmesan_input()$dataset,
+      input$dataset,
            "rock" = rock,
            "pressure" = pressure,
            "cars" = cars)
@@ -61,20 +56,21 @@ server <-  function(input, output, session) {
   datasetNCols <- reactive({
     req(datasetInput())
     ncol(datasetInput())
-  }, env = react_env)
+  }, env = parmesan_env)
 
   datasetNColsLabel <- reactive({
     paste0("Colums (max = ", datasetNCols(),")")
-  }, env = react_env)
+  }, env = parmesan_env)
 
   output$controls <- renderUI({
-    parmesan_render_ui(section = "Controls", config_path = config_path, input = input, env = react_env)
+    render_section(section = "controls", parmesan = parmesan)
+    # parmesan_render_ui(section = "Controls", config_path = config_path, input = input, env = react_env)
   })
 
   output$controls2 <- renderUI({
-    req(datasetNCols())
-    parmesan_render_ui(section = "Controls Dark", config_path = config_path,
-                       container_section = div_dark, input = input, env = react_env)
+    # req(datasetNCols())
+    render_section(section = "controls_dark", parmesan = parmesan,
+                   input = input, env = parmesan_env)
   })
 
   output$distPlot <- renderPlot({
@@ -88,6 +84,7 @@ server <-  function(input, output, session) {
       plot <- plot(x)
     }
     if(input$plot_type == "Histogram"){
+      req(input$bins)
       bins <- seq(min(x), max(x), length.out = input$bins + 1)
       plot <- hist(x, breaks = bins, col = "#75AADB", border = "white",
                    xlab = paste0("Values of ", column_name),

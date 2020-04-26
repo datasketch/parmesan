@@ -8,7 +8,7 @@ plot_type:
       - Histogram
 bins:
   show: true
-  depends_on: 
+  show_if: 
     plot_type:
       equals: Histogram
   input_type: sliderInput
