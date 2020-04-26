@@ -63,6 +63,12 @@ test_that("show_if works", {
   input <- list(plot_type = "XXXX")
   expect_null(render_par_input(par_input, input))
 
+
+  # Do not show layouts with empty inputs
+  path <- system.file("examples","ex05","parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+  expect_null(render_section("controls_empty", parmesan = parmesan))
+
 })
 
 

@@ -25,12 +25,14 @@ render_section <- function(section = NULL,
     container_element <- shiny::tags$div
   }
   section <- parmesan[[section]]
-  container_section(
-    container_title(id = section$id, class = 'par_section', section$label),
-    lapply(section$inputs, function(par_input) {
-      render_par_input(par_input, input = input, env = env)
-    })
-  )
+  if(!is.empty(section$inputs)){
+    container_section(
+      container_title(id = section$id, class = 'par_section', section$label),
+      lapply(section$inputs, function(par_input) {
+        render_par_input(par_input, input = input, env = env)
+      })
+    )
+  }
 
 }
 
