@@ -6,7 +6,9 @@ render_section <- function(section = NULL,
                            container_title = NULL,
                            container_element = NULL,
                            input = NULL,
-                           env = parent.env()){
+                           env = parent.env(),
+                           render_inputs = TRUE
+                           ){
 
   if(is.null(parmesan)){
     parmesan <- parmesan_load()
@@ -25,12 +27,18 @@ render_section <- function(section = NULL,
     container_element <- shiny::tags$div
   }
   section <- parmesan[[section]]
+
+  rendered_inputs <- NULL
+  if(render_inputs){
+    rendered_inputs <- lapply(section$inputs, function(par_input) {
+      render_par_input(par_input, input = input, env = env)
+    })
+  }
+
   if(!is.empty(section$inputs)){
     container_section(
       container_title(id = section$id, class = 'par_section', section$label),
-      lapply(section$inputs, function(par_input) {
-        render_par_input(par_input, input = input, env = env)
-      })
+      rendered_inputs
     )
   }
 
@@ -100,10 +108,10 @@ validate_show_if <- function(par_input, input){
     condition = names(par_input$show_if[[1]]),
     value = par_input$show_if[[1]][[1]]
   )
-  # str(dep)
+  str(dep)
   target_value <- input[[dep$id]]
   if(is.null(target_value)) return(FALSE)
-  # str(target_value)
+  str(target_value)
   if(dep$condition == "equals" && dep$value == target_value){
     return(TRUE)
   }

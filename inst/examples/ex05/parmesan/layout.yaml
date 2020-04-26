@@ -3,11 +3,11 @@ controls:
   inputs:
     - dataset
     - plot_type
+    - bins
 controls_dark:
   label: Controls Dark
   inputs:
     - column
-    - bins
 controls_empty:
   label: Controls Empty
   inputs:

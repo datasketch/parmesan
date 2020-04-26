@@ -5,12 +5,7 @@ ui <- fluidPage(
   titlePanel("Hello Shiny!"),
   h3("Children input elements do not need to be rendered as independent outputs."),
   column(4,
-         uiOutput("controls"),
-         hr(),
-         uiOutput("controls2"),
-         hr(),
-         uiOutput("controls3"),
-         hr(),
+         uiOutput("all_controls_here"),
          verbatimTextOutput("debug")
   ),
   column(8,
@@ -34,13 +29,13 @@ server <-  function(input, output, session) {
   # Put all parmesan inputs in reactive values
   parmesan_input <- parmesan_watch(input, parmesan)
 
+  output_parmesan("#all_controls_here", parmesan = parmesan,
+                  input = input, output = output,
+                  env = parmesan_env)
+
   output$debug <- renderPrint({
-    # str(reactiveValuesToList(parmesan_inputs))
-    # datasetNCols()
-    # str(reactiveValuesToList(parmesan_inputs))
     str(parmesan_input())
   })
-
 
   datasetInput <- reactive({
     req(input$dataset)
@@ -61,22 +56,7 @@ server <-  function(input, output, session) {
     paste0("Colums (max = ", datasetNCols(),")")
   }, env = parmesan_env)
 
-  output$controls <- renderUI({
-    render_section(section = "controls", parmesan = parmesan)
-  })
 
-  output$controls2 <- renderUI({
-    # req(datasetNCols())
-    render_section(section = "controls_dark", parmesan = parmesan,
-                   container_section = div_dark,
-                   input = input, env = parmesan_env)
-  })
-
-  output$controls3 <- renderUI({
-    # req(datasetNCols())
-    render_section(section = "controls_empty", parmesan = parmesan,
-                   input = input, env = parmesan_env)
-  })
 
   output$distPlot <- renderPlot({
     req(input$dataset, input$column, datasetInput())
