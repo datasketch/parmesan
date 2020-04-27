@@ -1,5 +1,5 @@
 
-
+#' @export
 render_section <- function(section = NULL,
                            parmesan = NULL,
                            container_section = NULL,
@@ -77,7 +77,7 @@ render_par_input <- function(par_input, input, env){
 
 }
 
-
+#' @export
 replace_reactives <- function(par_input, env){
   params <-  par_input$input_params
   pars <- names(Filter(function(x) grepl("reactive__", x), params))

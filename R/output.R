@@ -1,5 +1,5 @@
 
-
+#' @export
 output_parmesan <- function(selector, parmesan = NULL,
                             input = input, output = output,
                             container_section = NULL,
