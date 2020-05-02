@@ -1,0 +1,79 @@
+dataset:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: Dataset
+    choices:
+      - iris
+      - ToothGrowth
+      - mtcars
+      - cars
+    selected: iris
+num_or_fct: 
+  show: true
+  show_if:
+    hasFctAndNum():
+      equals: true
+  input_type: selectInput
+  input_params: 
+    label: 'Appears if dataset has numerics and factors'
+    choices: [numeric, factor]
+    multiple: true
+    selected: numeric
+enable_num_selector:
+  show: true
+  show_if:
+    num_or_fct:
+      has: numeric
+  input_type: checkboxInput
+  input_params: 
+    label: "Select numeric columns"
+    value: true
+enable_fct_selector:
+  show: true
+  show_if:
+    num_or_fct:
+      has: factor
+  input_type: checkboxInput
+  input_params: 
+    label: "Select factor columns"
+    value: true
+num_column:
+  show: true
+  show_if_all:
+    num_or_fct:
+      has: numeric
+    enable_num_selector:
+      equals: true
+  input_type: selectInput
+  input_params:
+    label: "Select numeric column"
+    choices: datasetNumCols()
+    selected: 1
+    multiple: true
+  update_param: value
+fct_column:
+  show: true
+  show_if_all:
+    num_or_fct:
+      has: factor
+    enable_fct_selector:
+      equals: true
+  input_type: selectInput
+  input_params:
+    label: "Select factor column"
+    choices: datasetFctCols()
+    selected: 1
+    multiple: true
+  update_param: value
+plot_which:
+  show: true
+  show_if:
+    nSelectedVars(): 
+      greater_than: 1
+  input_type: numericInput
+  input_params:
+    label: selectedVarsLabel()
+    value: 1
+    min: 1
+    max: nSelectedVars()

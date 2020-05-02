@@ -1,9 +1,14 @@
 library(shiny)
 library(parmesan)
+library(shi18ny)
+library(shinyjs)
 
 ui <- fluidPage(
-  titlePanel("Hello Shiny!"),
-  h3("This example shows a layout for input groups with custom container functions."),
+  titlePanel(ui_("hello")),
+  h3(ui_("app_intro_i18n")),
+  useShi18ny(),
+  h3(ui_("app_intro")),
+  langSelectorInput("lang", position = "fixed"),
   column(4,
          uiOutput("controls"),
          hr(),
@@ -12,6 +17,7 @@ ui <- fluidPage(
          verbatimTextOutput("debug")
   ),
   column(8,
+         uiOutput("dynamic"),
          plotOutput("distPlot")
   )
 )
@@ -22,11 +28,21 @@ div_dark <- function(...){
 
 server <-  function(input, output, session) {
 
-  path <- system.file("examples", "ex02", "parmesan", package = "parmesan")
+  i18n <- list(
+    defaultLang = "en",
+    availableLangs = c("es","en")
+  )
+  lang <- callModule(langSelector,"lang", i18n = i18n, showSelector=TRUE)
+
+  path <- system.file("examples", "ex03-shi18ny", "parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
 
+  observeEvent(lang(),{
+    uiLangUpdate(input$shi18ny_ui_classes, lang())
+  })
+
   output$debug <- renderPrint({
-    parmesan_input_ids(parmesan = parmesan)
+    lang()
   })
 
   datasetInput <- reactive({
@@ -37,12 +53,36 @@ server <-  function(input, output, session) {
   })
 
   output$controls <- renderUI({
-    render_section(section = "controls", parmesan = parmesan)
+
+    config_path <- system.file("examples", "ex03", "parmesan", package = "parmesan")
+
+    list(
+      h3(i_("control_text.first.intro", lang())),
+      render_section(section = "controls", parmesan = i_(parmesan, lang()))
+    )
   })
 
   output$controls2 <- renderUI({
-    render_section(section = "controls_dark", parmesan = parmesan,
-                   container_section = div_dark)
+
+    list(
+      h3(i_("control_text.second.intro", lang())),
+      render_section(section = "controls_dark", parmesan = i_(parmesan, lang()),
+                     container_section = div_dark)
+    )
+  })
+
+  output$dynamic <- renderUI({
+
+    l <- list(
+      a = "a_text",
+      b = "b_text",
+      c = "c_text"
+    )
+
+    lapply(l, function(x){
+      p(i_(x, lang()), style = "color:blueviolet")
+    })
+
   })
 
   output$distPlot <- renderPlot({

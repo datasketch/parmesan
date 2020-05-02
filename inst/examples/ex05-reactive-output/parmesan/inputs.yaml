@@ -34,9 +34,8 @@ column:
   show: true
   input_type: numericInput
   input_params:
-    label: reactive__datasetNColsLabel
-    # label: TEST
+    label: datasetNColsLabel()
     min: 1
-    max: reactive__datasetNCols
+    max: datasetNCols()
     value: 1
   update_param: value

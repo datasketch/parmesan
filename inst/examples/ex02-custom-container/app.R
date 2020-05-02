@@ -2,22 +2,27 @@ library(shiny)
 library(parmesan)
 
 ui <- fluidPage(
-  titlePanel("Hello Parmesan!"),
-  h3("This example shows dynamic inputs loaded from a YAML config file."),
-  sidebarLayout(
-    sidebarPanel(
-      uiOutput("controls_container"),
-      verbatimTextOutput("debug")
-    ),
-    mainPanel(
-      plotOutput("distPlot")
-    )
+  titlePanel("Hello Shiny!"),
+  h3("This example shows a layout for input groups with custom container functions."),
+  column(4,
+         uiOutput("controls"),
+         hr(),
+         uiOutput("controls2"),
+         hr(),
+         verbatimTextOutput("debug")
+  ),
+  column(8,
+         plotOutput("distPlot")
   )
 )
 
+div_dark <- function(...){
+  div(style="background-color:#DDD;border: 2px solid #CCC;border-radius:10px;padding:10px;", ...)
+}
+
 server <-  function(input, output, session) {
 
-  path <- system.file("examples", "ex01", "parmesan", package = "parmesan")
+  path <- system.file("examples", "ex02-custom-container", "parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
 
   output$debug <- renderPrint({
@@ -31,8 +36,13 @@ server <-  function(input, output, session) {
            "cars" = cars)
   })
 
-  output$controls_container <- renderUI({
-    render_section(parmesan = parmesan)
+  output$controls <- renderUI({
+    render_section(section = "controls", parmesan = parmesan)
+  })
+
+  output$controls2 <- renderUI({
+    render_section(section = "controls_dark", parmesan = parmesan,
+                   container_section = div_dark)
   })
 
   output$distPlot <- renderPlot({

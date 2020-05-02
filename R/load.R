@@ -1,11 +1,12 @@
 
-parmesan_load <- function(path = "parmesan"){
+parmesan_load <- function(path = "parmesan", inputs_only = FALSE){
 
   if(!dir.exists(path)){
     stop("Parmesan folder not found")
   }
 
   inputs <- yaml::read_yaml(file.path(path, "inputs.yaml"))
+  if(inputs_only) return(inputs)
   if(file.exists(file.path(path, "layout.yaml"))){
     layout <- yaml::read_yaml(file.path(path, "layout.yaml"))
   }else{
@@ -33,14 +34,13 @@ parmesan_load <- function(path = "parmesan"){
     x$inputs <- lapply(seq_along(inputs), function(i){
       input <- list(id = x$inputs[i])
       input <- c(input, inputs[[i]])
+      class(input) <- "parmesan_input"
       input
     })
     x
   })
   names(parmesan) <- section_ids
-  # parmesan$env <- new.env(parent = parent.frame(5))
-  # parmesan$env <- new.env(parent = .GlobalEnv)
-  # parmesan$env <- new.env(parent = environment())
+  class(parmesan) <- "parmesan"
   parmesan
 }
 

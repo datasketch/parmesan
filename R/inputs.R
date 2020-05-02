@@ -1,6 +1,6 @@
 
 #' @export
-parmesan_input_ids <- function(section = NULL, parmesan = NULL){
+parmesan_input_ids <- function(parmesan = NULL, section = NULL){
 
   if(is.null(parmesan)){
     parmesan <- parmesan_load()

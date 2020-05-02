@@ -3,7 +3,7 @@ test_that("render works", {
   library(tidyverse)
   library(shiny)
 
-  path <- system.file("examples","ex02","parmesan", package = "parmesan")
+  path <- system.file("examples","ex02-custom-container/","parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
 
   inputs <- yaml::read_yaml(file.path(path, "inputs.yaml"))
@@ -11,7 +11,7 @@ test_that("render works", {
 
   expect_equal(names(parmesan), names(layout))
   expect_equal(unname(map_chr(parmesan, "id")), names(layout))
-  expect_equal(parmesan[[2]]$inputs[[1]], c(list(id = "column"), inputs$column))
+  expect_equivalent(parmesan[[2]]$inputs[[1]], c(list(id = "column"), inputs$column))
 
   expect_equal(parmesan_input_ids(parmesan = parmesan), c("dataset", "column", "bins"))
 
@@ -47,7 +47,7 @@ test_that("render works", {
 
 test_that("show_if works", {
 
-  path <- system.file("examples","ex04","parmesan", package = "parmesan")
+  path <- system.file("examples","ex04-reactives/","parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
   render_section("controls", parmesan = parmesan)
 
@@ -65,10 +65,15 @@ test_that("show_if works", {
 
 
   # Do not show layouts with empty inputs
-  path <- system.file("examples","ex05","parmesan", package = "parmesan")
+  path <- system.file("examples","ex05-reactive-output/","parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
   expect_null(render_section("controls_empty", parmesan = parmesan))
 
 })
+
+
+
+
+
 
 

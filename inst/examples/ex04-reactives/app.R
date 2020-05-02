@@ -3,9 +3,13 @@ library(parmesan)
 
 ui <- fluidPage(
   titlePanel("Hello Shiny!"),
-  h3("Children input elements do not need to be rendered as independent outputs."),
+  h3("This example shows a layout for input groups with custom container functions
+     and children input elements."),
   column(4,
-         uiOutput("all_controls_here"),
+         uiOutput("controls"),
+         hr(),
+         uiOutput("controls2"),
+         hr(),
          verbatimTextOutput("debug")
   ),
   column(8,
@@ -22,20 +26,20 @@ div_dark <- function(...){
 
 server <-  function(input, output, session) {
 
-  path <- system.file("examples", "ex05", "parmesan", package = "parmesan")
+  path <- system.file("examples", "ex04-reactives", "parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
   parmesan_env <- new.env()
 
   # Put all parmesan inputs in reactive values
   parmesan_input <- parmesan_watch(input, parmesan)
 
-  output_parmesan("#all_controls_here", parmesan = parmesan,
-                  input = input, output = output,
-                  env = parmesan_env)
-
   output$debug <- renderPrint({
+    # str(reactiveValuesToList(parmesan_inputs))
+    # datasetNCols()
+    # str(reactiveValuesToList(parmesan_inputs))
     str(parmesan_input())
   })
+
 
   datasetInput <- reactive({
     req(input$dataset)
@@ -50,13 +54,22 @@ server <-  function(input, output, session) {
   datasetNCols <- reactive({
     req(datasetInput())
     ncol(datasetInput())
-  }, env = parmesan_env)
+  })
 
   datasetNColsLabel <- reactive({
     paste0("Colums (max = ", datasetNCols(),")")
-  }, env = parmesan_env)
+  })
 
+  output$controls <- renderUI({
+    render_section(section = "controls", parmesan = parmesan)
+  })
 
+  output$controls2 <- renderUI({
+    # req(datasetNCols())
+    render_section(section = "controls_dark", parmesan = parmesan,
+                   container_section = div_dark,
+                   input = input)
+  })
 
   output$distPlot <- renderPlot({
     req(input$dataset, input$column, datasetInput())

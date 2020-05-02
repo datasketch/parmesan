@@ -1,0 +1,11 @@
+controls:
+  label: Controls
+  inputs:
+    - dataset
+    - num_or_fct
+    - enable_num_selector
+    - num_column
+    - enable_fct_selector
+    - fct_column
+    - plot_which
+
