@@ -1,5 +1,5 @@
 
-
+#' @export
 render_section <- function(section = NULL,
                            parmesan = NULL,
                            container_section = NULL,
@@ -44,9 +44,3 @@ render_section <- function(section = NULL,
   }
 
 }
-
-# reactive <- function(...){
-#   shiny::reactive(..., env = )
-# }
-
-

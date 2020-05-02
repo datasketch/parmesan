@@ -1,6 +1,6 @@
 
-
-output_parmesan <- function(id, parmesan = NULL,
+#' @export
+output_parmesan <- function(selector, parmesan = NULL,
                             input = input, output = output,
                             container_section = NULL,
                             env = parent.frame(),

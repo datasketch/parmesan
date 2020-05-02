@@ -1,4 +1,6 @@
 
+
+#' @export
 parmesan_load <- function(path = "parmesan", inputs_only = FALSE){
 
   if(!dir.exists(path)){
