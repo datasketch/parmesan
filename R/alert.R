@@ -1,4 +1,4 @@
-
+#' @export
 parmesan_alert <- function(parmesan = NULL, env = parent.frame(),
                            panic = FALSE){
   # message("IN ALERT")
