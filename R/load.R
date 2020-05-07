@@ -1,7 +1,8 @@
 
 
 #' @export
-parmesan_load <- function(path = "parmesan", inputs_only = FALSE){
+parmesan_load <- function(path = "parmesan", inputs_only = FALSE,
+                          debug = FALSE){
 
   if(!dir.exists(path)){
     stop("Parmesan folder not found")
@@ -29,11 +30,21 @@ parmesan_load <- function(path = "parmesan", inputs_only = FALSE){
   parmesan <- layout
   section_ids <- names(layout)
   parmesan <- lapply(seq_along(layout), function(j){
+    if(debug)
+      message("Rendering layout section", "(", j,"): ", section_ids[j])
     # x <- layout[[2]]
     x <- list(id = section_ids[j])
     x <- c(x, layout[[j]])
+    if(debug)
+      message("with inputs: ", paste0(x$inputs, collapse = ", "))
+    which_null_inputs <- unlist(lapply(x$inputs, is.null))
+    if(any(which_null_inputs))
+      stop("Layout section: ", section_ids[j], ". Input number ",
+           paste0(which(which_null_inputs), collapse = ", "), " is NULL")
     inputs <- inputs[x$inputs]
     x$inputs <- lapply(seq_along(inputs), function(i){
+      if(debug)
+        message("  input id : ", x$inputs[i])
       input <- list(id = x$inputs[i])
       input <- c(input, inputs[[i]])
       class(input) <- "parmesan_input"
@@ -43,6 +54,7 @@ parmesan_load <- function(path = "parmesan", inputs_only = FALSE){
   })
   names(parmesan) <- section_ids
   class(parmesan) <- "parmesan"
+  if(debug) message("Rendered layout OK.")
   parmesan
 }
 

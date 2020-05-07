@@ -1,0 +1,408 @@
+chart:
+  show: true
+  input_type: buttonImageInput
+  input_params:
+    label: Chart type
+    images:
+      - bar
+      - pie
+      - donut
+      - treemap
+      - bubbles
+      - map
+    inline: true
+subtitle:
+  show: true
+  input_type: textInput
+  input_params:
+    label: Subtitle
+    value: ''
+title:
+  show: true
+  input_type: textInput
+  input_params:
+    label: Title
+    value: ''
+
+logo:
+  show: true
+  input_type: textInput 
+  input_params:
+    label: logo
+    value: "datasketch"
+logo_position:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: logo_position
+    choices: ["left","right","center"]
+    value: "right"
+
+palette_colors:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: palette_colors
+    value: ['#FAFAFA', '#4354A3','#3298A0']
+
+branding_include:
+  show: true
+  input_type: checkboxInput
+  input_params:
+    label: branding_include
+    value: FALSE
+branding_text:
+  show: true
+  show_if: 
+    branding_include:
+      equals: TRUE
+  input_type: textInput 
+  input_params:
+    label: branding_text
+    value: "This is some branding text"
+
+background_color:
+  show: true
+  input_type: 
+  input_params:
+    label: background_color
+    value: "#CDCFCC"
+
+branding_background_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: branding_background_color
+    value: "CDCF44"
+
+accent_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: accent_color
+    value: "#d2a045"
+
+# GENERAL STYLES
+
+text_size:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: text_size
+    value: 11
+text_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: text_color
+    value: "#6D8089"
+text_family:
+  show: true
+  input_type: selectizeInput
+  input_params:
+    label: text_family
+    choices: ['Arial', 'Ubuntu', 'Times new roman']
+    selected: "Ubuntu"
+
+line_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: line_color
+    value: "#DDDDF9"
+
+line_size:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: line_size
+    value: 1
+
+# TITLE STYLES
+title_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: title_color
+    value: "#444444"
+
+title_align:
+  show: true
+  input_type: selectInput
+  input_params:    
+    label: title_align
+    choices: ["left", "right", "center"]
+    value: "left"
+title_family:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: text_family
+    choices: ['Arial', 'Ubuntu', 'Times new roman','Montserrat']
+    selected: "Ubuntu"
+title_size:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: title_size
+    value: 21
+title_weight:
+  show: true
+  input_type: selectInput
+  input_params:    
+    label: title_weight
+    choices: [400, 700]
+    value: 700
+
+# SUBTITILES STYLES
+subtitle_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: subtitle_color
+    value: "#999999"
+subtitle_align:
+  show: true
+  input_type: selectInput
+  input_params:    
+    label: subtitle_align
+    choices: ["left", "right", "center"]
+    value: "left"
+subtitle_size:
+  show: true
+  input_type: 
+  input_params:
+    label: subtitle_size
+    value: 17
+subtitle_weight:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: title_weight
+    choices: [400, 700]
+    value: 700
+
+caption:
+  show: true   
+  input_type: textInput
+  input_params:
+    label: caption
+    value: "This is a caption"
+caption_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: caption_color
+    value: "#AAAAAA"
+caption_align:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: caption_align
+    choices: ["left","right","center"]
+    value: "right"
+caption_size:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: caption_size
+    value: 17
+
+axis_title_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: axis_title_color
+    value: '#5A6B72'
+axis_title_size:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: axis_title_size
+    value: 13
+axis_line_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: axis_line_color
+    value: '#DDDDF9'
+axis_line_width:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: axis_line_width
+    value: 1
+axis_ticks_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: axis_ticks_color
+    value: '#DDDDF9'
+axis_tick_length:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: axis_tick_length
+    value: 1
+
+# GRID X
+grid_x_enabled:
+  show: true
+  input_type: checkboxInput
+  input_params:
+    label: grid_x_enabled
+    value: TRUE
+grid_x_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: grid_x_color
+    value: "#fafafa" 
+grid_x_width:
+  show: true
+  input_type: numericInput 
+  input_params:
+    label: grid_x_width
+    value: 0
+grid_x_dash:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: grid_y_dash
+    choices: ["dot","dash"]
+    value: "dot"
+
+# GRID Y
+grid_y_enabled:
+  show: true
+  input_type: checkboxInput
+  input_params:
+    label: grid_y_enabled
+    value: TRUE
+grid_y_color:
+  show: true
+  input_type: colorInput
+  input_params:    
+    label: grid_y_color
+    value: "#DDDDF9"
+grid_y_width:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: grid_y_width
+    value: 1
+grid_y_dash:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: grid_y_dash
+    choices: ["dot","dash"]
+    value: "dot"
+
+
+
+# SPACE THAT COVERS ALL THE GRAPHIC
+plot_margin_bottom:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: plot_margin_bottom
+    value: NULL
+plot_margin_top:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: plot_margin_top
+    value: NULL
+plot_margin_left:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: plot_margin_left
+    value: NULL
+plot_margin_right:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: plot_margin_right
+    value: NULL
+
+# SPACE INTO AXIS (PLOT AREA)
+plot_background_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: plot_background_color
+    value: NULL
+plot_border_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: plot_border_color
+    value: "#CCCCCC"
+plot_border_width:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: plot_border_width
+    value: 0
+
+
+dataLabels_size:
+  show: true
+  input_type: numericInput
+  input_params:  
+    label: data_labels_size
+    value: NULL
+dataLabels_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: dataLabels_color
+    value: NULL
+label_color:
+  show: true
+  input_type: textInput
+  input_params:
+    label: label_color
+    value: "contrast"
+label_size:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: label_size
+    value: 11
+label_text_decoration:
+  show: true
+  input_type: textInput
+  input_params:
+    label: label_text_decoration
+    value: NULL
+label_text_outline:
+  show: true
+  input_type: textInput
+  input_params:
+    label: label_text_outline
+    value: "1px contrast"
+
+# LEGEND STYLE
+legend_color:
+  show: true
+  input_type: colorInput
+  input_params:
+    label: legend_color
+    value: "contrast"
+legend_family:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: legend_family
+    choices: ['Arial', 'Ubuntu', 'Times news roman']
+    value: "Montserrat"
+legend_size:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: legend_size
+    value: 13
+

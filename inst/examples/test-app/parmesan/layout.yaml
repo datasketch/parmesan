@@ -1,0 +1,117 @@
+chart:
+  label: Chart type
+  inputs: 
+    - chart
+
+titles:
+  label: Titles
+  inputs:
+    - title
+    - subtitle
+    - caption
+
+palette:
+  label: palette
+  inputs:
+    - palette_colors
+    - background_color
+
+branding:
+  label: branding
+  inputs:
+    - logo
+    - logo_position
+    - branding_include
+    - branding_text
+    - branding_background_color
+    - accent_color
+
+  # GENERAL STYLES
+texts:
+  label: texts
+  inputs:
+    - text_size
+    - text_color
+    - text_family
+  # TITLE STYLES
+    - title_color
+    - title_align
+    - title_family
+    - title_size
+    - title_weight
+  # SUBTITILES STYLES
+    - subtitle_color
+    - subtitle_align
+    - subtitle_size
+    - subtitle_weight
+  # CAPTION STYLES
+    - caption_color
+    - caption_align
+    - caption_size
+
+lines:
+  label: lines
+  inputs:
+    - line_color
+    - line_size
+
+
+axis:
+  label: axis
+  inputs:
+# GENERAL AXIS
+    - axis_title_color
+    - axis_title_size
+    - axis_line_color
+    - axis_line_width
+    - axis_ticks_color
+    - axis_tick_length
+
+grids:
+  label: grids
+  inputs:
+# GRID X
+    - grid_x_enabled
+    - grid_x_color
+    - grid_x_width
+    - grid_x_dash
+  # GRID Y
+    - grid_y_enabled
+    - grid_y_color
+    - grid_y_width
+    - grid_y_dash
+
+areas:
+  label: areas
+  inputs:
+# SPACE THAT COVERS ALL THE GRAPHIC
+    - plot_margin_bottom
+    - plot_margin_top
+    - plot_margin_left
+    - plot_margin_right
+
+  # SPACE INTO AXIS (PLOT AREA)
+    - plot_background_color
+    - plot_border_color
+    - plot_border_width
+
+dataLabels:
+  label: dataLabels
+  inputs:
+# DATA LABELS STYLE
+#    - dataLabels_show
+#    - dataLabels_format_sample
+    - dataLabels_size
+    - dataLabels_color
+    - label_color
+    - label_size
+    - label_text_decoration
+    - label_text_outline
+
+legend:
+  label: legend
+  inputs:
+# LEGEND STYLE
+    - legend_color
+    - legend_family
+    - legend_size
