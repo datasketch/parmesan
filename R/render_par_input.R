@@ -2,7 +2,6 @@
 render_par_input <- function(par_input, input, env = parent.frame(),
                              debug = FALSE){
   # message("\nRendering input: ", par_input$id, "\n")
-  validate_input_type(par_input)
 
   if(!par_input$show) return()
 

@@ -20,7 +20,7 @@ shiny:
 shinyinvoer:
   buttonImageInput:
     update_param: value
-  colorPalette:
+  colorPaletteInput:
     update_param: value
 colourPicker:
   colourInput:

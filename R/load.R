@@ -50,6 +50,8 @@ parmesan_load <- function(path = "parmesan", inputs_only = FALSE,
       class(input) <- "parmesan_input"
       input
     })
+    str(x)
+    lapply(x$inputs, validate_input_type)
     x
   })
   names(parmesan) <- section_ids
