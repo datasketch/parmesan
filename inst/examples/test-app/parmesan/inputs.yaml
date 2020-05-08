@@ -40,10 +40,10 @@ logo_position:
 
 palette_colors:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: palette_colors
-    value: ['#FAFAFA', '#4354A3','#3298A0']
+    colors: ['#FAFAFA', '#4354A3','#3298A0']
 
 branding_include:
   show: true
@@ -63,24 +63,24 @@ branding_text:
 
 background_color:
   show: true
-  input_type: 
+  input_type: colorPaletteInput
   input_params:
     label: background_color
     value: "#CDCFCC"
 
 branding_background_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: branding_background_color
-    value: "CDCF44"
+    colors: "CDCF44"
 
 accent_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: accent_color
-    value: "#d2a045"
+    colors: "#d2a045"
 
 # GENERAL STYLES
 
@@ -92,10 +92,10 @@ text_size:
     value: 11
 text_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: text_color
-    value: "#6D8089"
+    colors: "#6D8089"
 text_family:
   show: true
   input_type: selectizeInput
@@ -106,10 +106,10 @@ text_family:
 
 line_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: line_color
-    value: "#DDDDF9"
+    colors: "#DDDDF9"
 
 line_size:
   show: true
@@ -121,10 +121,10 @@ line_size:
 # TITLE STYLES
 title_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: title_color
-    value: "#444444"
+    colors: "#444444"
 
 title_align:
   show: true
@@ -157,10 +157,10 @@ title_weight:
 # SUBTITILES STYLES
 subtitle_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: subtitle_color
-    value: "#999999"
+    colors: "#999999"
 subtitle_align:
   show: true
   input_type: selectInput
@@ -190,10 +190,10 @@ caption:
     value: "This is a caption"
 caption_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: caption_color
-    value: "#AAAAAA"
+    colors: "#AAAAAA"
 caption_align:
   show: true
   input_type: selectInput
@@ -210,10 +210,10 @@ caption_size:
 
 axis_title_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: axis_title_color
-    value: '#5A6B72'
+    colors: '#5A6B72'
 axis_title_size:
   show: true
   input_type: numericInput
@@ -222,10 +222,10 @@ axis_title_size:
     value: 13
 axis_line_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: axis_line_color
-    value: '#DDDDF9'
+    colors: '#DDDDF9'
 axis_line_width:
   show: true
   input_type: numericInput
@@ -234,10 +234,10 @@ axis_line_width:
     value: 1
 axis_ticks_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: axis_ticks_color
-    value: '#DDDDF9'
+    colors: '#DDDDF9'
 axis_tick_length:
   show: true
   input_type: numericInput
@@ -254,10 +254,10 @@ grid_x_enabled:
     value: TRUE
 grid_x_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: grid_x_color
-    value: "#fafafa" 
+    colors: "#fafafa" 
 grid_x_width:
   show: true
   input_type: numericInput 
@@ -281,10 +281,10 @@ grid_y_enabled:
     value: TRUE
 grid_y_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:    
     label: grid_y_color
-    value: "#DDDDF9"
+    colors: "#DDDDF9"
 grid_y_width:
   show: true
   input_type: numericInput
@@ -330,16 +330,16 @@ plot_margin_right:
 # SPACE INTO AXIS (PLOT AREA)
 plot_background_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: plot_background_color
-    value: NULL
+    colors: NULL
 plot_border_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: plot_border_color
-    value: "#CCCCCC"
+    colors: "#CCCCCC"
 plot_border_width:
   show: true
   input_type: numericInput
@@ -356,10 +356,10 @@ dataLabels_size:
     value: NULL
 dataLabels_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: dataLabels_color
-    value: NULL
+    colors: NULL
 label_color:
   show: true
   input_type: textInput
@@ -388,10 +388,10 @@ label_text_outline:
 # LEGEND STYLE
 legend_color:
   show: true
-  input_type: colorInput
+  input_type: colorPaletteInput
   input_params:
     label: legend_color
-    value: "contrast"
+    colors: "contrast"
 legend_family:
   show: true
   input_type: selectInput

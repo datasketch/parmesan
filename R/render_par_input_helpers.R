@@ -2,6 +2,8 @@
 
 
 validate_input_type <- function(par_input){
+  if(is.null(par_input$input_type))
+    stop("Input with id: ", par_input$id, " has input_type is NULL")
   if(!par_input$input_type %in% available_inputs())
     stop(par_input$input_type, " is not a registered input. ",
          "Try using one of:\n", paste0(available_inputs(), collapse = ", "))
