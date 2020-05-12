@@ -170,7 +170,7 @@ subtitle_align:
     value: "left"
 subtitle_size:
   show: true
-  input_type: 
+  input_type: numericInput
   input_params:
     label: subtitle_size
     value: 17
