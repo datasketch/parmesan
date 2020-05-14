@@ -13,6 +13,11 @@ ui <- fluidPage(
   )
 )
 
+div_dark <- function(...){
+  div(style="background-color:#f4f4f7;border: 1px solid #CCC;border-radius:10px;padding:10px;margin-bottom:10px;", ...)
+}
+
+
 server <-  function(input, output, session) {
 
   path <- system.file("examples", "ex05-reactive-output", "parmesan",
@@ -23,6 +28,7 @@ server <-  function(input, output, session) {
   parmesan_input <- parmesan_watch(input, parmesan)
 
   output_parmesan("all_controls_here", parmesan = parmesan,
+                  container_section = div_dark,
                   input = input, output = output, env = environment())
 
   output$debug <- renderPrint({

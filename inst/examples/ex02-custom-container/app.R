@@ -17,7 +17,7 @@ ui <- fluidPage(
 )
 
 div_dark <- function(...){
-  div(style="background-color:#DDD;border: 2px solid #CCC;border-radius:10px;padding:10px;", ...)
+  div(style="background-color:#f4f4f7;border: 1px solid #CCC;border-radius:10px;padding:10px;margin-bottom:10px;", ...)
 }
 
 server <-  function(input, output, session) {
