@@ -69,7 +69,7 @@ output_parmesan <- function(id, parmesan = NULL,
   lapply(parmesan, function(section){
     lapply(section$inputs, function(par_input){
       # if(input_has_dependencies(par_input)){
-      insertUI(paste0("#section-",section$id), immediate = TRUE,
+      insertUI(paste0("#",section$id), immediate = TRUE,
                ui = uiOutput(paste0("output_",par_input$id)))
       # }
     })
