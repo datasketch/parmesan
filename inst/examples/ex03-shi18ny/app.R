@@ -43,7 +43,7 @@ server <-  function(input, output, session) {
   })
 
   output$debug <- renderPrint({
-    lang()
+    paste(lang(), ": ", input$parmesan)
   })
 
   datasetInput <- reactive({

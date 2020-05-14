@@ -39,7 +39,8 @@ render_section <- function(section = NULL,
   if(!is.empty(section$inputs)){
     container_section(
       container_title(id = section$id, class = 'par_section', section$label),
-      rendered_inputs
+      rendered_inputs,
+      shiny::tags$script("Shiny.onInputChange('parmesan_updated',+new Date);")
     )
   }
 
