@@ -72,6 +72,33 @@ test_that("show_if works", {
 })
 
 
+test_that("info tooltip works", {
+
+  library(tidyverse)
+  library(shiny)
+
+  path <- system.file("examples","ex02-custom-container/","parmesan", package = "parmesan")
+  parmesan <- parmesan_load(path)
+
+  inputs <- yaml::read_yaml(file.path(path, "inputs.yaml"))
+  layout <- yaml::read_yaml(file.path(path, "layout.yaml"))
+
+  # adding input_info to bins
+  parmesan$controls_dark$inputs[[2]]$input_info <- list(icon = "check", text = "Input clarifications")
+
+
+  # Input with no tooltip
+  expect_equal(render_par_input(parmesan$controls$inputs[[1]]),
+               selectInput("dataset", "Dataset",
+                           choices = c("rock","pressure","cars"),
+                           selected = "rock"))
+
+
+  # Input with tooltip
+  expect_equal(render_par_input(parmesan$controls_dark$inputs[[2]]),
+               sliderInput("bins", shinypanels::infoTooltip("Bins", "Input clarifications", "check"), 0, 50, 10, 1))
+
+})
 
 
 

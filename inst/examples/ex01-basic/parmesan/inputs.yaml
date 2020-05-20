@@ -7,6 +7,9 @@ bins:
     max: 50
     value: 10
     step: 1
+  input_info:
+    icon:
+    text: fjsdksjdkskds
   update_param: value
 dataset:
   show: true

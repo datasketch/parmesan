@@ -1,4 +1,3 @@
-
 render_par_input <- function(par_input, input, env = parent.frame(),
                              debug = FALSE){
   # message("\nRendering input: ", par_input$id, "\n")
@@ -25,6 +24,7 @@ render_par_input <- function(par_input, input, env = parent.frame(),
   }
 
 }
+
 
 
 replace_reactive_param_values <- function(par_input, env = parent.frame()){
@@ -89,15 +89,18 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
     return(any(pass_conditions))
 }
 
-render_par_html <- function(par_input){
+
+
+render_par_html <- function(par_input) {
   par_input$input_params$inputId <- par_input$id
   # str(par_input$input_params)
-  do.call(par_input$input_type, par_input$input_params)
+  if (!is.null(par_input$input_info)) {
+    icn <- par_input$input_info$icon %||% "info-circle"
+    # style in yaml for parameter
+    par_input$input_params$label <- shinypanels::infoTooltip(par_input$input_params$label, par_input$input_info$text, icn)
+    return(do.call(par_input$input_type, par_input$input_params))
+  }
+  return(do.call(par_input$input_type, par_input$input_params))
 }
-
-
-
-
-
 
 
