@@ -1,0 +1,90 @@
+bins:
+  show: true
+  input_type: sliderInput
+  input_params:
+    label: Bins
+    min: 0
+    max: 50
+    value: 10
+    step: 1
+  input_info:
+    icon: info-circle
+    text: Number of bins
+    icon-align: right
+  update_param: value
+dataset:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: Dataset
+    choices:
+      - rock
+      - pressure
+      - cars
+    selected: rock
+  input_info:
+    icon: check
+    text: Different datasets
+    icon-align: left
+  update_param: selected
+column:
+  show: true
+  input_type: numericInput
+  input_params:
+    label: Column
+    value: 1
+  update_param: value
+go:
+  show: true
+  input_type: actionButton
+  input_params:
+    label: Go
+  input_info:
+    icon: adn
+    text: GO!
+    icon-align: right
+periodicity:
+  show: true
+  input_type: radioButtons
+  input_params:
+    label: Periodicity
+    choices:
+     - Daily
+     - Monthly
+     - Yearly
+  input_info:
+    icon: plus
+    text: Periodicity
+    icon-align: right
+  update_param: value
+weekend:
+  show: true
+  input_type: checkboxInput
+  input_params:
+    label: Weekend
+  input_info:
+    icon: affiliatetheme
+    text: Weekend!
+theme:
+  show: true
+  input_type: checkboxGroupInput
+  input_params:
+    label: Theme
+    choices:
+     - Blue sky
+     - Gold
+     - Forest green
+  input_info:
+    icon: info-circle
+    text: Theme
+  update_param: value
+name:
+  show: true
+  input_type: textInput
+  input_params:
+    label: Name
+  input_info:
+    icon: circle
+    text: NAME
+    icon-align: right
+  update_param: value

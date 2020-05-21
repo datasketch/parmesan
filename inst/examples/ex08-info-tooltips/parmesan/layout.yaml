@@ -1,0 +1,11 @@
+controls:
+  label: Controls
+  inputs:
+    - dataset
+    - column
+    - bins
+    - go
+    - periodicity
+    - weekend
+    - theme
+    - name

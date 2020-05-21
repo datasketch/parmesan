@@ -33,6 +33,7 @@ render_section <- function(section = NULL,
   if(render_inputs){
     rendered_inputs <- lapply(section$inputs, function(par_input) {
       render_par_input(par_input, input = input, env = env, debug = debug)
+
     })
   }
 

@@ -38,7 +38,6 @@ test_that("Helpers",{
   input[["y"]] <- 1
   expect_false(validate_show_if(par_input, input, env))
 
-
 })
 
 
