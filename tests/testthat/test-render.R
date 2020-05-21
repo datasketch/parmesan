@@ -96,7 +96,7 @@ test_that("info tooltip works", {
 
   # Input with tooltip
   expect_equal(render_par_input(parmesan$controls_dark$inputs[[2]]),
-               sliderInput("bins", shinypanels::infoTooltip("Bins", "Input clarifications", "check"), 0, 50, 10, 1))
+               sliderInput("bins", parmesan::infoTooltip(parmesan$controls_dark$inputs[[2]]), 0, 50, 10, 1))
 
 })
 

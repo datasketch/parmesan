@@ -95,9 +95,7 @@ render_par_html <- function(par_input) {
   par_input$input_params$inputId <- par_input$id
   # str(par_input$input_params)
   if (!is.null(par_input$input_info)) {
-    icn <- par_input$input_info$icon %||% "info-circle"
-    # style in yaml for parameter
-    par_input$input_params$label <- shinypanels::infoTooltip(par_input$input_params$label, par_input$input_info$text, icn)
+    par_input$input_params$label <- parmesan:::infoTooltip(par_input)
     return(do.call(par_input$input_type, par_input$input_params))
   }
   return(do.call(par_input$input_type, par_input$input_params))
