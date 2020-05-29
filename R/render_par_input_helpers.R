@@ -42,7 +42,7 @@ infoTooltip <- function(par_input) {
   info <- par_input$input_info$text
   ic_a <- par_input$input_info$`icon-align` %||% "end"
   sl <- ""
-  js <- "end"
+  js <- "start"
   if (ic_a == "right") {
     sl <- paste0(".control-label[for = '", id, "'] {width: 100%;}")
     if (inp == "actionButton")
