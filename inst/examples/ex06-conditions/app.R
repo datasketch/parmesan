@@ -3,7 +3,7 @@ library(parmesan)
 
 ui <- fluidPage(
   titlePanel("Hello Parmesan!"),
-  h3("More conditional inputs"),
+  h3("Example 6. More conditional inputs"),
   column(4,
          uiOutput("all_controls_here")
   ),
@@ -61,15 +61,23 @@ server <-  function(input, output, session) {
     length(selectedVars())
   })
 
+  title_selector_reactive <- reactive({
+    input$title_selector
+  })
 
   output_parmesan("all_controls_here", parmesan = parmesan,
-                  input = input, output = output, debug = TRUE)
+                  input = input, output = output, env = environment(),
+                  debug = TRUE)
 
   output$debug <- renderPrint({
-    selectedVars()
+    #selectedVars()
+    shiny::is.reactive(input$dataset)
   })
 
   output$plot <- renderPlot({
+    if(is.null(selectedVars()))
+      return()
+
     if(is.null(input$plot_which)){
       plot_which <- selectedVars()[1]
     }else{

@@ -41,6 +41,7 @@ render_section <- function(section = NULL,
     container_section(
       container_title(id = section$id, class = 'par_section',
                       div(class = "style_section",
+                          style = "font-size: medium;font-weight: bolder;",
                            section$label)),
       rendered_inputs,
       shiny::tags$script("Shiny.onInputChange('parmesan_updated',+new Date);")

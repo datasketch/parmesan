@@ -9,13 +9,13 @@ dataset:
       - mtcars
       - cars
     selected: iris
-num_or_fct: 
+num_or_fct:
   show: true
   show_if:
     hasFctAndNum():
       equals: true
   input_type: selectInput
-  input_params: 
+  input_params:
     label: 'Appears if dataset has numerics and factors'
     choices: [numeric, factor]
     multiple: true
@@ -26,7 +26,7 @@ enable_num_selector:
     num_or_fct:
       has: numeric
   input_type: checkboxInput
-  input_params: 
+  input_params:
     label: "Select numeric columns"
     value: true
 enable_fct_selector:
@@ -35,7 +35,7 @@ enable_fct_selector:
     num_or_fct:
       has: factor
   input_type: checkboxInput
-  input_params: 
+  input_params:
     label: "Select factor columns"
     value: true
 num_column:
@@ -69,7 +69,7 @@ fct_column:
 plot_which:
   show: true
   show_if:
-    nSelectedVars(): 
+    nSelectedVars():
       greater_than: 1
   input_type: numericInput
   input_params:
@@ -77,3 +77,17 @@ plot_which:
     value: 1
     min: 1
     max: nSelectedVars()
+title_selector:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: Title is shown when this is line, bar or area.
+    choices: [line, bar, area, pie, map]
+title:
+  show: true
+  show_if:
+    title_selector_reactive():
+      is_any_of: [line, bar, area]
+  input_type: textInput
+  input_params:
+    label: Title

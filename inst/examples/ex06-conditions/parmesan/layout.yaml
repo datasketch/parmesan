@@ -8,4 +8,6 @@ controls:
     - enable_fct_selector
     - fct_column
     - plot_which
+    - title_selector
+    - title
 

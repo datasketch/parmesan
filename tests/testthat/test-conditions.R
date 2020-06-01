@@ -15,3 +15,4 @@ test_that("multiplication works", {
   expect_true(eval_conditions( 4, "not_in", 1:3))
 
 })
+

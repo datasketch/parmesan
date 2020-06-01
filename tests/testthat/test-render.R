@@ -26,13 +26,17 @@ test_that("render works", {
   section <- "controls_dark"
   rendered_section <- render_section(section, parmesan = parmesan)
   shiny_inputs <- div(
-    div(id = "controls_dark", class = "par_section", "Controls Dark"),
+    div(id = "controls_dark", class = "par_section",
+        div(class = "style_section", style="font-size: medium;font-weight: bolder;",
+            "Controls Dark")
+        ),
     tagList(
       numericInput("column", "Column", value = 1),
       sliderInput("bins", "Bins", min = 0, max = 50, value = 10)
     )
   )
-  expect_equal(as.character(rendered_section), as.character(shiny_inputs))
+  expect_equal(as.character(rendered_section$children[1:2]),
+               as.character(shiny_inputs$children))
 
 
   parmesan_sections <- function(inputs_layout){
