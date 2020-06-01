@@ -40,24 +40,27 @@ infoTooltip <- function(par_input) {
   inp <- par_input$input_type
   title <- par_input$input_params$label
   info <- par_input$input_info$text
-  ic_a <- par_input$input_info$`icon-align` %||% "end"
-  sl <- ""
-  js <- "start"
+  ic_a <- par_input$input_info$`icon-align` %||% "left"
+  sl0 <- paste0(".control-label[for = '", id, "-selectized'] {position: relative;}")
+  sl1 <- ""
+  js <- "flex-start"
   if (ic_a == "right") {
-    sl <- paste0(".control-label[for = '", id, "'] {width: 100%;}")
+    sl0 <- paste0(".control-label[for = '", id, "'] {width: 100%; position: relative;}")
     if (inp == "actionButton")
       # sl <- paste0("#", id, "{width: 100%;}")
-      sl <- ""
+      sl0 <- ""
     if (inp %in% c("selectInput", "selectizeInput"))
-      sl <- paste0(".control-label[for = '", id, "-selectized'] {width: 100%;}")
+      sl0 <- paste0(".control-label[for = '", id, "-selectized'] {width: 100%; position: relative;}")
     if (inp == "checkboxInput")
-      sl <- ".checkbox > label {width: 100%;}"
+      sl0 <- HTML(".checkbox > label {width: 100%;}")
 
     js <- "space-between;"
   }
+  if (inp == "checkboxInput") {
+    sl1 <- HTML(paste0(sl1, ".checkbox > label > span {display: inline-block;}"))
+  }
 
-
-  style <- paste0("
+  sl2 <- "
   .info-tool {
   display: inline-flex;
   }
@@ -70,19 +73,21 @@ infoTooltip <- function(par_input) {
   background: #eee;
   display: inline-block;
   font-size: 13px;
-  left: 20px;
+  left: 0;
   max-width: 200px;
   padding: 7px 10px;
   position: absolute;
-  top: -12px;
+  top: calc(100% + 5px);
   visibility: hidden;
   z-index: 100;
   }
-  .tooltip-inf:hover .tooltiptext {
+  .info-tool:hover .tooltiptext {
   visibility: visible;
-  } ", sl)
+  } "
 
-  tagList(tags$head(tags$style(style)),
+  tagList(shiny::singleton(tags$head(tags$style(sl0))),
+          shiny::singleton(tags$head(tags$style(sl1))),
+          shiny::singleton(tags$head(tags$style(sl2))),
           HTML(paste0('<div style = "display: inline-flex; align-items: baseline; width: 100%; justify-content: ', js, '">',
                       title,
                       '<div class = "info-tool"> <div class="tooltip-inf">',
