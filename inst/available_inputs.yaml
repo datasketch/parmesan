@@ -17,10 +17,14 @@ shiny:
     update_param: value
   textInput:
     update_param: value
+  textAreaInput:
+    update_param: value
 shinyinvoer:
   buttonImageInput:
     update_param: value
   colorPaletteInput:
+    update_param: value
+  toggleSwitchInput:
     update_param: value
 colourPicker:
   colourInput:
