@@ -9,5 +9,8 @@ controls:
     - fct_column
     - plot_which
     - title_selector
+empty_section:
+  label: Title (Do not show section title when no inputs shows)
+  inputs:
     - title
 

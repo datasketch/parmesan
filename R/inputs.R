@@ -17,6 +17,34 @@ parmesan_input_ids <- function(parmesan = NULL, section = NULL){
 }
 
 #' @export
+parmesan_inputs <- function(parmesan = NULL, section = NULL){
+  if(is.null(parmesan)){
+    parmesan <- parmesan_load()
+  }
+  if(!is.null(section)){
+    parmesan <- parmesan[[section]]
+  }
+  inputs <- unname(unlist(lapply(parmesan, function(x){
+    x$inputs
+  }),recursive = FALSE))
+  inputs
+}
+
+#' @export
+parmesan_input_values <- function(parmesan = NULL, section = NULL){
+  inputs <- parmesan_inputs(parmesan = parmesan, section = section)
+  unlist(lapply(inputs,function(x){
+    l <- list(x$input_params$value %||%
+                x$input_params$selected %||%
+                x$input_params$color %||%
+                x$input_params$colors)
+    setNames(l, x$id)
+  }),recursive = FALSE)
+}
+
+
+
+#' @export
 parmesan_watch <- function(input, parmesan = NULL){
   if(is.null(parmesan)) parmesan <- parmesan_load()
   parmesan_inputs <- reactiveValues()
