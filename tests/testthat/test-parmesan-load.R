@@ -10,6 +10,18 @@ test_that("Config files are ok", {
   expect_warning(parmesan_load(path),
                  "inputs in inputs.yaml not defined in layout.yaml: gender")
 
+  presets <- list(
+    bins = list(min = 1),
+    column = list(label ="COL")
+  )
+  parmesan <- parmesan_load(path, presets = presets)
+
+  expect_equal(parmesan$controls$inputs[[3]]$input_params[["min"]],
+               presets[["bins"]]$min)
+  expect_equal(parmesan$controls$inputs[[2]]$input_params[["label"]],
+               presets[["column"]]$label)
+
+
 })
 
 

@@ -1,31 +1,45 @@
 shiny:
   actionButton:
     update_param: value
+    options_param: 
   sliderInput:
     update_param: value
+    options_param: 
   selectInput:
     update_param: selected
+    options_param: choices
   selectizeInput:
     update_param: selected
+    options_param: choices
   checkboxInput:
     update_param: value
+    options_param: 
   checkboxGroupInput:
     update_param: selected
+    options_param: choices
   radioButtons:
     update_param: selected
+    options_param: 
   numericInput:
     update_param: value
+    options_param: 
   textInput:
     update_param: value
+    options_param: 
   textAreaInput:
     update_param: value
+    options_param: 
 shinyinvoer:
   buttonImageInput:
     update_param: value
+    options_param: 
   colorPaletteInput:
     update_param: value
+    options_param: 
   toggleSwitchInput:
     update_param: value
+    options_param: 
 colourPicker:
   colourInput:
     update_param: value
+    options_param: 
