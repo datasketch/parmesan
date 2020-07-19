@@ -48,7 +48,8 @@ parmesan_input_values <- function(parmesan = NULL, section = NULL){
 
 #' @export
 parmesan_watch <- function(input, parmesan = NULL){
-  if(is.null(parmesan)) parmesan <- parmesan_load()
+  #if(is.null(parmesan)) parmesan <- parmesan_load()
+  if(is.null(parmesan)) return()
   parmesan_inputs <- reactiveValues()
   # parmesan_inputs$inputs <- parmesan_input_values(parmesan)
   # parmesan_env <- new.env()
