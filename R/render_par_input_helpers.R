@@ -17,7 +17,7 @@ remove_parenthesis <- function(x){
   gsub("\\(\\)","",x)
 }
 
-is_reactive <- function(x){
+is_reactive_string <- function(x){
   any(grepl("\\(\\)", x))
 }
 

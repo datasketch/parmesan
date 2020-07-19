@@ -8,6 +8,10 @@ parmesan_load <- function(path = "parmesan", inputs_only = FALSE,
     stop("Parmesan folder not found")
   }
 
+  if(is.reactive(presets)){
+    presets <- presets()
+  }
+
   inputs <- yaml::read_yaml(file.path(path, "inputs.yaml"))
   if(inputs_only) return(inputs)
   if(file.exists(file.path(path, "layout.yaml"))){

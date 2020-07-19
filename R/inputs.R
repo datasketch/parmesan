@@ -4,6 +4,8 @@ parmesan_input_ids <- function(parmesan = NULL, section = NULL){
 
   if(is.null(parmesan)){
     parmesan <- parmesan_load()
+  }else if (is.reactive(parmesan)){
+    parmesan <- parmesan()
   }
   if(!is.null(section)){
     parmesan <- parmesan[[section]]

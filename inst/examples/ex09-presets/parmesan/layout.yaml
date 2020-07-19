@@ -1,0 +1,6 @@
+controls:
+  label: Controls
+  inputs:
+    - dataset
+    - column
+    - bins

@@ -13,6 +13,8 @@ render_section <- function(section = NULL,
 
   if(is.null(parmesan)){
     parmesan <- parmesan_load()
+  }else if (is.reactive(parmesan)){
+    parmesan <- parmesan()
   }
   if(is.null(section)){
     section <- names(parmesan)[1]

@@ -58,7 +58,7 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
       value1ini <- value1
       value1 <- input[[value1]]
     }
-    if(is_reactive(value1)){
+    if(is_reactive_string(value1)){
       value1ini <- value1
       value1 <- do.call(remove_parenthesis(value1), list(), envir = env)
     }
@@ -66,7 +66,7 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
       value2ini <- value2
       value2 <- input[[value2]]
     }
-    if(is_reactive(value1)){
+    if(is_reactive_string(value1)){
       value2ini <- value2
       value2 <- do.call(reactive_fun, list(), envir = env)
     }
