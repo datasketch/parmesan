@@ -9,6 +9,15 @@ render_par_input <- function(par_input, input, env = parent.frame(),
     par_input <- replace_reactive_param_values(par_input, env = env)
   }
 
+  # Replace any reactives tooltip
+  if(input_has_reactive_tooltip_text(par_input)){
+    message("\n\nHAS REACTIVE TOOLTIP")
+    str(par_input)
+    #par_input <- replace_reactive_param_values(par_input, env = env)
+    str(replace_reactive_tooltip_text(par_input, env = env))
+    par_input <- replace_reactive_tooltip_text(par_input, env = env)
+  }
+
   # Has no conditionals
   if (!input_has_show_if(par_input)) {
     html <- render_par_html(par_input)
@@ -19,13 +28,12 @@ render_par_input <- function(par_input, input, env = parent.frame(),
     if(is.null(input)) stop("Need to pass input to render_section")
     if(validate_show_if(par_input, input, env, debug = debug)){
       html <- render_par_html(par_input)
+      #html <- render_par_html(par_input, env = env, debug = debug)
       return(html)
     }
   }
 
 }
-
-
 
 replace_reactive_param_values <- function(par_input, env = parent.frame()){
   params <-  par_input$input_params
@@ -38,6 +46,13 @@ replace_reactive_param_values <- function(par_input, env = parent.frame()){
   names(params_reactive) <- pars
   params <- modifyList(params, params_reactive)
   par_input$input_params <- params
+  par_input
+}
+
+replace_reactive_tooltip_text <- function(par_input, env = parent.frame()){
+  text <-  par_input$input_info$text
+  text <- do.call(remove_parenthesis(text), list(), envir = env)
+  par_input$input_info$text <- text
   par_input
 }
 
@@ -93,7 +108,6 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
 
 render_par_html <- function(par_input) {
   par_input$input_params$inputId <- par_input$id
-  # str(par_input$input_params)
   if (!is.null(par_input$input_info)) {
     par_input$input_params$label <- parmesan:::infoTooltip(par_input)
     return(do.call(par_input$input_type, par_input$input_params))
