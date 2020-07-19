@@ -11,7 +11,7 @@ output_parmesan <- function(id, parmesan = NULL,
   }
 
   observe({
-    if(is.reactive(parmesan))
+    if(shiny::is.reactive(parmesan))
       parmesan <- parmesan()
 
     # For some reason this is needed so the env gets "loaded"

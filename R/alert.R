@@ -3,7 +3,7 @@ parmesan_alert <- function(parmesan = NULL, env = parent.frame(),
                            panic = FALSE){
 
   # Alerts do not work with reactive parmesan/presets
-  if(is.reactive(parmesan))
+  if(shiny::is.reactive(parmesan))
     return()
 
   # message("IN ALERT")

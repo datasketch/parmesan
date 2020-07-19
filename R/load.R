@@ -8,7 +8,7 @@ parmesan_load <- function(path = "parmesan", inputs_only = FALSE,
     stop("Parmesan folder not found")
   }
 
-  if(is.reactive(presets)){
+  if(shiny::is.reactive(presets)){
     presets <- presets()
   }
 
