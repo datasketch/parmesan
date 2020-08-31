@@ -13,11 +13,15 @@ input_has_reactive_param_values <- function(par_input){
   any(grepl("\\(\\)", par_input$input_params))
 }
 
+input_has_reactive_tooltip_text <- function(par_input){
+  any(grepl("\\(\\)", par_input$input_info$text))
+}
+
 remove_parenthesis <- function(x){
   gsub("\\(\\)","",x)
 }
 
-is_reactive <- function(x){
+is_reactive_string <- function(x){
   any(grepl("\\(\\)", x))
 }
 
@@ -39,13 +43,19 @@ input_has_show_if <- function(par_input){
 }
 
 
-infoTooltip <- function(par_input) {
+infoTooltip <- function(par_input, debug = FALSE) {
+
+  if(debug){
+    message("in tooltip")
+    str(par_input)
+  }
 
   icn <- par_input$input_info$icon %||% "info-circle"
   id <- par_input$id
   inp <- par_input$input_type
   title <- par_input$input_params$label
   info <- par_input$input_info$text
+
   ic_a <- par_input$input_info$`icon-align` %||% "left"
   sl0 <- paste0(".control-label[for = '", id, "-selectized'] {position: relative;}")
   sl1 <- ""

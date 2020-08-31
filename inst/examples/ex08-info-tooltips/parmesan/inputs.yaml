@@ -9,7 +9,7 @@ bins:
     step: 1
   input_info:
     icon: info-circle
-    text: Number of bins
+    text: custom_bins_text()
     icon-align: right
   update_param: value
 dataset:
@@ -82,9 +82,11 @@ name:
   show: true
   input_type: textInput
   input_params:
-    label: Name
+    label: SOME TEXT INPUT
+    value: Init text
   input_info:
     icon: circle
-    text: NAME
+    text: SOME TEXT INPUT TOOLTIP
     icon-align: right
   update_param: value
+

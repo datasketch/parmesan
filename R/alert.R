@@ -1,6 +1,11 @@
 #' @export
 parmesan_alert <- function(parmesan = NULL, env = parent.frame(),
                            panic = FALSE){
+
+  # Alerts do not work with reactive parmesan/presets
+  if(shiny::is.reactive(parmesan))
+    return()
+
   # message("IN ALERT")
   # fenv(env)
   funs_in_env <- as.vector(lsf.str(envir = env))

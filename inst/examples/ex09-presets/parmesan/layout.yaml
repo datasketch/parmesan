@@ -3,9 +3,4 @@ controls:
   inputs:
     - dataset
     - column
-    - name
     - bins
-    - go
-    - periodicity
-    - weekend
-    - theme

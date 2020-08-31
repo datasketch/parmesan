@@ -2,10 +2,14 @@
 
 #' @export
 parmesan_load <- function(path = "parmesan", inputs_only = FALSE,
-                          debug = FALSE){
+                          debug = FALSE, presets = NULL){
 
   if(!dir.exists(path)){
     stop("Parmesan folder not found")
+  }
+
+  if(shiny::is.reactive(presets)){
+    presets <- presets()
   }
 
   inputs <- yaml::read_yaml(file.path(path, "inputs.yaml"))
@@ -45,8 +49,13 @@ parmesan_load <- function(path = "parmesan", inputs_only = FALSE,
     x$inputs <- lapply(seq_along(inputs), function(i){
       if(debug)
         message("  input id : ", x$inputs[i])
-      input <- list(id = x$inputs[i])
+      input_id <- x$inputs[i]
+      input <- list(id = input_id)
       input <- c(input, inputs[[i]])
+      if(!is.null(presets)){
+        input_preset <- presets[[input_id]] %||% list()
+        input$input_params <- modifyList(input$input_params, input_preset)
+      }
       class(input) <- "parmesan_input"
       input
     })
