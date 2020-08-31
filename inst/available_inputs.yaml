@@ -26,6 +26,8 @@ shinyinvoer:
     update_param: value
   toggleSwitchInput:
     update_param: value
+  numberInput:
+    update_param: value
 colourPicker:
   colourInput:
     update_param: value
