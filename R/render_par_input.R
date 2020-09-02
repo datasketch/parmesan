@@ -44,7 +44,7 @@ replace_reactive_param_values <- function(par_input, env = parent.frame()){
     dep_value_params
   })
   names(params_reactive) <- pars
-  params <- modifyList(params, params_reactive)
+  params <- modifyList(params, params_reactive, keep.null = TRUE)
   par_input$input_params <- params
   par_input
 }
