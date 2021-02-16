@@ -107,12 +107,16 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
 
 
 render_par_html <- function(par_input) {
+
+  inputtype <- par_input$input_type
+  input_type_with_ns <- input_namespace(inputtype)
+
   par_input$input_params$inputId <- par_input$id
   if (!is.null(par_input$input_info)) {
     par_input$input_params$label <- parmesan:::infoTooltip(par_input)
-    return(do.call(par_input$input_type, par_input$input_params))
+    return(do.call(getfun(input_type_with_ns), par_input$input_params))
   }
-  return(do.call(par_input$input_type, par_input$input_params))
+  return(do.call(getfun(input_type_with_ns), par_input$input_params))
 }
 
 

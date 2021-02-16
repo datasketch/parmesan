@@ -105,6 +105,12 @@ test_that("info tooltip works", {
 })
 
 
+test_that("namespace lookup works", {
 
+  expect_equal(input_namespace("colorPaletteInput"), "shinyinvoer::colorPaletteInput")
+
+  expect_equal(input_namespace("actionButton"), "shiny::actionButton")
+
+})
 
 

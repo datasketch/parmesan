@@ -15,3 +15,14 @@ is.empty <- function (x)
 {
   !as.logical(length(x))
 }
+
+
+#' Get function from string of namespace::function() to pass to do.call
+getfun <- function(x) {
+  if(length(grep("::", x))>0) {
+    parts <- strsplit(x, "::")[[1]]
+    getExportedValue(parts[1], parts[2])
+  } else {
+    x
+  }
+}
