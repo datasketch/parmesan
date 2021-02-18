@@ -45,6 +45,9 @@ shinyinvoer:
   searchInput:
     update_param: data
     options_param:
+  passiveTextInput:
+    update_param: value
+    options_param:
 colourPicker:
   colourInput:
     update_param: value
