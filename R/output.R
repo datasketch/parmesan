@@ -1,11 +1,17 @@
 
 #' @export
-output_parmesan <- function(id, parmesan = NULL,
-                            input = input, output = output,
-                            session = session,
+output_parmesan <- function(id,
+                            r = NULL,
+                            parmesan = NULL,
                             container_section = NULL,
+                            parent = getDefaultReactiveDomain(),
                             env = parent.frame(),
-                            panic = FALSE, debug = FALSE){
+                            panic = FALSE,
+                            debug = FALSE){
+
+  moduleServer(id, function(input, output, session){
+    ns <- parent$ns
+
   if(is.null(parmesan)){
     parmesan <- parmesan_load()
   }
@@ -24,8 +30,8 @@ output_parmesan <- function(id, parmesan = NULL,
     #insert section placeholders
     lapply(sections, function(section){
       removeUI(selector = paste0("#section-",section), immediate = TRUE)
-      insertUI(paste0("#",id), immediate = TRUE,
-               ui = div(class = "section_0", id = paste0("section-",section)),)
+      insertUI(paste0("#",ns(id)), immediate = TRUE,
+               ui = div(class = "section_0", id = paste0("section-",section)))
     })
 
     # Insert sections titles and boxes leaving out inputs.
@@ -37,6 +43,7 @@ output_parmesan <- function(id, parmesan = NULL,
                                    render_inputs = FALSE,
                                    env = env))
     })
+
 
     # Do we first need to insert individual inputs
     # with no dependencies in each section? Not for now.
@@ -53,26 +60,26 @@ output_parmesan <- function(id, parmesan = NULL,
     # })
 
 
-
     # Second insert all inputs with dependencies
     # Create outputs for all inputs
     # (only those with dependencies?, not for now)
 
-    lapply(parmesan, function(section){
-      lapply(section$inputs, function(par_input){
-        # if(input_has_dependencies(par_input)){
-        output[[paste0("output_",par_input$id)]] <- renderUI({
-          render_par_input(par_input, input = input, env = env, debug = debug)
-        })
-        # }
-      })
-    })
+    # lapply(parmesan, function(section){
+    #   lapply(section$inputs, function(par_input){
+    #     # if(input_has_dependencies(par_input)){
+    #     output[[paste0("output_",par_input$id)]] <- renderUI({
+    #       # render_par_input(par_input = par_input, input = input, env = env, debug = debug)
+    #       selectInput(par_input$id, label = "blahblah", choices = c("rock", "pressure"))
+    #     })
+    #     # }
+    #   })
+    # })
     # Create UIs for all inputs with dependencies
     lapply(parmesan, function(section){
       lapply(section$inputs, function(par_input){
         # if(input_has_dependencies(par_input)){
         insertUI(paste0("#",section$id), immediate = TRUE,
-                 ui = uiOutput(paste0("output_",par_input$id)))
+                 ui = div(render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = parent, r = r)))
         # }
       })
     })
@@ -83,6 +90,7 @@ output_parmesan <- function(id, parmesan = NULL,
       shiny::tags$script("Shiny.onInputChange('parmesan_updated',+new Date);")
     })
 
+  })
 
   })
 
