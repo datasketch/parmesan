@@ -33,6 +33,14 @@ parmServer <- function(id, r) {
         r$datasetNCols <- datasetNCols
       })
 
+      observe({
+        r$datasetInput <- datasetInput()
+        r$dataset <- input$dataset
+        r$column <- input$column
+        r$plot_type <- input$plot_type
+        r$bins <- input$bins
+      })
+
 
       path <- system.file("examples", "ex05-reactive-output", "parmesan",
                           package = "parmesan")
@@ -54,13 +62,7 @@ parmServer <- function(id, r) {
         "hello"
       })
 
-      observe({
-        r$datasetInput <- datasetInput()
-        r$dataset <- input$dataset
-        r$column <- input$column
-        r$plot_type <- input$plot_type
-        r$bins <- input$bins
-      })
+
 
 
     }
