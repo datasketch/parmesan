@@ -30,7 +30,7 @@ render_par_input <- function(par_input, input,
   if(input_has_show_if(par_input)){
     # browser()
     if(is.null(input)) stop("Need to pass input to render_section")
-    if(validate_show_if(par_input, input, env, parent, debug = debug)){
+    if(validate_show_if(par_input = par_input, input = input, env = env, parent = parent, r = r, debug = debug)){
       html <- render_par_html(par_input)
       #html <- render_par_html(par_input, env = env, debug = debug)
       return(html)
@@ -67,7 +67,7 @@ replace_reactive_tooltip_text <- function(par_input, env = parent.frame()){
 
 
 
-validate_show_if <- function(par_input, input, env, parent, debug = FALSE){
+validate_show_if <- function(par_input, input, env, parent, r, debug = FALSE){
   if(is.null(par_input)) return()
 
   ns <- parent$ns
@@ -79,22 +79,34 @@ validate_show_if <- function(par_input, input, env, parent, debug = FALSE){
     condition <- names(par_input$show_if[[i]])
     value1 <- names(par_input$show_if)[[i]]
     value2 <- par_input$show_if[[i]][[1]]
+
     value2ini <- value1ini <- NULL
-    if(is_shiny_input(value1, input)){
+    if(is_shiny_input(x = value1, input = input, r = r)){
       value1ini <- value1
-      value1 <- input[[value1]]
-    }
-    if(is_shiny_input(value1, input)){
-      value1ini <- value1
-      value1 <- input[[value1]]
+
+      if(is.null(parent)){
+        value1 <- input[[value1]]
+      } else {
+        value1 <- r[[value1]]
+      }
+
     }
     if(is_reactive_string(value1)){
       value1ini <- value1
-      value1 <- do.call(remove_parenthesis(value1), list(), envir = env)
+      if(is.null(parent)){
+        value1 <- do.call(remove_parenthesis(value1), list(), envir = env)
+      } else {
+        value1 <- do.call(r[[remove_parenthesis(inp)]], list())
+      }
     }
-    if(is_shiny_input(value2, input)){
+    if(is_shiny_input(x = value2, input = input, r = r)){
       value2ini <- value2
-      value2 <- input[[value2]]
+
+      if(is.null(parent)){
+        value2 <- input[[value2]]
+      } else {
+        value2 <- r[[value2]]
+      }
     }
     if(is_reactive_string(value1)){
       value2ini <- value2
