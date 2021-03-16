@@ -49,19 +49,22 @@ server <-  function(input, output, session) {
   })
 
   output_parmesan("all_controls_here", parmesan = parmesan_lang,
-                  input = input, output = output, session = session,
-                  env = environment())
+                  # input = input, output = output, session = session,
+                  env = environment(), parent = session)
   # output_parmesan("all_controls_here", parmesan = parmesan,
 
+
   output$debug <- renderPrint({
-    paste0(
-      "Parmesan updated: ", input$parmesan_updated
-      # str(parmesan_input())
-      )
+    # paste0(
+    #   "Parmesan updated: ", input$parmesan_updated
+    #   # str(parmesan_input())
+    #   )
+    str(parmesan_input())
   })
 
   datasetInput <- reactive({
     req(input$dataset)
+    # browser()
     get(input$dataset)
   })
 
