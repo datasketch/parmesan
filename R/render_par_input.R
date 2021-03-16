@@ -1,8 +1,8 @@
 render_par_input <- function(par_input, input,
                              env = parent.frame(),
                              debug = FALSE,
-                             parent = parent,
-                             r = r){
+                             parent = NULL,
+                             r = NULL){
   # message("\nRendering input: ", par_input$id, "\n")
 
   if(!par_input$show) return()
@@ -28,8 +28,9 @@ render_par_input <- function(par_input, input,
   }
   # Show if dependency
   if(input_has_show_if(par_input)){
+    # browser()
     if(is.null(input)) stop("Need to pass input to render_section")
-    if(validate_show_if(par_input, input, env, debug = debug)){
+    if(validate_show_if(par_input, input, env, parent, debug = debug)){
       html <- render_par_html(par_input)
       #html <- render_par_html(par_input, env = env, debug = debug)
       return(html)
@@ -66,8 +67,10 @@ replace_reactive_tooltip_text <- function(par_input, env = parent.frame()){
 
 
 
-validate_show_if <- function(par_input, input, env, debug = FALSE){
+validate_show_if <- function(par_input, input, env, parent, debug = FALSE){
   if(is.null(par_input)) return()
+
+  ns <- parent$ns
 
   if(debug) message("\nRendering: ", par_input$id)
   condition_type <- names(par_input)[grep("show_",names(par_input))]
@@ -77,6 +80,10 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
     value1 <- names(par_input$show_if)[[i]]
     value2 <- par_input$show_if[[i]][[1]]
     value2ini <- value1ini <- NULL
+    if(is_shiny_input(value1, input)){
+      value1ini <- value1
+      value1 <- input[[value1]]
+    }
     if(is_shiny_input(value1, input)){
       value1ini <- value1
       value1 <- input[[value1]]
@@ -114,14 +121,19 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
 
 
 
-render_par_html <- function(par_input, parent) {
+render_par_html <- function(par_input, parent = NULL) {
 
-  ns <- parent$ns
+  par_input_id <- par_input$id
+  if(!is.null(parent)){
+    ns <- parent$ns
+    par_input_id <- ns(par_input$id)
+  }
+
 
   inputtype <- par_input$input_type
   input_type_with_ns <- input_namespace(inputtype)
 
-  par_input$input_params$inputId <- ns(par_input$id)
+  par_input$input_params$inputId <- par_input_id
   if (!is.null(par_input$input_info)) {
     par_input$input_params$label <- parmesan:::infoTooltip(par_input)
     return(do.call(getfun(input_type_with_ns), par_input$input_params))

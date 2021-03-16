@@ -4,7 +4,7 @@ output_parmesan <- function(id,
                             r = NULL,
                             parmesan = NULL,
                             container_section = NULL,
-                            parent = getDefaultReactiveDomain(),
+                            parent = NULL,
                             env = parent.frame(),
                             panic = FALSE,
                             debug = FALSE){
@@ -30,7 +30,11 @@ output_parmesan <- function(id,
     #insert section placeholders
     lapply(sections, function(section){
       removeUI(selector = paste0("#section-",section), immediate = TRUE)
-      insertUI(paste0("#",ns(id)), immediate = TRUE,
+      section_id <- id
+      if(!is.null(parent)){
+        section_id <- ns(id)
+      }
+      insertUI(paste0("#",section_id), immediate = TRUE,
                ui = div(class = "section_0", id = paste0("section-",section)))
     })
 
