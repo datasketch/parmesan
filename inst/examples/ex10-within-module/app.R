@@ -58,8 +58,7 @@ parmServer <- function(id, r) {
 
 
       output$debug <- renderPrint({
-        # str(parmesan_input())
-        "hello"
+        str(parmesan_input())
       })
 
 
@@ -70,8 +69,8 @@ parmServer <- function(id, r) {
 }
 
 ui <- fluidPage(
-  titlePanel("Example 05 - Hello Parmesan!"),
-  h3("Children input elements do not need to be rendered as independent outputs."),
+  titlePanel("Example 10 - Hello Parmesan!"),
+  h3("Use parmesan inputs from within a shiny module."),
   column(4,
          parmUI("parm_module")
   ),
