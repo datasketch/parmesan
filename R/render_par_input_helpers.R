@@ -36,7 +36,7 @@ is_shiny_input <- function(x, input, r = NULL){
   if(!is.null(r)){
     validate <- !is.null(r[[x]])
   }
-
+ validate
 }
 
 
