@@ -1,12 +1,15 @@
-render_par_input <- function(par_input, input, env = parent.frame(),
-                             debug = FALSE){
+render_par_input <- function(par_input, input,
+                             env = parent.frame(),
+                             debug = FALSE,
+                             parent = parent,
+                             r = r){
   # message("\nRendering input: ", par_input$id, "\n")
 
   if(!par_input$show) return()
 
   # Replace any reactives in param values
   if(input_has_reactive_param_values(par_input)){
-    par_input <- replace_reactive_param_values(par_input, env = env)
+    par_input <- replace_reactive_param_values(par_input, env = env, r = r)
   }
 
   # Replace any reactives tooltip
@@ -20,7 +23,7 @@ render_par_input <- function(par_input, input, env = parent.frame(),
 
   # Has no conditionals
   if (!input_has_show_if(par_input)) {
-    html <- render_par_html(par_input)
+    html <- render_par_html(par_input, parent)
     return(html)
   }
   # Show if dependency
@@ -35,12 +38,17 @@ render_par_input <- function(par_input, input, env = parent.frame(),
 
 }
 
-replace_reactive_param_values <- function(par_input, env = parent.frame()){
+replace_reactive_param_values <- function(par_input, env = parent.frame(), r = NULL){
   params <-  par_input$input_params
   pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
+
   params_reactive <- lapply(pars, function(par){
     inp <- par_input$input_params[[par]]
-    dep_value_params <- do.call(remove_parenthesis(inp), list(), envir = env)
+    if(is.null(r)){
+      dep_value_params <- do.call(remove_parenthesis(inp), list(), envir = env)
+    } else {
+      dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
+    }
     dep_value_params
   })
   names(params_reactive) <- pars
@@ -106,12 +114,14 @@ validate_show_if <- function(par_input, input, env, debug = FALSE){
 
 
 
-render_par_html <- function(par_input) {
+render_par_html <- function(par_input, parent) {
+
+  ns <- parent$ns
 
   inputtype <- par_input$input_type
   input_type_with_ns <- input_namespace(inputtype)
 
-  par_input$input_params$inputId <- par_input$id
+  par_input$input_params$inputId <- ns(par_input$id)
   if (!is.null(par_input$input_info)) {
     par_input$input_params$label <- parmesan:::infoTooltip(par_input)
     return(do.call(getfun(input_type_with_ns), par_input$input_params))
