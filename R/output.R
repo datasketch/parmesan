@@ -1,14 +1,18 @@
-
 #' @export
 output_parmesan <- function(id,
-                            parmesan = NULL,
-                            input = input,
-                            output = output,
-                            session = session,
+                            parmesan,
+                            input,
+                            output,
+                            session,
                             container_section = NULL,
                             r = NULL,
                             env = parent.frame(),
                             panic = FALSE, debug = FALSE){
+
+  if(is.null(parmesan)) stop("Need 'parmesan' parameter to create shiny inputs.")
+  if(is.null(input)) stop("Need 'input' parameter to create shiny inputs.")
+  if(is.null(output)) stop("Need 'output' parameter to create shiny inputs.")
+  if(is.null(session)) stop("Need 'session' parameter to create shiny inputs.")
 
   ns <- session$ns
 
@@ -74,16 +78,8 @@ output_parmesan <- function(id,
           params <-  par_input$input_params
           pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
           params_reactive <- lapply(pars, function(par){
-            inp <- par_input$input_params[[par]]
-
-            if(is.null(r)){
-              dep_value_params <- do.call(remove_parenthesis(inp), list(), envir = env)
-            } else {
-              dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
-            }
-
-
-            dep_value_params
+            reactive_input <- par_input$input_params[[par]]
+            evaluate_reactive(x = reactive_input, env = env, r = r)
           })
           names(params_reactive) <- pars
 
