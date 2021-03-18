@@ -78,13 +78,17 @@ output_parmesan <- function(id,
     #     # }
     #   })
     # })
-    # Create UIs for all inputs with dependencies
+
+    # Create UIs for all inputs without conditionals
     lapply(parmesan, function(section){
       lapply(section$inputs, function(par_input){
-        # if(input_has_dependencies(par_input)){
-        insertUI(paste0("#",section$id), immediate = TRUE,
-                 ui = div(render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = parent, r = r)))
-        # }
+
+        if(!input_has_show_if(par_input)){
+          insertUI(paste0("#",section$id),
+                   immediate = TRUE,
+                   ui = div(render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = parent, r = r)))
+        }
+
       })
     })
 
@@ -93,7 +97,6 @@ output_parmesan <- function(id,
         lapply(section$inputs, function(par_input){
           # Update inputs that have reactive values
           if(input_has_reactive_param_values(par_input)){
-
             # Evaluate reactives parameters that need to change with reactives
             params <-  par_input$input_params
             pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
@@ -120,7 +123,32 @@ output_parmesan <- function(id,
       })
     })
 
+    observe({
+      lapply(parmesan, function(section){
+        lapply(seq_along(section$inputs), function(x){
+          par_input <- section$inputs[[x]]
+          # Insert/remove conditional inputs
+          if(input_has_show_if(par_input)){
 
+            conditions_passed <- validate_show_if(par_input = par_input, input = input, env = env, parent = parent, r = r, debug = debug)
+
+            last_input <- section$inputs[[x-1]]
+            last_input_id <- last_input$id
+            last_input_id_with_ns <- paste0("#",ns(last_input_id))
+
+            if(conditions_passed){
+              insertUI(last_input_id_with_ns,
+                       immediate = TRUE,
+                       ui = div(id = paste0("output_",par_input$id),
+                                render_par_html(par_input = par_input, parent = parent)))
+            } else {
+              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
+            }
+
+          }
+        })
+      })
+    })
 
 
     # Add parmesan_updated input
