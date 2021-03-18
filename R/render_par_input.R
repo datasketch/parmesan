@@ -3,23 +3,17 @@ render_par_input <- function(par_input, input,
                              debug = FALSE,
                              parent = NULL,
                              r = NULL){
-  # message("\nRendering input: ", par_input$id, "\n")
 
   if(!par_input$show) return()
 
-  # Replace any reactives in param values
-  if(input_has_reactive_param_values(par_input)){
-    par_input <- replace_reactive_param_values(par_input, env = env, parent = parent, r = r)
-  }
-
-  # Replace any reactives tooltip
-  if(input_has_reactive_tooltip_text(par_input)){
-    message("\n\nHAS REACTIVE TOOLTIP")
-    str(par_input)
-    #par_input <- replace_reactive_param_values(par_input, env = env)
-    str(replace_reactive_tooltip_text(par_input, env = env))
-    par_input <- replace_reactive_tooltip_text(par_input, env = env)
-  }
+  # # Replace any reactives tooltip
+  # if(input_has_reactive_tooltip_text(par_input)){
+  #   message("\n\nHAS REACTIVE TOOLTIP")
+  #   str(par_input)
+  #   #par_input <- replace_reactive_param_values(par_input, env = env)
+  #   str(replace_reactive_tooltip_text(par_input, env = env))
+  #   par_input <- replace_reactive_tooltip_text(par_input, env = env)
+  # }
 
   # Has no conditionals
   if (!input_has_show_if(par_input)) {
@@ -38,25 +32,6 @@ render_par_input <- function(par_input, input,
 
 }
 
-replace_reactive_param_values <- function(par_input, env = parent.frame(), parent = NULL, r = NULL){
-  params <-  par_input$input_params
-  pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
-
-  params_reactive <- lapply(pars, function(par){
-    inp <- par_input$input_params[[par]]
-    if(is.null(parent)){
-      dep_value_params <- do.call(remove_parenthesis(inp), list(), envir = env)
-    } else {
-      dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
-    }
-    dep_value_params
-  })
-  names(params_reactive) <- pars
-  params <- modifyList(params, params_reactive, keep.null = TRUE)
-  par_input$input_params <- params
-  par_input
-}
-
 replace_reactive_tooltip_text <- function(par_input, env = parent.frame()){
   text <-  par_input$input_info$text
   text <- do.call(remove_parenthesis(text), list(), envir = env)
@@ -73,7 +48,7 @@ validate_show_if <- function(par_input, input, env, parent, r, debug = FALSE){
 
   if(debug) message("\nRendering: ", par_input$id)
   condition_type <- names(par_input)[grep("show_",names(par_input))]
-# browser()
+
   conditions <- lapply(seq_along(par_input$show_if), function(i){
     condition <- names(par_input$show_if[[i]])
     value1 <- names(par_input$show_if)[[i]]
@@ -140,9 +115,8 @@ render_par_html <- function(par_input, parent = NULL) {
     par_input_id <- ns(par_input$id)
   }
 
-
-  inputtype <- par_input$input_type
-  input_type_with_ns <- input_namespace(inputtype)
+  input_type <- par_input$input_type
+  input_type_with_ns <- input_namespace(input_type)
 
   par_input$input_params$inputId <- par_input_id
   if (!is.null(par_input$input_info)) {
