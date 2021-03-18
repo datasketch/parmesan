@@ -25,6 +25,22 @@ is_reactive_string <- function(x){
   any(grepl("\\(\\)", x))
 }
 
+evaluate_reactive <- function(x, env, r = NULL){
+  if(is.null(r)){
+    do.call(remove_parenthesis(x), list(), envir = env)
+  } else {
+    do.call(r[[remove_parenthesis(x)]], list())
+  }
+}
+
+evaluate_input <- function(x, r = NULL){
+  if(is.null(r)){
+    input[[x]]
+  } else {
+    r[[x]]
+  }
+}
+
 is_shiny_input <- function(x, input, r = NULL){
   if(shiny::is.reactive(x)) return(FALSE)
   if(!is.character(x)) return(FALSE)
@@ -45,7 +61,6 @@ input_has_show_if <- function(par_input){
   # !is.null(par_input$show_if) #|| grepl("reactive__", names(par_input))
   any(grepl("show_if", names(par_input)))
 }
-
 
 # infoTooltip <- function(par_input, debug = FALSE) {
 #
