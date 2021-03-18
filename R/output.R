@@ -1,17 +1,16 @@
 
 #' @export
 output_parmesan <- function(id,
-                            r = NULL,
-                            parent = NULL,
                             parmesan = NULL,
                             input = input,
                             output = output,
                             session = session,
                             container_section = NULL,
+                            r = NULL,
                             env = parent.frame(),
                             panic = FALSE, debug = FALSE){
 
-  ns <- parent$ns
+  ns <- session$ns
 
   if(is.null(parmesan)){
     parmesan <- parmesan_load()
@@ -31,10 +30,7 @@ output_parmesan <- function(id,
     #insert section placeholders
     lapply(sections, function(section){
       removeUI(selector = paste0("#section-",section), immediate = TRUE)
-      section_id <- id
-      if(!is.null(parent)){
-        section_id <- ns(id)
-      }
+      section_id <- ns(id)
       insertUI(paste0("#",section_id), immediate = TRUE,
                ui = div(class = "section_0", id = paste0("section-",section)))
     })
@@ -59,7 +55,7 @@ output_parmesan <- function(id,
           insertUI(paste0("#",section$id),
                    immediate = TRUE,
                    ui = div(id = paste0("output_",par_input$id),
-                            render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = parent, r = r)))
+                            render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = session, r = r)))
         }
 
       })
@@ -80,7 +76,13 @@ output_parmesan <- function(id,
             pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
             params_reactive <- lapply(pars, function(par){
               inp <- par_input$input_params[[par]]
-              dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
+
+              if(is.null(r)){
+                dep_value_params <- do.call(remove_parenthesis(inp), list(), envir = env)
+              } else {
+                dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
+              }
+
 
               dep_value_params
             })
@@ -91,7 +93,7 @@ output_parmesan <- function(id,
             input_type <- par_input$input_type
             input_type_with_ns <- updateInput_namespace(input_type)
 
-            update_params <- c(session = parent,
+            update_params <- c(session = session,
                                inputId = id,
                                params_reactive)
             do.call(getfun(input_type_with_ns), update_params)
@@ -111,7 +113,7 @@ output_parmesan <- function(id,
           # Insert/remove conditional inputs
           if(input_has_show_if(par_input)){
 
-            conditions_passed <- validate_show_if(par_input = par_input, input = input, env = env, parent = parent, r = r, debug = debug)
+            conditions_passed <- validate_show_if(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
 
             last_input <- section$inputs[[x-1]]
             last_input_id <- paste0("output_", last_input$id)
@@ -123,7 +125,7 @@ output_parmesan <- function(id,
                        where = "afterEnd",
                        immediate = TRUE,
                        ui = div(id = paste0("output_",par_input$id),
-                                render_par_html(par_input = par_input, parent = parent)))
+                                render_par_html(par_input = par_input, parent = session)))
             } else {
               removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
             }
