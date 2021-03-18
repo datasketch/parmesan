@@ -53,7 +53,7 @@ output_parmesan <- function(id,
           insertUI(paste0("#",section$id),
                    immediate = TRUE,
                    ui = div(id = paste0("output_",par_input$id),
-                            render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = session, r = r)))
+                            render_par_input(par_input = par_input, parent = session)))
         }
 
       })
@@ -127,7 +127,7 @@ output_parmesan <- function(id,
                      where = "afterEnd",
                      immediate = TRUE,
                      ui = div(id = paste0("output_",par_input$id),
-                              render_par_html(par_input = par_input, parent = session)))
+                              render_par_input(par_input = par_input, parent = session)))
           } else {
             removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
           }
@@ -165,7 +165,7 @@ output_parmesan <- function(id,
                    where = "afterEnd",
                    immediate = TRUE,
                    ui = div(id = paste0("output_",par_input$id),
-                            render_par_html(par_input = par_input, parent = session)))
+                            render_par_input(par_input = par_input, parent = session)))
         }
       })
     })
