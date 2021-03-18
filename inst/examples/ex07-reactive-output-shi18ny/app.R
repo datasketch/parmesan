@@ -64,13 +64,9 @@ server <-  function(input, output, session) {
     paste0("Colums (max = ", datasetNCols(),")")
   })
 
-  observe({
-    r$plot_type <- input$plot_type
-  })
-
   output_parmesan("all_controls_here", parmesan = parmesan_lang,
-                  # input = input, output = output, session = session,
-                  env = environment(), r = r)
+                  input = input, output = output, session = session,
+                  env = environment())
   # output_parmesan("all_controls_here", parmesan = parmesan,
 
 
