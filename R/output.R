@@ -16,7 +16,7 @@ output_parmesan <- function(id,
     parmesan <- parmesan_load()
   }
 
-  observe({
+  # observe({
     if(shiny::is.reactive(parmesan))
       parmesan <- parmesan()
 
@@ -88,6 +88,41 @@ output_parmesan <- function(id,
       })
     })
 
+    observe({
+      lapply(parmesan, function(section){
+        lapply(section$inputs, function(par_input){
+          # Update inputs that have reactive values
+          if(input_has_reactive_param_values(par_input)){
+
+            # Evaluate reactives parameters that need to change with reactives
+            params <-  par_input$input_params
+            pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
+            params_reactive <- lapply(pars, function(par){
+              inp <- par_input$input_params[[par]]
+              dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
+
+              dep_value_params
+            })
+            names(params_reactive) <- pars
+
+            # Update parameters
+            id <- par_input$id
+            input_type <- par_input$input_type
+            input_type_with_ns <- updateInput_namespace(input_type)
+
+            update_params <- c(session = parent,
+                               inputId = id,
+                               params_reactive)
+            do.call(getfun(input_type_with_ns), update_params)
+
+          }
+        })
+      })
+    })
+
+
+
+
     # Add parmesan_updated input
     insertUI(paste0("#",id), immediate = TRUE, ui = uiOutput("parmesan_update_output"))
     output$parmesan_update_output <- renderUI({
@@ -96,7 +131,7 @@ output_parmesan <- function(id,
 
   })
 
-  })
+  # })
 
 }
 
