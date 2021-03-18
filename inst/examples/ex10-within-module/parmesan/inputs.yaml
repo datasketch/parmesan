@@ -4,6 +4,7 @@ plot_type:
   input_params:
     label: Plot Type
     choices: plot_type_choices()
+    selected: plot_type_selected()
 bins:
   show: true
   show_if: 
@@ -14,7 +15,7 @@ bins:
     label: Bins
     min: 0
     max: 50
-    value: 10
+    value: bins_default_value()
     step: 1
   update_param: value
 dataset:
