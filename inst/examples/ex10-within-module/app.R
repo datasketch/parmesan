@@ -51,7 +51,8 @@ parmServer <- function(id, r) {
         parmesan_alert(parmesan, env = environment())
 
         output_parmesan("all_controls_here", r = r, parmesan = parmesan,
-                        container_section = div_dark, parent = session)
+                        input = input, output = output, session = session,
+                        container_section = div_dark)
 
 
       output$debug <- renderPrint({
