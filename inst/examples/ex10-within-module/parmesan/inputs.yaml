@@ -3,9 +3,7 @@ plot_type:
   input_type: radioButtons
   input_params:
     label: Plot Type
-    choices:
-      - Plot
-      - Histogram
+    choices: plot_type_choices()
 bins:
   show: true
   show_if: 
@@ -24,12 +22,7 @@ dataset:
   input_type: selectInput
   input_params:
     label: Dataset
-    choices:
-      - rock
-      - pressure
-      - cars
-    selected: rock
-  update_param: selected
+    choices: dataset_choices()
 column:
   show: true
   input_type: numericInput

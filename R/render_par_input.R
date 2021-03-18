@@ -25,7 +25,7 @@ validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FA
     value2ini <- value1ini <- NULL
     if(is_shiny_input(x = value1, input = input, r = r)){
       value1ini <- value1
-      value1 <- evaluate_input(x = value1, r = r)
+      value1 <- evaluate_input(x = value1, input = input, r = r)
     }
     if(is_reactive_string(value1)){
       value1ini <- value1
@@ -33,7 +33,7 @@ validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FA
     }
     if(is_shiny_input(x = value2, input = input, r = r)){
       value2ini <- value2
-      value2 <- evaluate_input(x = value2, r = r)
+      value2 <- evaluate_input(x = value2, input = input, r = r)
     }
     if(is_reactive_string(value1)){
       value2ini <- value2
