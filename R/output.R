@@ -145,12 +145,7 @@ output_parmesan <- function(id,
         if(input_has_reactive_tooltip_text(par_input)){
 
           text <-  par_input$input_info$text
-          if(is.null(r)){
-            text <- do.call(remove_parenthesis(text), list(), envir = env)
-          } else {
-            text <- do.call(r[[remove_parenthesis(text)]], list())
-          }
-          par_input$input_info$text <- text
+          par_input$input_info$text <- evaluate_reactive(x = text, env = env, r = r)
 
           last_input <- section$inputs[[x-1]]
           last_input_id <- paste0("output_", last_input$id)
