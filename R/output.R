@@ -86,7 +86,8 @@ output_parmesan <- function(id,
         if(!input_has_show_if(par_input)){
           insertUI(paste0("#",section$id),
                    immediate = TRUE,
-                   ui = div(render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = parent, r = r)))
+                   ui = div(id = paste0("output_",par_input$id),
+                            render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = parent, r = r)))
         }
 
       })
@@ -133,11 +134,12 @@ output_parmesan <- function(id,
             conditions_passed <- validate_show_if(par_input = par_input, input = input, env = env, parent = parent, r = r, debug = debug)
 
             last_input <- section$inputs[[x-1]]
-            last_input_id <- last_input$id
-            last_input_id_with_ns <- paste0("#",ns(last_input_id))
+            last_input_id <- paste0("output_", last_input$id)
+            last_input_id_div <- paste0("#",last_input_id)
 
             if(conditions_passed){
-              insertUI(last_input_id_with_ns,
+              insertUI(last_input_id_div,
+                       where = "afterEnd",
                        immediate = TRUE,
                        ui = div(id = paste0("output_",par_input$id),
                                 render_par_html(par_input = par_input, parent = parent)))
