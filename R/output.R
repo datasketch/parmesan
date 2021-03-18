@@ -2,21 +2,22 @@
 #' @export
 output_parmesan <- function(id,
                             r = NULL,
-                            parmesan = NULL,
-                            container_section = NULL,
                             parent = NULL,
+                            parmesan = NULL,
+                            input = input,
+                            output = output,
+                            session = session,
+                            container_section = NULL,
                             env = parent.frame(),
-                            panic = FALSE,
-                            debug = FALSE){
+                            panic = FALSE, debug = FALSE){
 
-  moduleServer(id, function(input, output, session){
-    ns <- parent$ns
+  ns <- parent$ns
 
   if(is.null(parmesan)){
     parmesan <- parmesan_load()
   }
 
-  # observe({
+  observe({
     if(shiny::is.reactive(parmesan))
       parmesan <- parmesan()
 
@@ -48,36 +49,7 @@ output_parmesan <- function(id,
                                    env = env))
     })
 
-
-    # Do we first need to insert individual inputs
-    # with no dependencies in each section? Not for now.
-
-    # # First insert all inputs with no dependencies
-    # lapply(parmesan, function(section){
-    #   lapply(section$inputs, function(par_input){
-    #     if(!input_has_dependencies(par_input)){
-    #       insertUI(paste0("#section-",section$id),
-    #                ui = render_par_input(par_input, input = input, env = env)
-    #       )
-    #     }
-    #   })
-    # })
-
-
-    # Second insert all inputs with dependencies
-    # Create outputs for all inputs
-    # (only those with dependencies?, not for now)
-
-    # lapply(parmesan, function(section){
-    #   lapply(section$inputs, function(par_input){
-    #     # if(input_has_dependencies(par_input)){
-    #     output[[paste0("output_",par_input$id)]] <- renderUI({
-    #       # render_par_input(par_input = par_input, input = input, env = env, debug = debug)
-    #       selectInput(par_input$id, label = "blahblah", choices = c("rock", "pressure"))
-    #     })
-    #     # }
-    #   })
-    # })
+    # Second insert all inputs
 
     # Create UIs for all inputs without conditionals
     lapply(parmesan, function(section){
@@ -93,7 +65,12 @@ output_parmesan <- function(id,
       })
     })
 
+  })
+
     observe({
+      if(shiny::is.reactive(parmesan))
+        parmesan <- parmesan()
+
       lapply(parmesan, function(section){
         lapply(section$inputs, function(par_input){
           # Update inputs that have reactive values
@@ -125,6 +102,9 @@ output_parmesan <- function(id,
     })
 
     observe({
+      if(shiny::is.reactive(parmesan))
+        parmesan <- parmesan()
+
       lapply(parmesan, function(section){
         lapply(seq_along(section$inputs), function(x){
           par_input <- section$inputs[[x]]
@@ -138,6 +118,7 @@ output_parmesan <- function(id,
             last_input_id_div <- paste0("#",last_input_id)
 
             if(conditions_passed){
+              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
               insertUI(last_input_id_div,
                        where = "afterEnd",
                        immediate = TRUE,
@@ -159,9 +140,8 @@ output_parmesan <- function(id,
       shiny::tags$script("Shiny.onInputChange('parmesan_updated',+new Date);")
     })
 
-  })
-
   # })
+
 
 }
 
