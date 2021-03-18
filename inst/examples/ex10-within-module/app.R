@@ -14,8 +14,18 @@ parmServer <- function(id, r) {
     id,
     function(input, output, session) {
 
+      dataset_choices <- reactive({
+        c("rock", "pressure", "cars")
+      })
+
+
+      plot_type_choices <- reactive({
+        c("Plot", "Histogram")
+      })
+
       datasetInput <- reactive({
         req(input$dataset)
+        if(any(grepl("\\(\\)", input$dataset))) return()
         get(input$dataset)
       })
 
@@ -43,6 +53,14 @@ parmServer <- function(id, r) {
       })
 
       observe({
+        r$plot_type_choices <- plot_type_choices
+      })
+
+      observe({
+        r$dataset_choices <- dataset_choices
+      })
+
+      observe({
         r$maxCustomChoices <- maxCustomChoices
       })
 
@@ -66,9 +84,9 @@ parmServer <- function(id, r) {
         r$dataset <- input$dataset
       })
 
-      # observe({
-      #   r$column <- input$column
-      # })
+      observe({
+        r$column <- input$column
+      })
 
       observe({
         r$plot_type <- input$plot_type
