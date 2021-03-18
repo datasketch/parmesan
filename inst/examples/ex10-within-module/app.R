@@ -28,31 +28,75 @@ parmServer <- function(id, r) {
         paste0("Colums (max = ", datasetNCols(),")")
       })
 
+      colourCustomChoices <- reactive({
+        paletero::paletero_cat(LETTERS[1:8], palette = "Set1")
+      })
+
+      maxCustomChoices <- reactive({
+        if(is.null(input$plot_type)){
+          2
+        } else if(input$plot_type == "Histogram"){
+          1
+        } else {
+          4
+        }
+      })
+
+      observe({
+        r$maxCustomChoices <- maxCustomChoices
+      })
+
+      observe({
+        r$colourCustomChoices <- colourCustomChoices
+      })
+
       observe({
         r$datasetNColsLabel <- datasetNColsLabel
+      })
+
+      observe({
         r$datasetNCols <- datasetNCols
+      })
+
+      observe({
         r$datasetInput <- datasetInput()
+      })
+
+      observe({
         r$dataset <- input$dataset
-        r$column <- input$column
+      })
+
+      # observe({
+      #   r$column <- input$column
+      # })
+
+      observe({
         r$plot_type <- input$plot_type
+      })
+
+      observe({
         r$bins <- input$bins
+      })
+
+      observe({
+        r$colour_custom <- input$colour_custom
       })
 
 
       path <- system.file("examples", "ex10-within-module", "parmesan",
                           package = "parmesan")
 
-        parmesan <- parmesan_load(path)
+      parmesan <- parmesan_load(path)
 
-        # Put all parmesan inputs in reactive values
+      # Put all parmesan inputs in reactive values
 
-        parmesan_input <- parmesan_watch(input, parmesan)
+      parmesan_input <- parmesan_watch(input, parmesan)
 
-        parmesan_alert(parmesan, env = environment())
+      parmesan_alert(parmesan, env = environment())
 
-        output_parmesan("all_controls_here", r = r, parmesan = parmesan,
-                        input = input, output = output, session = session,
-                        container_section = div_dark)
+      output_parmesan("all_controls_here", r = r, parmesan = parmesan,
+                      input = input, output = output, session = session,
+                      container_section = div_dark)
 
 
       output$debug <- renderPrint({
@@ -88,8 +132,9 @@ server <-  function(input, output, session) {
   parmServer("parm_module", r = r)
 
   output$distPlot <- renderPlot({
-    req(r$dataset, r$column, r$datasetInput)
-    # req(r$dataset, r$datasetInput)
+    req(r$dataset, r$column, r$datasetInput, r$colour_custom)
+    if(any(grepl("\\(\\)", r$colour_custom))) return()
+
     dataset  <- r$dataset
     column <- r$column
     x <- r$datasetInput[, column]
@@ -97,12 +142,12 @@ server <-  function(input, output, session) {
 
 
     if(r$plot_type == "Plot"){
-      plot <- plot(x)
+      plot <- plot(x, col = r$colour_custom)
     }
     if(r$plot_type == "Histogram"){
       req(r$bins)
       bins <- seq(min(x), max(x), length.out = r$bins + 1)
-      plot <- hist(x, breaks = bins, col = "#75AADB", border = "white",
+      plot <- hist(x, breaks = bins, col = r$colour_custom, border = "white",
                    xlab = paste0("Values of ", column_name),
                    main =  paste0("This is ", dataset, ", column ", column))
       # plot <- hist(x)

@@ -3,6 +3,7 @@ controls:
   inputs:
     - dataset
     - plot_type
+    - colour_custom
     - bins
 controls_dark:
   label: Controls Dark
