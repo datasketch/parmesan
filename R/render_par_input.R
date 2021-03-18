@@ -9,7 +9,7 @@ render_par_input <- function(par_input,
 }
 
 
-validate_show_if <- function(par_input, input, env, parent, r, debug = FALSE){
+validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FALSE){
   if(is.null(par_input)) return()
 
   ns <- parent$ns
@@ -25,30 +25,15 @@ validate_show_if <- function(par_input, input, env, parent, r, debug = FALSE){
     value2ini <- value1ini <- NULL
     if(is_shiny_input(x = value1, input = input, r = r)){
       value1ini <- value1
-
-      if(is.null(r)){
-        value1 <- input[[value1]]
-      } else {
-        value1 <- r[[value1]]
-      }
-
+      value1 <- evaluate_input(x = value1, r = r)
     }
     if(is_reactive_string(value1)){
       value1ini <- value1
-      if(is.null(r)){
-        value1 <- do.call(remove_parenthesis(value1), list(), envir = env)
-      } else {
-        value1 <- do.call(r[[remove_parenthesis(inp)]], list())
-      }
+      value1 <- evaluate_reactive(x = value1, env = env, r = r)
     }
     if(is_shiny_input(x = value2, input = input, r = r)){
       value2ini <- value2
-
-      if(is.null(r)){
-        value2 <- input[[value2]]
-      } else {
-        value2 <- r[[value2]]
-      }
+      value2 <- evaluate_input(x = value2, r = r)
     }
     if(is_reactive_string(value1)){
       value2ini <- value2
