@@ -27,18 +27,29 @@ is_reactive_string <- function(x){
 
 evaluate_reactive <- function(x, env, r = NULL){
   if(is.null(r)){
-    do.call(remove_parenthesis(x), list(), envir = env)
+    value <- do.call(remove_parenthesis(x), list(), envir = env)
   } else {
-    do.call(r[[remove_parenthesis(x)]], list())
+    value <- tryCatch({
+      do.call(r[[remove_parenthesis(x)]], list())},
+      error=function(cond) {
+        if(is.null(r[[x]]) & nchar(cond) > 0){
+          message(paste0("Can't find ", x, " in reactiveValues within r."))
+          message("Error message:")
+          message(cond)
+        }
+        return(NULL)
+      })
   }
+  value
 }
 
 evaluate_input <- function(x, r = NULL){
   if(is.null(r)){
-    input[[x]]
+    value <- input[[x]]
   } else {
-    r[[x]]
+    value <- r[[x]]
   }
+  value
 }
 
 is_shiny_input <- function(x, input, r = NULL){
