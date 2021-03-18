@@ -48,17 +48,7 @@ server <-  function(input, output, session) {
     i_(parmesan, lang(), keys = c("label", "choices"))
   })
 
-  output_parmesan("all_controls_here", parmesan = parmesan_lang,
-                  input = input, output = output, session = session,
-                  env = environment())
-  # output_parmesan("all_controls_here", parmesan = parmesan,
-
-  output$debug <- renderPrint({
-    paste0(
-      "Parmesan updated: ", input$parmesan_updated
-      # str(parmesan_input())
-      )
-  })
+  r <- reactiveValues()
 
   datasetInput <- reactive({
     req(input$dataset)
@@ -72,6 +62,20 @@ server <-  function(input, output, session) {
 
   datasetNColsLabel <- reactive({
     paste0("Colums (max = ", datasetNCols(),")")
+  })
+
+  output_parmesan("all_controls_here", parmesan = parmesan_lang,
+                  input = input, output = output, session = session,
+                  env = environment())
+  # output_parmesan("all_controls_here", parmesan = parmesan,
+
+
+  output$debug <- renderPrint({
+    # paste0(
+    #   "Parmesan updated: ", input$parmesan_updated
+    #   # str(parmesan_input())
+    #   )
+    str(parmesan_input())
   })
 
 

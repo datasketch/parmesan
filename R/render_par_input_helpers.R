@@ -25,14 +25,18 @@ is_reactive_string <- function(x){
   any(grepl("\\(\\)", x))
 }
 
-is_shiny_input <- function(x, input){
+is_shiny_input <- function(x, input, r = NULL){
   if(shiny::is.reactive(x)) return(FALSE)
   if(!is.character(x)) return(FALSE)
   # For multiple values in conditional inputs
   # Doesn't work yet when conditionals are vectors or reactives
   if(length(x) > 1) return(FALSE)
 
-  !is.null(input[[x]])
+  validate <- !is.null(input[[x]])
+  if(!is.null(r)){
+    validate <- !is.null(r[[x]])
+  }
+ validate
 }
 
 

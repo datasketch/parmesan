@@ -1,0 +1,116 @@
+library(shiny)
+library(parmesan)
+
+parmUI <- function(id) {
+  ns <- NS(id)
+  tagList(
+    uiOutput(ns("all_controls_here")),
+    verbatimTextOutput(ns("debug"))
+  )
+}
+
+parmServer <- function(id, r) {
+  moduleServer(
+    id,
+    function(input, output, session) {
+
+      datasetInput <- reactive({
+        req(input$dataset)
+        get(input$dataset)
+      })
+
+      datasetNCols <- reactive({
+        req(datasetInput())
+        ncol(datasetInput())
+      })
+
+      datasetNColsLabel <- reactive({
+        paste0("Colums (max = ", datasetNCols(),")")
+      })
+
+      observe({
+        r$datasetNColsLabel <- datasetNColsLabel
+        r$datasetNCols <- datasetNCols
+        r$datasetInput <- datasetInput()
+        r$dataset <- input$dataset
+        r$column <- input$column
+        r$plot_type <- input$plot_type
+        r$bins <- input$bins
+      })
+
+
+      path <- system.file("examples", "ex10-within-module", "parmesan",
+                          package = "parmesan")
+
+        parmesan <- parmesan_load(path)
+
+        # Put all parmesan inputs in reactive values
+
+        parmesan_input <- parmesan_watch(input, parmesan)
+
+        parmesan_alert(parmesan, env = environment())
+
+        output_parmesan("all_controls_here", r = r, parmesan = parmesan,
+                        input = input, output = output, session = session,
+                        container_section = div_dark)
+
+
+      output$debug <- renderPrint({
+        str(parmesan_input())
+      })
+
+
+
+
+    }
+  )
+}
+
+ui <- fluidPage(
+  titlePanel("Example 10 - Hello Parmesan!"),
+  h3("Use parmesan inputs from within a shiny module."),
+  column(4,
+         parmUI("parm_module")
+  ),
+  column(8,
+         plotOutput("distPlot")
+  )
+)
+
+div_dark <- function(...){
+  div(style="background-color:#f4f4f7;border: 1px solid #CCC;border-radius:10px;padding:10px;margin-bottom:10px;", ...)
+}
+
+server <-  function(input, output, session) {
+
+  r <- reactiveValues()
+
+  parmServer("parm_module", r = r)
+
+  output$distPlot <- renderPlot({
+    req(r$dataset, r$column, r$datasetInput)
+    # req(r$dataset, r$datasetInput)
+    dataset  <- r$dataset
+    column <- r$column
+    x <- r$datasetInput[, column]
+    column_name <- names(r$datasetInput)[column]
+
+
+    if(r$plot_type == "Plot"){
+      plot <- plot(x)
+    }
+    if(r$plot_type == "Histogram"){
+      req(r$bins)
+      bins <- seq(min(x), max(x), length.out = r$bins + 1)
+      plot <- hist(x, breaks = bins, col = "#75AADB", border = "white",
+                   xlab = paste0("Values of ", column_name),
+                   main =  paste0("This is ", dataset, ", column ", column))
+      # plot <- hist(x)
+    }
+    plot
+  })
+
+}
+
+
+shinyApp(ui, server)

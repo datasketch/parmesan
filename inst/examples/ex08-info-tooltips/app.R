@@ -12,9 +12,13 @@ server <-  function(input, output, session) {
   path <- system.file("examples", "ex08-info-tooltips", "parmesan", package = "parmesan")
   parmesan <- parmesan_load(path)
 
-  output$controls_container <- renderUI({
-    render_section(parmesan = parmesan)
-  })
+  # output$controls_container <- renderUI({
+  #   render_section(parmesan = parmesan)
+  # })
+
+  output_parmesan("controls_container", parmesan = parmesan,
+                  input = input, output = output, session = session,
+                  env = environment())
 
   custom_bins_text <- reactive({
     input$new_tooltip
