@@ -16,7 +16,7 @@ output_parmesan <- function(id,
     parmesan <- parmesan_load()
   }
 
-  # Insert sections and inputs
+  # Initialise sections and inputs (insert all without reactives or conditions)
   observe({
     if(shiny::is.reactive(parmesan))
       parmesan <- parmesan()
