@@ -49,7 +49,7 @@ output_parmesan <- function(id,
     lapply(parmesan, function(section){
       lapply(section$inputs, function(par_input){
 
-        if(!input_has_show_if(par_input)){
+        if(!(input_has_show_if(par_input) | input_has_reactive_tooltip_text(par_input))){
           insertUI(paste0("#",section$id),
                    immediate = TRUE,
                    ui = div(id = paste0("output_",par_input$id),
@@ -137,38 +137,39 @@ output_parmesan <- function(id,
     })
   })
 
-  # Update reactive infotooltip
-  # observe({
-  #   if(shiny::is.reactive(parmesan))
-  #     parmesan <- parmesan()
-  #
-  #   lapply(parmesan, function(section){
-  #     lapply(section$inputs, function(par_input){
-  #
-  #       if(input_has_reactive_tooltip_text(par_input)){
-  #
-  #         text <-  par_input$input_info$text
-  #         if(is.null(r)){
-  #           text <- do.call(remove_parenthesis(text), list(), envir = env)
-  #         } else {
-  #           text <- do.call(r[[remove_parenthesis(text)]], list())
-  #         }
-  #         par_input$input_info$text <- text
-  #         par_input$input_params$label <- parmesan:::infoTooltip(par_input)
-  #
-  #         # Update parameters
-  #         id <- par_input$id
-  #         input_type <- par_input$input_type
-  #         updateInput_type_with_ns <- updateInput_namespace(input_type)
-  #
-  #         update_params <- c(session = session,
-  #                            inputId = id,
-  #                            label = par_input$input_params$label)
-  #         do.call(getfun(updateInput_type_with_ns), update_params)
-  #       }
-  #     })
-  #   })
-  # })
+  # Insert inputs with reactive infotooltip
+  observe({
+    if(shiny::is.reactive(parmesan))
+      parmesan <- parmesan()
+
+    lapply(parmesan, function(section){
+      lapply(seq_along(section$inputs), function(x){
+        par_input <- section$inputs[[x]]
+
+        if(input_has_reactive_tooltip_text(par_input)){
+
+          text <-  par_input$input_info$text
+          if(is.null(r)){
+            text <- do.call(remove_parenthesis(text), list(), envir = env)
+          } else {
+            text <- do.call(r[[remove_parenthesis(text)]], list())
+          }
+          par_input$input_info$text <- text
+
+          last_input <- section$inputs[[x-1]]
+          last_input_id <- paste0("output_", last_input$id)
+          last_input_id_div <- paste0("#",last_input_id)
+
+          removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
+          insertUI(last_input_id_div,
+                   where = "afterEnd",
+                   immediate = TRUE,
+                   ui = div(id = paste0("output_",par_input$id),
+                            render_par_html(par_input = par_input, parent = session)))
+        }
+      })
+    })
+  })
 
 
   # Add parmesan_updated input
