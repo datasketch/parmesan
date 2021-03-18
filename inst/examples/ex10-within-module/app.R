@@ -31,9 +31,6 @@ parmServer <- function(id, r) {
       observe({
         r$datasetNColsLabel <- datasetNColsLabel
         r$datasetNCols <- datasetNCols
-      })
-
-      observe({
         r$datasetInput <- datasetInput()
         r$dataset <- input$dataset
         r$column <- input$column
@@ -42,7 +39,7 @@ parmServer <- function(id, r) {
       })
 
 
-      path <- system.file("examples", "ex05-reactive-output", "parmesan",
+      path <- system.file("examples", "ex10-within-module", "parmesan",
                           package = "parmesan")
 
         parmesan <- parmesan_load(path)
@@ -91,12 +88,12 @@ server <-  function(input, output, session) {
 
   output$distPlot <- renderPlot({
     req(r$dataset, r$column, r$datasetInput)
+    # req(r$dataset, r$datasetInput)
     dataset  <- r$dataset
     column <- r$column
     x <- r$datasetInput[, column]
     column_name <- names(r$datasetInput)[column]
 
-    # browser()
 
     if(r$plot_type == "Plot"){
       plot <- plot(x)
@@ -107,6 +104,7 @@ server <-  function(input, output, session) {
       plot <- hist(x, breaks = bins, col = "#75AADB", border = "white",
                    xlab = paste0("Values of ", column_name),
                    main =  paste0("This is ", dataset, ", column ", column))
+      # plot <- hist(x)
     }
     plot
   })
