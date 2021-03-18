@@ -23,6 +23,15 @@ parmServer <- function(id, r) {
         c("Plot", "Histogram")
       })
 
+      plot_type_selected <- reactive({
+        req(plot_type_choices())
+        plot_type_choices()[2]
+      })
+
+      bins_default_value <- reactive({
+        5
+      })
+
       datasetInput <- reactive({
         req(input$dataset)
         if(any(grepl("\\(\\)", input$dataset))) return()
@@ -54,6 +63,14 @@ parmServer <- function(id, r) {
 
       observe({
         r$plot_type_choices <- plot_type_choices
+      })
+
+      observe({
+        r$plot_type_selected <- plot_type_selected
+      })
+
+      observe({
+        r$bins_default_value <- bins_default_value
       })
 
       observe({
