@@ -63,6 +63,56 @@ output_parmesan <- function(id,
     })
   })
 
+  # Insert/remove conditional inputs
+  observe({
+
+    if(shiny::is.reactive(parmesan))
+      parmesan <- parmesan()
+
+    lapply(parmesan, function(section){
+      lapply(seq_along(section$inputs), function(x){
+        par_input <- section$inputs[[x]]
+
+        if(input_has_show_if(par_input)){
+
+          observe({
+
+            conditions_passed <- validate_show_if(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
+
+            last_input <- section$inputs[[x-1]]
+            last_input_id <- paste0("output_", last_input$id)
+            last_input_id_div <- paste0("#",last_input_id)
+
+            if(conditions_passed){
+
+              if(input_has_reactive_param_values(par_input)){
+
+                  params <-  par_input$input_params
+                  pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
+                  params_reactive <- lapply(pars, function(par){
+                    reactive_input <- par_input$input_params[[par]]
+                    evaluate_reactive(x = reactive_input, env = env, r = r)
+                  })
+                  names(params_reactive) <- pars
+                  params <- modifyList(params, params_reactive, keep.null = TRUE)
+                  par_input$input_params <- params
+              }
+
+              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
+              insertUI(last_input_id_div,
+                       where = "afterEnd",
+                       immediate = TRUE,
+                       ui = div(id = paste0("output_",par_input$id),
+                                render_par_input(par_input = par_input, parent = session)))
+            } else {
+              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
+            }
+
+          })
+        }
+      })
+    })
+  })
 
   # Update inputs that have reactive values
   observe({
@@ -93,44 +143,6 @@ output_parmesan <- function(id,
                                inputId = id,
                                params_reactive)
             do.call(getfun(updateInput_type_with_ns), update_params)
-          })
-        }
-      })
-    })
-  })
-
-
-  # Insert/remove conditional inputs
-  observe({
-
-    if(shiny::is.reactive(parmesan))
-      parmesan <- parmesan()
-
-    lapply(parmesan, function(section){
-      lapply(seq_along(section$inputs), function(x){
-        par_input <- section$inputs[[x]]
-
-        if(input_has_show_if(par_input)){
-
-          observe({
-
-            conditions_passed <- validate_show_if(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
-
-            last_input <- section$inputs[[x-1]]
-            last_input_id <- paste0("output_", last_input$id)
-            last_input_id_div <- paste0("#",last_input_id)
-
-            if(conditions_passed){
-              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
-              insertUI(last_input_id_div,
-                       where = "afterEnd",
-                       immediate = TRUE,
-                       ui = div(id = paste0("output_",par_input$id),
-                                render_par_input(par_input = par_input, parent = session)))
-            } else {
-              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
-            }
-
           })
         }
       })
