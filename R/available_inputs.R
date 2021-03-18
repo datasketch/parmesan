@@ -18,9 +18,21 @@ lookup_input_namespace <- function(){
   inputs_lookup
 }
 
+lookup_updateInput_namespace <- function(){
+  inputs <- load_available_inputs()
+  inputs_packages <- data.frame(names = names(unlist(load_available_inputs(), recursive = FALSE))) %>%
+    tidyr::separate(names, c("package", "input")) %>%
+    dplyr::mutate(ns = paste0(package, "::update", firstup(input)))
+  inputs_lookup <- inputs_packages %>% dplyr::pull(ns)
+  names(inputs_lookup) <- inputs_packages %>% dplyr::pull(input)
+  inputs_lookup
+}
+
 input_namespace <- function(input){
   as.character(lookup_input_namespace()[input])
 }
 
-
+updateInput_namespace <- function(input){
+  as.character(lookup_updateInput_namespace()[input])
+}
 
