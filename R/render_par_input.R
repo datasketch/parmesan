@@ -15,20 +15,8 @@ render_par_input <- function(par_input, input,
   #   par_input <- replace_reactive_tooltip_text(par_input, env = env)
   # }
 
-  # Has no conditionals
-  if (!input_has_show_if(par_input)) {
     html <- render_par_html(par_input, parent)
     return(html)
-  }
-  # Show if dependency
-  if(input_has_show_if(par_input)){
-    if(is.null(input)) stop("Need to pass input to render_section")
-    if(validate_show_if(par_input = par_input, input = input, env = env, parent = parent, r = r, debug = debug)){
-      html <- render_par_html(par_input, parent)
-      #html <- render_par_html(par_input, env = env, debug = debug)
-      return(html)
-    }
-  }
 
 }
 
@@ -104,7 +92,6 @@ validate_show_if <- function(par_input, input, env, parent, r, debug = FALSE){
   if(condition_type == "show_if_any")
     return(any(pass_conditions))
 }
-
 
 
 render_par_html <- function(par_input, parent = NULL) {
