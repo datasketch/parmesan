@@ -39,3 +39,10 @@ column:
     max: datasetNCols()
     value: 1
   update_param: value
+colour_custom:
+  show: true
+  input_type: colorPaletteInput
+  input_params:
+    label: Colors
+    colors: colourCustomChoices()
+    max_colors: maxCustomChoices()
