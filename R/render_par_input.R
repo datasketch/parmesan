@@ -1,32 +1,12 @@
-render_par_input <- function(par_input, input,
-                             env = parent.frame(),
-                             debug = FALSE,
+render_par_input <- function(par_input,
                              parent = NULL,
-                             r = NULL){
+                             debug = FALSE){
 
   if(!par_input$show) return()
 
-  # # Replace any reactives tooltip
-  # if(input_has_reactive_tooltip_text(par_input)){
-  #   message("\n\nHAS REACTIVE TOOLTIP")
-  #   str(par_input)
-  #   #par_input <- replace_reactive_param_values(par_input, env = env)
-  #   str(replace_reactive_tooltip_text(par_input, env = env))
-  #   par_input <- replace_reactive_tooltip_text(par_input, env = env)
-  # }
-
-    html <- render_par_html(par_input, parent)
-    return(html)
-
+  html <- render_par_html(par_input = par_input, parent = parent)
+  return(html)
 }
-
-replace_reactive_tooltip_text <- function(par_input, env = parent.frame()){
-  text <-  par_input$input_info$text
-  text <- do.call(remove_parenthesis(text), list(), envir = env)
-  par_input$input_info$text <- text
-  par_input
-}
-
 
 
 validate_show_if <- function(par_input, input, env, parent, r, debug = FALSE){
