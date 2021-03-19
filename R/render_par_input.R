@@ -15,9 +15,6 @@ render_par_input <- function(par_input,
   # Replace any reactives tooltip
   if(input_has_reactive_tooltip_text(par_input)){
     message("\n\nHAS REACTIVE TOOLTIP")
-    str(par_input)
-    #par_input <- replace_reactive_param_values(par_input, env = env)
-    # str(replace_reactive_tooltip_text(par_input, r = r, env = env))
     par_input <- replace_reactive_tooltip_text(par_input, r = r, env = env)
   }
 
@@ -31,7 +28,6 @@ render_par_input <- function(par_input,
     if(is.null(input)) stop("Need to pass input to render_section")
     if(validate_show_if(par_input = par_input, input = input, env = env, parent = parent, r = r, debug = debug)){
       html <- render_par_html(par_input, parent)
-      #html <- render_par_html(par_input, env = env, debug = debug)
       return(html)
     }
   }
@@ -60,13 +56,7 @@ replace_reactive_param_values <- function(par_input, env = parent.frame(), paren
 
 replace_reactive_tooltip_text <- function(par_input, r = NULL, env = parent.frame()){
   text <-  par_input$input_info$text
-
-  if(is.null(r)){
-    text <- do.call(remove_parenthesis(text), list(), envir = env)
-  } else {
-    text <- do.call(r[[remove_parenthesis(text)]], list())
-  }
-
+  text <- evaluate_reactive(x = text, env = env, r = r)
   par_input$input_info$text <- text
   par_input
 }
@@ -92,12 +82,7 @@ validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FA
     }
     if(is_reactive_string(value1)){
       value1ini <- value1
-
-      if(is.null(r)){
-        value1 <- do.call(remove_parenthesis(value1), list(), envir = env)
-      } else {
-        value1 <- do.call(r[[remove_parenthesis(value1)]], list())
-      }
+      value1 <- evaluate_reactive(x = value1, env = env, r = r)
     }
     if(is_shiny_input(x = value2, input = input, r = r)){
       value2ini <- value2
@@ -129,25 +114,13 @@ validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FA
 
 render_par_html <- function(par_input, parent = NULL) {
 
-  par_input_id <- par_input$id
-  if(!is.null(parent)){
-    ns <- parent$ns
-    par_input_id <- ns(par_input$id)
-  }
-
+  ns <- parent$ns
+  par_input_id <- ns(par_input$id)
   input_type <- par_input$input_type
   input_type_with_ns <- input_namespace(input_type)
 
   # If selected not in choices, use first choices option as selected
-  choices <- par_input$input_params$choices
-  selected <- par_input$input_params$selected
-  if(!any(is.null(choices), is.null(selected))){
-    if(!selected %in% choices){
-      warning("Value ",selected, " not in choices for ",par_input$input_params$label,". Using first value of choices vector instead.")
-      selected <- choices[1]
-      par_input$input_params$selected <- selected
-    }
-  }
+  par_input$input_params$selected <- validate_selected_in_choices(input_params = par_input$input_params)
 
   par_input$input_params$inputId <- par_input_id
   if (!is.null(par_input$input_info)) {
