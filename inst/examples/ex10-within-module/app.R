@@ -26,6 +26,7 @@ parmServer <- function(id, r) {
       plot_type_selected <- reactive({
         req(plot_type_choices())
         plot_type_choices()[2]
+        "blahblah"
       })
 
       bins_default_value <- reactive({

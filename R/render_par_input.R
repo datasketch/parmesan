@@ -138,6 +138,17 @@ render_par_html <- function(par_input, parent = NULL) {
   input_type <- par_input$input_type
   input_type_with_ns <- input_namespace(input_type)
 
+  # If selected not in choices, use first choices option as selected
+  choices <- par_input$input_params$choices
+  selected <- par_input$input_params$selected
+  if(!any(is.null(choices), is.null(selected))){
+    if(!selected %in% choices){
+      warning("Value ",selected, " not in choices for ",par_input$input_params$label,". Using first value of choices vector instead.")
+      selected <- choices[1]
+      par_input$input_params$selected <- selected
+    }
+  }
+
   par_input$input_params$inputId <- par_input_id
   if (!is.null(par_input$input_info)) {
     par_input$input_params$label <- parmesan:::infoTooltip(par_input)
