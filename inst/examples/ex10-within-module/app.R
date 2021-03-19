@@ -133,7 +133,6 @@ parmServer <- function(id, r) {
                       input = input, output = output, session = session,
                       container_section = div_dark)
 
-
       output$debug <- renderPrint({
         str(parmesan_input())
       })

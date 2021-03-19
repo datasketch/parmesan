@@ -67,8 +67,6 @@ server <-  function(input, output, session) {
   output_parmesan("all_controls_here", parmesan = parmesan_lang,
                   input = input, output = output, session = session,
                   env = environment())
-  # output_parmesan("all_controls_here", parmesan = parmesan,
-
 
   output$debug <- renderPrint({
     # paste0(
