@@ -9,6 +9,18 @@ validate_input_type <- function(par_input){
          "Try using one of:\n", paste0(available_inputs(), collapse = ", "))
 }
 
+validate_selected_in_choices <- function(input_params){
+  selected <- input_params$selected
+  choices <- input_params$choices
+  if(!any(is.null(choices), is.null(selected))){
+    if(!selected %in% choices){
+      warning("Value ",selected, " not in choices for ",input_params$label,". Using first value of choices vector instead.")
+      selected <- choices[1]
+    }
+  }
+  selected
+}
+
 input_has_reactive_param_values <- function(par_input){
   any(grepl("\\(\\)", par_input$input_params))
 }
