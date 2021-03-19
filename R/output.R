@@ -59,7 +59,7 @@ output_parmesan <- function(id,
 
           if(section$inputs[[1]]$id == par_input$id){
             selector <- paste0("#",section$id)
-            where <- "afterBegin"
+            where <- "beforeEnd"
           } else {
             last_input <- section$inputs[[x-1]]
             last_input_id <- paste0("output_", last_input$id)
@@ -84,9 +84,6 @@ output_parmesan <- function(id,
   output$parmesan_update_output <- renderUI({
     shiny::tags$script("Shiny.onInputChange('parmesan_updated',+new Date);")
   })
-
-
-  # })
 
 
 }
