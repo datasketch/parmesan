@@ -4,8 +4,68 @@ render_par_input <- function(par_input,
 
   if(!par_input$show) return()
 
-  html <- render_par_html(par_input = par_input, parent = parent)
-  return(html)
+  # Replace any reactives in param values
+  if(input_has_reactive_param_values(par_input)){
+    par_input <- replace_reactive_param_values(par_input, env = env, parent = parent, r = r)
+  }
+
+  # Replace any reactives tooltip
+  if(input_has_reactive_tooltip_text(par_input)){
+    message("\n\nHAS REACTIVE TOOLTIP")
+    str(par_input)
+    #par_input <- replace_reactive_param_values(par_input, env = env)
+    # str(replace_reactive_tooltip_text(par_input, r = r, env = env))
+    par_input <- replace_reactive_tooltip_text(par_input, r = r, env = env)
+  }
+
+  # Has no conditionals
+  if (!input_has_show_if(par_input)) {
+    html <- render_par_html(par_input, parent)
+    return(html)
+  }
+  # Show if dependency
+  if(input_has_show_if(par_input)){
+    if(is.null(input)) stop("Need to pass input to render_section")
+    if(validate_show_if(par_input = par_input, input = input, env = env, parent = parent, r = r, debug = debug)){
+      html <- render_par_html(par_input, parent)
+      #html <- render_par_html(par_input, env = env, debug = debug)
+      return(html)
+    }
+  }
+
+}
+
+replace_reactive_param_values <- function(par_input, env = parent.frame(), parent = NULL, r = NULL){
+  params <-  par_input$input_params
+  pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
+
+  params_reactive <- lapply(pars, function(par){
+    inp <- par_input$input_params[[par]]
+
+    if(is.null(r)){
+      dep_value_params <- do.call(remove_parenthesis(inp), list(), envir = env)
+    } else {
+      dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
+    }
+    dep_value_params
+  })
+  names(params_reactive) <- pars
+  params <- modifyList(params, params_reactive, keep.null = TRUE)
+  par_input$input_params <- params
+  par_input
+}
+
+replace_reactive_tooltip_text <- function(par_input, r = NULL, env = parent.frame()){
+  text <-  par_input$input_info$text
+
+  if(is.null(r)){
+    text <- do.call(remove_parenthesis(text), list(), envir = env)
+  } else {
+    text <- do.call(r[[remove_parenthesis(text)]], list())
+  }
+
+  par_input$input_info$text <- text
+  par_input
 }
 
 
@@ -29,7 +89,12 @@ validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FA
     }
     if(is_reactive_string(value1)){
       value1ini <- value1
-      value1 <- evaluate_reactive(x = value1, env = env, r = r)
+
+      if(is.null(r)){
+        value1 <- do.call(remove_parenthesis(value1), list(), envir = env)
+      } else {
+        value1 <- do.call(r[[remove_parenthesis(value1)]], list())
+      }
     }
     if(is_shiny_input(x = value2, input = input, r = r)){
       value2ini <- value2
