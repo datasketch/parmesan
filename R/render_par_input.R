@@ -1,5 +1,8 @@
 render_par_input <- function(par_input,
+                             input = NULL,
+                             env = NULL,
                              parent = NULL,
+                             r = NULL,
                              debug = FALSE){
 
   if(!par_input$show) return()

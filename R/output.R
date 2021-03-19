@@ -72,7 +72,7 @@ output_parmesan <- function(id,
                    where = where,
                    immediate = TRUE,
                    ui = div(id = paste0("output_",par_input$id),
-                            render_par_input(par_input = par_input, input = input, env = env, debug = debug, parent = session, r = r)))
+                            render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)))
         })
       })
     })
