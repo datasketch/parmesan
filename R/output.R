@@ -50,29 +50,41 @@ output_parmesan <- function(id,
                                    env = env))
     })
 
+    # lapply(parmesan, function(section){
+    #   lapply(section$inputs, function(par_input){
+    #     # if(input_has_dependencies(par_input)){
+    #     output[[paste0("output_",par_input$id)]] <- renderUI({
+    #       render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
+    #     })
+    #     # }
+    #   })
+    # })
+
     # Create UIs for all inputs without conditionals
     lapply(parmesan, function(section){
       lapply(seq_along(section$inputs), function(x){
         par_input <- section$inputs[[x]]
 
         observe({
-
-          if(section$inputs[[1]]$id == par_input$id){
+          first_section_input <- section$inputs[[1]]$id == par_input$id
+          if(TRUE){
             selector <- paste0("#",section$id)
-            where <- "beforeEnd"
+            location <- "beforeEnd"
           } else {
-            last_input <- section$inputs[[x-1]]
-            last_input_id <- paste0("output_", last_input$id)
-            selector <- paste0("#",last_input_id)
-            where <- "afterEnd"
+            last_input_id <- section$inputs[[x-1]]$id
+            last_input_output_id <- paste0("output_", last_input_id)
+            selector <- paste0("#",last_input_output_id)
+            location <- "afterEnd"
           }
 
           removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
           insertUI(selector = selector,
-                   where = where,
+                   where = location,
                    immediate = TRUE,
                    ui = div(id = paste0("output_",par_input$id),
-                            render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)))
+                            render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug))
+                   # ui = uiOutput(paste0("output_",par_input$id))
+                   )
         })
       })
     })
