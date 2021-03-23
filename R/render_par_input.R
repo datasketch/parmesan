@@ -118,7 +118,7 @@ render_par_html <- function(par_input, parent = NULL) {
   input_type_with_ns <- input_namespace(input_type)
 
   # If selected not in choices, use first choices option as selected
-  par_input$input_params$selected <- validate_selected_in_choices(input_params = par_input$input_params)
+  par_input$input_params$selected <- validate_selected_in_choices(par_input = par_input)
 
   par_input$input_params$inputId <- par_input_id
   if (!is.null(par_input$input_info)) {
