@@ -1,6 +1,6 @@
 Package: parmesan
 Title: Parametrized Shiny Apps... Neat!
-Version: 0.5.1
+Version: 0.6.1
 Authors@R: 
     person(given = "Juan Pablo",
            family = "Marin Diaz",
