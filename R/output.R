@@ -1,18 +1,15 @@
 #' @export
-output_parmesan <- function(id,
-                            parmesan,
-                            input,
-                            output,
-                            session,
-                            container_section = NULL,
+output_parmesan <- function(id, parmesan = NULL,
                             r = NULL,
+                            input = input,
+                            output = output,
+                            session = session,
+                            container_section = NULL,
                             env = parent.frame(),
                             panic = FALSE, debug = FALSE){
 
-  if(is.null(parmesan)) stop("Need 'parmesan' parameter to create shiny inputs.")
   if(is.null(input)) stop("Need 'input' parameter to create shiny inputs.")
   if(is.null(output)) stop("Need 'output' parameter to create shiny inputs.")
-  if(is.null(session)) stop("Need 'session' parameter to create shiny inputs.")
 
   ns <- session$ns
 
@@ -49,137 +46,23 @@ output_parmesan <- function(id,
                                    env = env))
     })
 
+    lapply(parmesan, function(section){
+      lapply(section$inputs, function(par_input){
+        # if(input_has_dependencies(par_input)){
+        output[[paste0("output_",par_input$id)]] <- renderUI({
+          render_par_input(par_input, input = input, env = env, debug = debug, parent = session, r = r)
+        })
+        # }
+      })
+    })
+
     # Create UIs for all inputs without conditionals
     lapply(parmesan, function(section){
       lapply(section$inputs, function(par_input){
-
-        if(!(input_has_show_if(par_input) | input_has_reactive_tooltip_text(par_input))){
-          insertUI(paste0("#",section$id),
-                   immediate = TRUE,
-                   ui = div(id = paste0("output_",par_input$id),
-                            render_par_input(par_input = par_input, parent = session)))
-        }
-      })
-    })
-  })
-
-  # Insert/remove conditional inputs
-  observe({
-
-    if(shiny::is.reactive(parmesan))
-      parmesan <- parmesan()
-
-    lapply(parmesan, function(section){
-      lapply(seq_along(section$inputs), function(x){
-        par_input <- section$inputs[[x]]
-
-        if(input_has_show_if(par_input)){
-
-          observe({
-
-            conditions_passed <- validate_show_if(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
-
-            last_input <- section$inputs[[x-1]]
-            last_input_id <- paste0("output_", last_input$id)
-            last_input_id_div <- paste0("#",last_input_id)
-
-            if(conditions_passed){
-
-              if(input_has_reactive_param_values(par_input)){
-
-                  params <-  par_input$input_params
-                  pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
-                  params_reactive <- lapply(pars, function(par){
-                    reactive_input <- par_input$input_params[[par]]
-                    evaluate_reactive(x = reactive_input, env = env, r = r)
-                  })
-                  names(params_reactive) <- pars
-                  params <- modifyList(params, params_reactive, keep.null = TRUE)
-                  par_input$input_params <- params
-              }
-
-              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
-              insertUI(last_input_id_div,
-                       where = "afterEnd",
-                       immediate = TRUE,
-                       ui = div(id = paste0("output_",par_input$id),
-                                render_par_input(par_input = par_input, parent = session)))
-            } else {
-              removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
-            }
-
-          })
-        }
-      })
-    })
-  })
-
-  # Update inputs that have reactive values
-  observe({
-
-    if(shiny::is.reactive(parmesan))
-      parmesan <- parmesan()
-
-    lapply(parmesan, function(section){
-      lapply(section$inputs, function(par_input){
-
-        if(input_has_reactive_param_values(par_input)){
-
-          observe({
-            params <-  par_input$input_params
-            pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
-            params_reactive <- lapply(pars, function(par){
-              reactive_input <- par_input$input_params[[par]]
-              evaluate_reactive(x = reactive_input, env = env, r = r)
-            })
-            names(params_reactive) <- pars
-
-            # Update parameters
-            id <- par_input$id
-            input_type <- par_input$input_type
-            updateInput_type_with_ns <- updateInput_namespace(input_type)
-
-            update_params <- c(session = session,
-                               inputId = id,
-                               params_reactive)
-            do.call(getfun(updateInput_type_with_ns), update_params)
-          })
-        }
-      })
-    })
-  })
-
-
-  # Insert inputs with reactive infotooltip
-  observe({
-
-    if(shiny::is.reactive(parmesan))
-      parmesan <- parmesan()
-
-    lapply(parmesan, function(section){
-      lapply(seq_along(section$inputs), function(x){
-        par_input <- section$inputs[[x]]
-
-        if(input_has_reactive_tooltip_text(par_input)){
-
-          observe({
-
-            text <-  par_input$input_info$text
-            par_input$input_info$text <- evaluate_reactive(x = text, env = env, r = r)
-
-            last_input <- section$inputs[[x-1]]
-            last_input_id <- paste0("output_", last_input$id)
-            last_input_id_div <- paste0("#",last_input_id)
-
-            removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
-            insertUI(last_input_id_div,
-                     where = "afterEnd",
-                     immediate = TRUE,
-                     ui = div(id = paste0("output_",par_input$id),
-                              render_par_input(par_input = par_input, parent = session)))
-
-          })
-        }
+        # if(input_has_dependencies(par_input)){
+        insertUI(paste0("#",section$id), immediate = TRUE,
+                 ui = uiOutput(session$ns(paste0("output_",par_input$id))))
+        # }
       })
     })
   })
@@ -190,8 +73,6 @@ output_parmesan <- function(id,
   output$parmesan_update_output <- renderUI({
     shiny::tags$script("Shiny.onInputChange('parmesan_updated',+new Date);")
   })
-
-  # })
 
 
 }

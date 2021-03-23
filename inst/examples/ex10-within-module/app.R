@@ -1,5 +1,6 @@
 library(shiny)
 library(parmesan)
+library(shinypanels)
 
 parmUI <- function(id) {
   ns <- NS(id)
@@ -13,6 +14,7 @@ parmServer <- function(id, r) {
   moduleServer(
     id,
     function(input, output, session) {
+      ns <- NS(id)
 
       dataset_choices <- reactive({
         c("rock", "pressure", "cars")
@@ -26,6 +28,7 @@ parmServer <- function(id, r) {
       plot_type_selected <- reactive({
         req(plot_type_choices())
         plot_type_choices()[2]
+        "blahblah"
       })
 
       bins_default_value <- reactive({
@@ -130,9 +133,12 @@ parmServer <- function(id, r) {
       parmesan_alert(parmesan, env = environment())
 
       output_parmesan("all_controls_here", r = r, parmesan = parmesan,
-                      input = input, output = output, session = session,
-                      container_section = div_dark)
+                      input = input, output = output, session = session)
 
+      # Modulo cuando el plan es basico
+      observe({
+        shinypanels::showModalMultipleId(modal_id = "modal_plan_controls", list_id = c(ns("output_plot_type")))
+      })
 
       output$debug <- renderPrint({
         str(parmesan_input())
@@ -145,15 +151,16 @@ parmServer <- function(id, r) {
   )
 }
 
-ui <- fluidPage(
-  titlePanel("Example 10 - Hello Parmesan!"),
-  h3("Use parmesan inputs from within a shiny module."),
-  column(4,
-         parmUI("parm_module")
-  ),
-  column(8,
-         plotOutput("distPlot")
-  )
+ui <- panelsPage(
+  shinypanels::modal(id = 'modal_plan_controls', title = "modal_upgrade_title", "message_modal_controls"),
+  # titlePanel("Example 10 - Hello Parmesan!"),
+  # h3("Use parmesan inputs from within a shiny module."),
+  panel(title = "Example 10 - Hello Parmesan!",
+        collapse = FALSE,
+        width = 300,
+        body = parmUI("parm_module")),
+  panel(title = "Plot",
+        body = plotOutput("distPlot"))
 )
 
 div_dark <- function(...){
