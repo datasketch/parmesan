@@ -65,25 +65,6 @@ is_reactive_string <- function(x){
   any(grepl("\\(\\)", x))
 }
 
-evaluate_reactive <- function(x, env, r = NULL){
-  if(is.null(r)){
-    value <- do.call(remove_parenthesis(x), list(), envir = env)
-  } else {
-    value <- tryCatch({
-      do.call(r[[remove_parenthesis(x)]], list())
-      },
-      error=function(cond) {
-        if(is.null(r[[x]]) & nchar(cond[1]$message) > 0){
-          message(paste0("Can't find ", x, " in reactiveValues within r."))
-          message("Error message:")
-          message(cond)
-        }
-        return(NULL)
-      })
-  }
-  value
-}
-
 evaluate_input <- function(x, input = NULL, r = NULL){
   if(is.null(r)){
     value <- input[[x]]
