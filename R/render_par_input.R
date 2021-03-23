@@ -101,10 +101,8 @@ validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FA
     }
     list(value1 = value1, condition = condition, value2 = value2)
   })
-
   pass_conditions <- unlist(lapply(conditions, function(x)
     eval_conditions(x$value1, x$condition, x$value2)))
-
   if(condition_type %in% c("show_if", "show_if_all"))
     return(all(pass_conditions))
   if(condition_type == "show_if_any")
@@ -129,5 +127,3 @@ render_par_html <- function(par_input, parent = NULL) {
   }
   return(do.call(getfun(input_type_with_ns), par_input$input_params))
 }
-
-

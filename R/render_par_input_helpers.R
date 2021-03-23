@@ -1,6 +1,3 @@
-
-
-
 validate_input_type <- function(par_input){
   if(is.null(par_input$input_type))
     stop("Input with id: ", par_input$id, " has input_type is NULL")
@@ -24,9 +21,24 @@ validate_selected_in_choices <- function(input_params){
 input_has_reactive_param_values <- function(par_input){
   any(grepl("\\(\\)", par_input$input_params))
 }
-
 input_has_reactive_tooltip_text <- function(par_input){
   any(grepl("\\(\\)", par_input$input_info$text))
+}
+
+evaluate_input <- function(x, input = NULL, r = NULL){
+  if(is.null(r)){
+    value <- input[[x]]
+  } else {
+    value <- r[[x]]
+  }
+  value
+}
+
+remove_parenthesis <- function(x){
+  gsub("\\(\\)","",x)
+}
+is_reactive_string <- function(x){
+  any(grepl("\\(\\)", x))
 }
 
 evaluate_reactive <- function(x, env, r = NULL){
@@ -48,22 +60,6 @@ evaluate_reactive <- function(x, env, r = NULL){
   value
 }
 
-evaluate_input <- function(x, input = NULL, r = NULL){
-  if(is.null(r)){
-    value <- input[[x]]
-  } else {
-    value <- r[[x]]
-  }
-  value
-}
-
-remove_parenthesis <- function(x){
-  gsub("\\(\\)","",x)
-}
-
-is_reactive_string <- function(x){
-  any(grepl("\\(\\)", x))
-}
 
 evaluate_input <- function(x, input = NULL, r = NULL){
   if(is.null(r)){
@@ -87,7 +83,6 @@ is_shiny_input <- function(x, input, r = NULL){
   }
  validate
 }
-
 
 
 input_has_show_if <- function(par_input){

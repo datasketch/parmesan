@@ -1,19 +1,15 @@
 #' @export
-output_parmesan <- function(id,
-                            parmesan,
-                            input,
-                            output,
-                            session,
-                            container_section = NULL,
+output_parmesan <- function(id, parmesan = NULL,
                             r = NULL,
+                            input = input,
+                            output = output,
+                            session = session,
+                            container_section = NULL,
                             env = parent.frame(),
                             panic = FALSE, debug = FALSE){
 
-
-  if(is.null(parmesan)) stop("Need 'parmesan' parameter to create shiny inputs.")
   if(is.null(input)) stop("Need 'input' parameter to create shiny inputs.")
   if(is.null(output)) stop("Need 'output' parameter to create shiny inputs.")
-  if(is.null(session)) stop("Need 'session' parameter to create shiny inputs.")
 
   ns <- session$ns
 
@@ -54,7 +50,7 @@ output_parmesan <- function(id,
       lapply(section$inputs, function(par_input){
         # if(input_has_dependencies(par_input)){
         output[[paste0("output_",par_input$id)]] <- renderUI({
-          render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
+          render_par_input(par_input, input = input, env = env, debug = debug, parent = session, r = r)
         })
         # }
       })
@@ -62,30 +58,11 @@ output_parmesan <- function(id,
 
     # Create UIs for all inputs without conditionals
     lapply(parmesan, function(section){
-      lapply(seq_along(section$inputs), function(x){
-        par_input <- section$inputs[[x]]
-
-        observe({
-          first_section_input <- section$inputs[[1]]$id == par_input$id
-          if(TRUE){
-            selector <- paste0("#",section$id)
-            location <- "beforeEnd"
-          } else {
-            last_input_id <- section$inputs[[x-1]]$id
-            last_input_output_id <- paste0("output_", last_input_id)
-            selector <- paste0("#",last_input_output_id)
-            location <- "afterEnd"
-          }
-
-          removeUI(selector = paste0("#output_",par_input$id), immediate = TRUE)
-          insertUI(selector = selector,
-                   where = location,
-                   immediate = TRUE,
-                   # ui = div(id = paste0("output_",par_input$id),
-                   #          render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug))
-                   ui = uiOutput(session$ns(paste0("output_",par_input$id)))
-                   )
-        })
+      lapply(section$inputs, function(par_input){
+        # if(input_has_dependencies(par_input)){
+        insertUI(paste0("#",section$id), immediate = TRUE,
+                 ui = uiOutput(session$ns(paste0("output_",par_input$id))))
+        # }
       })
     })
   })
