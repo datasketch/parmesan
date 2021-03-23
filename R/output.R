@@ -50,15 +50,15 @@ output_parmesan <- function(id,
                                    env = env))
     })
 
-    # lapply(parmesan, function(section){
-    #   lapply(section$inputs, function(par_input){
-    #     # if(input_has_dependencies(par_input)){
-    #     output[[paste0("output_",par_input$id)]] <- renderUI({
-    #       render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
-    #     })
-    #     # }
-    #   })
-    # })
+    lapply(parmesan, function(section){
+      lapply(section$inputs, function(par_input){
+        # if(input_has_dependencies(par_input)){
+        output[[paste0("output_",par_input$id)]] <- renderUI({
+          render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug)
+        })
+        # }
+      })
+    })
 
     # Create UIs for all inputs without conditionals
     lapply(parmesan, function(section){
@@ -81,9 +81,9 @@ output_parmesan <- function(id,
           insertUI(selector = selector,
                    where = location,
                    immediate = TRUE,
-                   ui = div(id = paste0("output_",par_input$id),
-                            render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug))
-                   # ui = uiOutput(paste0("output_",par_input$id))
+                   # ui = div(id = paste0("output_",par_input$id),
+                   #          render_par_input(par_input = par_input, input = input, env = env, parent = session, r = r, debug = debug))
+                   ui = uiOutput(session$ns(paste0("output_",par_input$id)))
                    )
         })
       })
