@@ -20,10 +20,12 @@ bins:
   update_param: value
 dataset:
   show: true
-  input_type: selectInput
+  input_type: selectizeInput
   input_params:
     label: Dataset
     choices: dataset_choices()
+    selected: " "
+    multiple: true
 column:
   show: true
   input_type: numericInput
