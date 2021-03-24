@@ -65,11 +65,11 @@ parmesan_watch <- function(input, parmesan = NULL){
 
 #' @export
 parmesan_reactives <- function(parmesan){
-  map(parmesan, function(section){
-        map(section$inputs, function(par_input){
-          params <- par_input$input_params
-          Filter(function(x) grepl("\\(\\)", x), params)
-        }) %>% unlist(use.names = FALSE)
+  purrr::map(parmesan, function(section){
+    purrr::map(section$inputs, function(par_input){
+      params <- par_input$input_params
+      Filter(function(x) grepl("\\(\\)", x), params)
+    }) %>% unlist(use.names = FALSE)
   }) %>% unlist(use.names = FALSE)
 }
 
