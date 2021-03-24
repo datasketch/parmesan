@@ -48,7 +48,7 @@ evaluate_reactive <- function(x, env, r = NULL){
     value <- do.call(remove_parenthesis(x), list(), envir = env)
   } else {
     value <- tryCatch({
-      do.call(r[[remove_parenthesis(x)]], list())
+      r[[remove_parenthesis(x)]]
     },
     error=function(cond) {
       if(is.null(r[[x]]) & nchar(cond[1]$message) > 0){
