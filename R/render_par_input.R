@@ -44,7 +44,7 @@ replace_reactive_param_values <- function(par_input, env = parent.frame(), paren
     if(is.null(r)){
       dep_value_params <- do.call(remove_parenthesis(inp), list(), envir = env)
     } else {
-      dep_value_params <- do.call(r[[remove_parenthesis(inp)]], list())
+      dep_value_params <- r[[remove_parenthesis(inp)]]
     }
     dep_value_params
   })

@@ -29,5 +29,7 @@ eval_condition_less_than <- function(x, y) x < y
 eval_condition_greater_than <- function(x, y) x > y
 
 eval_condition_is_empty <- function(x,y) is.empty(x)
-eval_condition_is_not_empty <- function(x, y) !is.empty()
+eval_condition_is_not_empty <- function(x, y) !is.empty(x)
+
+
 

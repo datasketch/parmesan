@@ -16,6 +16,23 @@ parmServer <- function(id, r) {
     function(input, output, session) {
       ns <- NS(id)
 
+
+      # Initialise parmesan inputs
+      path <- system.file("examples", "ex10-within-module", "parmesan",
+                          package = "parmesan")
+
+      parmesan <- parmesan_load(path)
+
+      parmesan_input <- parmesan_watch(input, parmesan)
+
+      parmesan_alert(parmesan, env = environment())
+
+      output_parmesan("all_controls_here", r = r, parmesan = parmesan,
+                      input = input, output = output, session = session)
+
+
+
+      # Define reactives needed in parmesan
       dataset_choices <- reactive({
         c("rock", "pressure", "cars")
       })
@@ -65,77 +82,54 @@ parmServer <- function(id, r) {
       })
 
       observe({
-        r$plot_type_choices <- plot_type_choices
+        r$plot_type_choices <- plot_type_choices()
       })
 
       observe({
-        r$plot_type_selected <- plot_type_selected
+        r$plot_type_selected <- plot_type_selected()
       })
 
       observe({
-        r$bins_default_value <- bins_default_value
+        r$bins_default_value <- bins_default_value()
       })
 
       observe({
-        r$dataset_choices <- dataset_choices
+        r$dataset_choices <- dataset_choices()
       })
 
       observe({
-        r$maxCustomChoices <- maxCustomChoices
+        r$maxCustomChoices <- maxCustomChoices()
       })
 
       observe({
-        r$colourCustomChoices <- colourCustomChoices
+        r$colourCustomChoices <- colourCustomChoices()
       })
 
       observe({
-        r$datasetNColsLabel <- datasetNColsLabel
+        r$datasetNColsLabel <- datasetNColsLabel()
       })
 
       observe({
-        r$datasetNCols <- datasetNCols
+        r$datasetNCols <- datasetNCols()
       })
 
       observe({
         r$datasetInput <- datasetInput()
       })
 
-      observe({
-        r$dataset <- input$dataset
-      })
+      # Pass all inputs from parmesan to other parts of the app as reactiveValues
+      parmesan_inputs <- purrr::map(parmesan, function(.x) { purrr::map_chr(.x$inputs, "id")}) %>% unlist(use.names = FALSE)
 
       observe({
-        r$column <- input$column
+        for(parmesan_input in parmesan_inputs){
+          get_input <- input[[parmesan_input]]
+          if(!is.null(get_input)){
+            r[[parmesan_input]] <- get_input
+          }
+        }
       })
 
-      observe({
-        r$plot_type <- input$plot_type
-      })
-
-      observe({
-        r$bins <- input$bins
-      })
-
-      observe({
-        r$colour_custom <- input$colour_custom
-      })
-
-
-      path <- system.file("examples", "ex10-within-module", "parmesan",
-                          package = "parmesan")
-
-      parmesan <- parmesan_load(path)
-
-      # Put all parmesan inputs in reactive values
-
-      parmesan_input <- parmesan_watch(input, parmesan)
-
-      parmesan_alert(parmesan, env = environment())
-
-      output_parmesan("all_controls_here", r = r, parmesan = parmesan,
-                      input = input, output = output, session = session)
-
-      # Modulo cuando el plan es basico
+      # Hide one of the inputs with modal
       observe({
         shinypanels::showModalMultipleId(modal_id = "modal_plan_controls", list_id = c(ns("output_plot_type")))
       })
@@ -143,9 +137,6 @@ parmServer <- function(id, r) {
       output$debug <- renderPrint({
         str(parmesan_input())
       })
-
-
-
 
     }
   )
@@ -175,7 +166,7 @@ server <-  function(input, output, session) {
 
   output$distPlot <- renderPlot({
     req(r$dataset, r$column, r$datasetInput, r$colour_custom)
-    if(any(grepl("\\(\\)", r$colour_custom))) return()
+    if(r$dataset == " ") return()
 
     dataset  <- r$dataset
     column <- r$column
