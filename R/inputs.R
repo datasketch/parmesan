@@ -94,6 +94,7 @@ parmesan_reactives <- function(parmesan){
 
       # Filter for brackets to extract reactive strings
       Filter(function(x) grepl("\\(\\)", x), check)
+
     }) %>% unlist(use.names = FALSE)
   }) %>% unlist(use.names = FALSE)
 }
@@ -107,17 +108,6 @@ get_conditional_values <- function(par_input){
 
   purrr::flatten(conditional_values)
 }
-
-
-
-if("show_if" %in% names(par_input)){
-  show_ifs <- purrr::map(seq_along(par_input$show_if), function(i){
-    list(names(par_input$show_if)[[i]],
-         par_input$show_if[[i]][[1]])})
-  check <- c(params, show_ifs)
-}
-
-
 
 
 
