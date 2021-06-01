@@ -25,12 +25,8 @@ parmServer <- function(id, r) {
 
       parmesan_input <- parmesan_watch(input, parmesan)
 
-      parmesan_alert(parmesan, env = environment())
-
       output_parmesan("all_controls_here", r = r, parmesan = parmesan,
                       input = input, output = output, session = session)
-
-
 
       # Define reactives needed in parmesan
       dataset_choices <- reactive({
@@ -115,6 +111,11 @@ parmServer <- function(id, r) {
       observe({
         r$datasetInput <- datasetInput()
       })
+
+      observe({
+        parmesan_alert(parmesan, r = r, env = environment())
+      })
+
 
       # Pass all inputs from parmesan to other parts of the app as reactiveValues
       parmesan_inputs <- purrr::map(parmesan, function(.x) { purrr::map_chr(.x$inputs, "id")}) %>% unlist(use.names = FALSE)
