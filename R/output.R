@@ -10,6 +10,7 @@ output_parmesan <- function(id, parmesan = NULL,
 
   if(is.null(input)) stop("Need 'input' parameter to create shiny inputs.")
   if(is.null(output)) stop("Need 'output' parameter to create shiny inputs.")
+  if(is.null(session)) stop("Need 'session' parameter to create shiny inputs.")
 
   ns <- session$ns
 
