@@ -16,7 +16,7 @@ parmesan_alert <- function(parmesan = NULL,
     # may be used later for non-reactive funs defined in server
     reacts_in_env <- which_shiny_reactives(env = env) %||% funs_in_env
   } else {
-    reacts_in_env <- names(reactiveValuesToList(r))
+    reacts_in_env <- names(isolate(reactiveValuesToList(r)))
   }
 
   which_parmesan_reactives <- which_parmesan_reactives(parmesan)
