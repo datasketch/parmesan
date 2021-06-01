@@ -36,7 +36,7 @@ render_par_input <- function(par_input,
 
 replace_reactive_param_values <- function(par_input, env = parent.frame(), parent = NULL, r = NULL){
   params <-  par_input$input_params
-  pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
+  pars <- names(params[grepl("\\(\\)", params)])
 
   params_reactive <- lapply(pars, function(par){
     inp <- par_input$input_params[[par]]
