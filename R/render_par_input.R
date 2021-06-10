@@ -10,6 +10,8 @@ render_par_input <- function(par_input,
   # Replace any reactives in param values
   if(input_has_reactive_param_values(par_input)){
     par_input <- replace_reactive_param_values(par_input, env = env, parent = parent, r = r)
+
+    if(is.null(par_input)) return()
   }
 
   # Replace any reactives tooltip
@@ -36,7 +38,7 @@ render_par_input <- function(par_input,
 
 replace_reactive_param_values <- function(par_input, env = parent.frame(), parent = NULL, r = NULL){
   params <-  par_input$input_params
-  pars <- names(Filter(function(x) grepl("\\(\\)", x), params))
+  pars <- names(params[grepl("\\(\\)", params)])
 
   params_reactive <- lapply(pars, function(par){
     inp <- par_input$input_params[[par]]
@@ -50,6 +52,10 @@ replace_reactive_param_values <- function(par_input, env = parent.frame(), paren
   })
   names(params_reactive) <- pars
   params <- modifyList(params, params_reactive, keep.null = TRUE)
+
+  n_missing_params <- length(Filter(is.null, params))
+  if(n_missing_params > 0) return()
+
   par_input$input_params <- params
   par_input
 }

@@ -61,19 +61,3 @@ parmesan_watch <- function(input, parmesan = NULL){
   })
   reactive(reactiveValuesToList(parmesan_inputs))
 }
-
-
-#' @export
-parmesan_reactives <- function(parmesan){
-  purrr::map(parmesan, function(section){
-    purrr::map(section$inputs, function(par_input){
-      params <- par_input$input_params
-      Filter(function(x) grepl("\\(\\)", x), params)
-    }) %>% unlist(use.names = FALSE)
-  }) %>% unlist(use.names = FALSE)
-}
-
-
-
-
-

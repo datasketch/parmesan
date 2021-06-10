@@ -1,17 +1,24 @@
 #' @export
-parmesan_alert <- function(parmesan = NULL, env = parent.frame(),
+parmesan_alert <- function(parmesan = NULL,
+                           r = NULL,
+                           env = parent.frame(),
                            panic = FALSE){
 
   # Alerts do not work with reactive parmesan/presets
   if(shiny::is.reactive(parmesan))
     return()
 
-  # message("IN ALERT")
-  # fenv(env)
-  funs_in_env <- as.vector(lsf.str(envir = env))
-  # funs_in_env used for tests, list env funs
-  # may be used later for non-reactive funs defined in server
-  reacts_in_env <- which_shiny_reactives(env = env) %||% funs_in_env
+  if(is.null(r)){
+    # message("IN ALERT")
+    # fenv(env)
+    funs_in_env <- as.vector(lsf.str(envir = env))
+    # funs_in_env used for tests, list env funs
+    # may be used later for non-reactive funs defined in server
+    reacts_in_env <- which_shiny_reactives(env = env) %||% funs_in_env
+  } else {
+    reacts_in_env <- names(isolate(reactiveValuesToList(r)))
+  }
+
   which_parmesan_reactives <- which_parmesan_reactives(parmesan)
   if(!all(which_parmesan_reactives %in% reacts_in_env)){
     msg <- paste0(
@@ -52,6 +59,16 @@ fenv <- function(env = parent.frame(), msg = "", silent = FALSE){
   )
 }
 
+#' Show all reactive elements of parmesan object
+#'
+#' Returns all reactive elements from parmesan object,
+#' including parameters, conditions (in show_if statements),
+#' and reactive info tooltip text.
+#'
+#' @param parmesan Parmesan object
+#'
+#' @return Character vector of all reactive strings.
+#' @export
 which_parmesan_reactives <- function(parmesan){
   if(is.null(parmesan)){
     parmesan <- parmesan_load()
