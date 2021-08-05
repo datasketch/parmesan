@@ -53,7 +53,8 @@ replace_reactive_param_values <- function(par_input, env = parent.frame(), paren
   names(params_reactive) <- pars
   params <- modifyList(params, params_reactive, keep.null = TRUE)
 
-  n_missing_params <- length(Filter(is.null, params))
+  params_without_selected <- params[names(params) %in% "selected" == FALSE]
+  n_missing_params <- length(Filter(is.null, params_without_selected))
   if(n_missing_params > 0) return()
 
   par_input$input_params <- params
@@ -107,6 +108,7 @@ validate_show_if <- function(par_input, input, env, parent, r = NULL, debug = FA
     }
     list(value1 = value1, condition = condition, value2 = value2)
   })
+
   pass_conditions <- unlist(lapply(conditions, function(x)
     eval_conditions(x$value1, x$condition, x$value2)))
   if(condition_type %in% c("show_if", "show_if_all"))
