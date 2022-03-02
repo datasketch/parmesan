@@ -1,0 +1,37 @@
+plot_type:
+  show: true
+  input_type: radioButtons
+  input_params:
+    label: Plot Type
+    choices:
+      - Plot
+      - Histogram
+    selected: Plot
+  update_param: selected
+bins:
+  show: true
+  input_type: sliderInput
+  input_params:
+    label: Bins
+    min: 0
+    max: 50
+    value: 10
+    step: 1
+  update_param: value
+dataset:
+  show: true
+  input_type: selectInput
+  input_params:
+    label: Dataset
+    choices: data_opts()
+    selected: rock
+  update_param: selected
+colorsId:
+  show: true
+  input_type: colorPaletteInput
+  input_params:
+    label: Paleta de color
+    colors: agg_palette()
+    max_colors: 6
+    palette: agg_palette()
+  update_param: palette
