@@ -22,7 +22,7 @@ server <- function(input, output, session) {
 
   parmesan::resetButtonServer(id = "reset_button",
                               input = input,
-                              id_reset = c("plot_type", "bins"),
+                              id_reset = "all",#c("plot_type", "bins"),
                               session=session)
 
   agg_palette <- reactive({

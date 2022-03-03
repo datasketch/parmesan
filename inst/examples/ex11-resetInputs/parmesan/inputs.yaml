@@ -34,4 +34,3 @@ colorsId:
     colors: agg_palette()
     max_colors: 6
     palette: agg_palette()
-  update_param: palette

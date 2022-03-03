@@ -42,6 +42,7 @@ initial_inputs_namespace <- function(parmesanInputs = NULL) {
 
   df_parmesan <-
     purrr::map(seq_along(parmesanInputs), function(i) {
+      if (!("update_param" %in% names(parmesanInputs[[i]]))) return()
       data.frame(id = parmesanInputs[[i]]$id,
                  input_type = parmesanInputs[[i]]$input_type,
                  update_param = parmesanInputs[[i]]$update_param)
