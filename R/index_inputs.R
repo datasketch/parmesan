@@ -55,7 +55,7 @@ indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_labe
 }
 
 #' @export
-indexButtonsServer <- function(session, input, id, parmesan_ids = NULL, parmesan_load = NULL) {
+indexButtonsServer <- function(session, input, id, parmesan_ids = NULL, parmesan_load = NULL, module_id = NULL) {
   ns <- session$ns
   buttonsId <- NULL
   if (is.null(parmesan_ids)) {
@@ -77,7 +77,7 @@ parmesan:::parmesan_inputs(parmesan = parmesan_load)
       df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
       print("df inpuuuuut")
       print(df_inputs)
-      parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load)
+      parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load, module_id = module_id)
     })
   })
 
