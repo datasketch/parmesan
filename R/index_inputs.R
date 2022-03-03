@@ -63,7 +63,10 @@ indexButtonsServer <- function(session, input, id, parmesan_ids = NULL, parmesan
   } else {
     buttonsId <- paste0(id, "-index-", parmesan_ids)
   }
-
+  print("tabla resumen")
+print(parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load)))
+print("parametros ")
+parmesan:::parmesan_inputs(parmesan = parmesan_load)
   purrr::map(buttonsId, function(btn) {
     observeEvent(input[[btn]], {
       id_reset <- gsub(paste0(id, "-index-"), "", btn)
