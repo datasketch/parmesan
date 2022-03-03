@@ -8,8 +8,8 @@ ui <- panelsPage(
   panel(title = "Filters",
         id = "azul",
         body = div(
-          verbatimTextOutput("test"),
-          parmesan::resetButtonUI(id = "reset_button", icon = "close"),
+          uiOutput("indexTest"),
+          #verbatimTextOutput("test"),
           uiOutput("controls")
         )
   )
@@ -20,20 +20,22 @@ server <- function(input, output, session) {
 
 
 
-  parmesan::resetButtonServer(id = "reset_button",
-                              input = input,
-                              id_reset = "all",#c("plot_type", "bins"),
-                              session=session)
+  li <- reactive({
+    parmesan:::index_inputs(session = session, input = input) %>% plyr::compact()
+  })
 
-  agg_palette <- reactive({
-    c("#AAF13C", "#DD77CC", "#FF33AA")
+  output$indexTest <- renderUI({
+
+    indexButtonsUI(id = "INDEXTEST", list_inputs = li(),
+                   dic = data.frame(id = c("plot_type", "bins", "dataset"),
+                                    label = c("Grafico", "Bins", "Datos")))
   })
 
   data_opts <- reactive({
     c("rock", "pressure", "cars", "iris")
   })
 
-
+  #indexButtonsServer(session = session, input = input, id = "INDEXTEST")
   parmesan <- parmesan_load()
   parmesan_input <- parmesan_watch(input, parmesan)
   output_parmesan("controls",
@@ -42,13 +44,7 @@ server <- function(input, output, session) {
                   session = session,
                   env = environment())
 
-  output$test <- renderPrint({
-    list(
-    input$dataset,
-    input$bins
-    )
-  })
-
+  indexButtonsServer(session = session, input = input, id = "INDEXTEST")
 
 }
 

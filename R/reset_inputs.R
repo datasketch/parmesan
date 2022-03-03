@@ -1,5 +1,5 @@
 #'@export
-resetButtonUI <- function(id = "reset_button", icon_name = "" ,class = "btn action-button") {
+resetButtonUI <- function(id = "reset_button", icon_name = "trash" ,class = "btn action-button") {
   ns <- shiny::NS(id)
   shiny::actionButton(inputId = ns("resetButton"),
                       label = " ",
