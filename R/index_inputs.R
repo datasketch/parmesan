@@ -54,7 +54,7 @@ indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_labe
 }
 
 #' @export
-indexButtonsServer <- function(session, input, id, parmesan_ids = NULL) {
+indexButtonsServer <- function(session, input, id, parmesan_ids = NULL, parmesan_load = NULL) {
   ns <- session$ns
   buttonsId <- NULL
   if (is.null(parmesan_ids)) {
@@ -62,11 +62,11 @@ indexButtonsServer <- function(session, input, id, parmesan_ids = NULL) {
   } else {
     buttonsId <- paste0(id, "-index-", parmesan_ids)
   }
- print(buttonsId)
   purrr::map(buttonsId, function(btn) {
     observeEvent(input[[btn]], {
       id_reset <- gsub(paste0(id, "-index-"), "", btn)
-      df_inputs <- parmesan:::initial_inputs_namespace(parmesan_inputs())
+      print(id_reset)
+      df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
       df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
       parmesan:::updateInput_function(session, df_inputs = df_inputs)
     })
