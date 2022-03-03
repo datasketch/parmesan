@@ -9,7 +9,7 @@ index_inputs <- function(session, input, parmesan = NULL) {
     #   observeEvent(input[[i]], {
         if (is.null(input[[i]])) return()
         input_value <- input[[i]]
-        if (length(input_value) > 1) input_value <- paste0(input_value, collapse = "-")
+        if (length(input_value) > 1) input_value <- paste0(input_value, collapse = " - ")
         df_change <- NULL
         ind_change <- input_value == initial_values[[i]] #indicador de cambio
         if (!ind_change) {
@@ -54,9 +54,9 @@ indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_labe
 }
 
 #' @export
-indexButtonsServer <- function(session, input, id) {
+indexButtonsServer <- function(session, input, id, parmesan = NULL) {
 
-  buttonsId <- paste0(id, "-index-", parmesan::parmesan_input_ids())
+  buttonsId <- paste0(id, "-index-", parmesan::parmesan_input_ids(parmesan = parmesan))
 
   purrr::map(buttonsId, function(btn) {
     observeEvent(input[[btn]], {
