@@ -20,13 +20,11 @@ server <- function(input, output, session) {
 
 
 
-  li <- reactive({
-    parmesan:::index_inputs(session = session, input = input) %>% plyr::compact()
-  })
+
 
   output$indexTest <- renderUI({
 
-    indexButtonsUI(id = "INDEXTEST", list_inputs = li(),
+    parmesan::indexButtonsUI(id = "INDEXTEST", list_inputs = li(),
                    dic = data.frame(id = c("plot_type", "bins", "dataset"),
                                     label = c("Grafico", "Bins", "Datos")))
   })
@@ -44,6 +42,10 @@ server <- function(input, output, session) {
                   session = session,
                   env = environment())
 
+
+  li <- reactive({
+    parmesan:::index_inputs(session = session, input = input, parmesan = parmesan) %>% plyr::compact()
+  })
   indexButtonsServer(session = session, input = input, id = "INDEXTEST")
 
 }

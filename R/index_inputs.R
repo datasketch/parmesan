@@ -1,8 +1,8 @@
-index_inputs <- function(session, input) {
+index_inputs <- function(session, input, parmesan = NULL) {
 
-
-  initial_values <- parmesan::parmesan_input_values()
-
+  parmesan <- parmesan
+  initial_values <- parmesan::parmesan_input_values(parmesan = parmesan)
+  print(initial_values)
    l <- purrr:::map(names(initial_values), function(i) {
       iv <- initial_values[[i]] # valor inicial
 
