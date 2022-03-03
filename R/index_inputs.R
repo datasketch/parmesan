@@ -15,7 +15,6 @@ index_inputs <- function(session, input, parmesan = NULL) {
         if (!ind_change) {
           df_change <- data.frame(id = i, change_by = input_value)
         }
-        #print(df_change)
         df_change
     #})
 
@@ -63,20 +62,14 @@ indexButtonsServer <- function(session, input, id, parmesan_ids = NULL, parmesan
   } else {
     buttonsId <- paste0(id, "-index-", parmesan_ids)
   }
-  print("tabla resumen")
-print(parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load)))
-print("parametros ")
+
 parmesan:::parmesan_inputs(parmesan = parmesan_load)
   purrr::map(buttonsId, function(btn) {
+
     observeEvent(input[[btn]], {
       id_reset <- gsub(paste0(id, "-index-"), "", btn)
       df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
-      print(df_inputs)
-      print("ID RESET")
-      print(id_reset)
       df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
-      print("df inpuuuuut")
-      print(df_inputs)
       parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load, module_id = module_id)
     })
   })
