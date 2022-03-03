@@ -55,8 +55,8 @@ indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_labe
 
 #' @export
 indexButtonsServer <- function(session, input, id, parmesan = NULL) {
-
-  buttonsId <- paste0(id, "-index-", parmesan::parmesan_input_ids(parmesan = parmesan))
+  ns <- session$ns
+  buttonsId <- ns(paste0(id, "-index-", parmesan::parmesan_input_ids(parmesan = parmesan)))
 
   purrr::map(buttonsId, function(btn) {
     observeEvent(input[[btn]], {
