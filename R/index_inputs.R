@@ -63,10 +63,10 @@ indexButtonsServer <- function(session, input, id, parmesan_ids = NULL, parmesan
   } else {
     buttonsId <- paste0(id, "-index-", parmesan_ids)
   }
+  print(parmesan:::parmesan_inputs(parmesan = parmesan_load))
   purrr::map(buttonsId, function(btn) {
     observeEvent(input[[btn]], {
       id_reset <- gsub(paste0(id, "-index-"), "", btn)
-      print(id_reset)
       df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
       df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
       parmesan:::updateInput_function(session, df_inputs = df_inputs)
