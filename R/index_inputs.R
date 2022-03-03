@@ -77,7 +77,7 @@ parmesan:::parmesan_inputs(parmesan = parmesan_load)
       df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
       print("df inpuuuuut")
       print(df_inputs)
-      parmesan:::updateInput_function(session, df_inputs = df_inputs)
+      parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load)
     })
   })
 

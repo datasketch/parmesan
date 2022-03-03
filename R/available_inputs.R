@@ -52,14 +52,14 @@ initial_inputs_namespace <- function(parmesanInputs = NULL) {
 
 }
 
-updateInput_function <- function(session, df_inputs) {
+updateInput_function <- function(session, df_inputs, parmesan_load = NULL) {
   if (is.null(df_inputs)) return()
 
   purrr::map(unique(df_inputs$id), function(id_inputs){
     input_filter <- df_inputs %>% dplyr::filter(id %in% id_inputs)
     input_type <- input_filter %>% .$input_type
     update_param <- input_filter %>% .$update_param
-    update_value <- parmesan::parmesan_input_values()[[id_inputs]]
+    update_value <- parmesan::parmesan_input_values(parmesan = parmesan_load)[[id_inputs]]
     update_list <- list(update_value)
     names(update_list) <- c(update_param)
     update_list$session <- session
