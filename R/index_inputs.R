@@ -5,13 +5,13 @@ index_inputs <- function(session, input, parmesan = NULL) {
 
    l <- purrr:::map(names(initial_values), function(i) {
       iv <- initial_values[[i]] # valor inicial
-      if (length(iv) > 1) paste0(iv, collapse = " - ")
+      if (length(iv) > 1) iv <- paste0(iv, collapse = " - ")
     #   observeEvent(input[[i]], {
         if (is.null(input[[i]])) return()
         input_value <- input[[i]]
         if (length(input_value) > 1) input_value <- paste0(input_value, collapse = " - ")
         df_change <- NULL
-        ind_change <- input_value == initial_values[[i]] #indicador de cambio
+        ind_change <- input_value == iv#initial_values[[i]] #indicador de cambio
         if (!ind_change) {
           df_change <- data.frame(id = i, change_by = input_value)
         }
