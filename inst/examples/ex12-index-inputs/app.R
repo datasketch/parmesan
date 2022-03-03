@@ -44,7 +44,7 @@ server <- function(input, output, session) {
 
 
   li <- reactive({
-    parmesan:::index_inputs(session = session, input = input, parmesan = parmesan) %>% plyr::compact()
+    parmesan:::index_inputs(session = session, input = input) %>% plyr::compact()
   })
   indexButtonsServer(session = session, input = input, id = "INDEXTEST")
 
