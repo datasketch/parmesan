@@ -46,8 +46,8 @@ indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_labe
     }
     div(class = "index-buttons",
     shiny::actionButton(inputId = inputs_id,
-                        label = HTML(paste("<span class=", class_label, ">",inputs_label,"</span>", valor_i, "<span class=", class_close ,">x</span>")),
-                        class = "btn action-button")
+                        label = HTML(paste("<span class=", class_label, ">",inputs_label,"</span>", valor_i, "<span class=", class_close ,">x</span>"))
+                        )
     )
   })
 
@@ -56,7 +56,8 @@ indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_labe
 #' @export
 indexButtonsServer <- function(session, input, id, parmesan = NULL) {
   ns <- session$ns
-  buttonsId <- ns(paste0(id, "-index-", parmesan::parmesan_input_ids(parmesan = parmesan)))
+  print(parmesan::parmesan_input_ids(parmesan = parmesan))
+  buttonsId <- paste0(id, "-index-", parmesan::parmesan_input_ids(parmesan = parmesan))
  print(buttonsId)
   purrr::map(buttonsId, function(btn) {
     observeEvent(input[[btn]], {
