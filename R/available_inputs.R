@@ -52,7 +52,7 @@ initial_inputs_namespace <- function(parmesanInputs = NULL) {
 
 }
 
-updateInput_function <- function(session, df_inputs, parmesan_load = NULL) {
+updateInput_function <- function(session, df_inputs, parmesan_load = NULL, module_id = NULL) {
   if (is.null(df_inputs)) return()
 
   purrr::map(unique(df_inputs$id), function(id_inputs){
@@ -63,8 +63,13 @@ updateInput_function <- function(session, df_inputs, parmesan_load = NULL) {
     update_list <- list(update_value)
     names(update_list) <- c(update_param)
     update_list$session <- session
+    if (!is.null(module_id)) id_inputs <- paste0(module_id, id_inputs)
     update_list$inputId <- id_inputs
+    print("update list")
+    print(update_list$inputId)
     update_function <- updateInput_namespace(input_type)
+    print("update info")
+    print(update_function)
     do.call(eval(parse(text = update_function)), args = update_list)
   })
 
