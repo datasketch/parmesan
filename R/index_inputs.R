@@ -57,7 +57,7 @@ indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_labe
 indexButtonsServer <- function(session, input, id, parmesan = NULL) {
   ns <- session$ns
   buttonsId <- ns(paste0(id, "-index-", parmesan::parmesan_input_ids(parmesan = parmesan)))
-
+ print(buttonsId)
   purrr::map(buttonsId, function(btn) {
     observeEvent(input[[btn]], {
       id_reset <- gsub(paste0(id, "-index-"), "", btn)
