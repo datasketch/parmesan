@@ -42,6 +42,7 @@ initial_inputs_namespace <- function(parmesanInputs = NULL) {
 
   df_parmesan <-
     purrr::map(seq_along(parmesanInputs), function(i) {
+      if (!("update_param" %in% names(parmesanInputs[[i]]))) return()
       data.frame(id = parmesanInputs[[i]]$id,
                  input_type = parmesanInputs[[i]]$input_type,
                  update_param = parmesanInputs[[i]]$update_param)
@@ -51,19 +52,24 @@ initial_inputs_namespace <- function(parmesanInputs = NULL) {
 
 }
 
-updateInput_function <- function(session, df_inputs) {
+updateInput_function <- function(session, df_inputs, parmesan_load = NULL, module_id = NULL) {
   if (is.null(df_inputs)) return()
 
   purrr::map(unique(df_inputs$id), function(id_inputs){
     input_filter <- df_inputs %>% dplyr::filter(id %in% id_inputs)
     input_type <- input_filter %>% .$input_type
     update_param <- input_filter %>% .$update_param
-    update_value <- parmesan::parmesan_input_values()[[id_inputs]]
+    update_value <- parmesan::parmesan_input_values(parmesan = parmesan_load)[[id_inputs]]
     update_list <- list(update_value)
     names(update_list) <- c(update_param)
     update_list$session <- session
+    if (!is.null(module_id)) id_inputs <- paste0(module_id, id_inputs)
     update_list$inputId <- id_inputs
+    #print("update id")
+    #print(update_list$inputId)
     update_function <- updateInput_namespace(input_type)
+    #print("update value")
+    #print(update_list$value)
     do.call(eval(parse(text = update_function)), args = update_list)
   })
 

@@ -20,17 +20,21 @@ bins:
   update_param: value
 dataset:
   show: true
-  input_type: selectInput
+  input_type: selectizeInput
   input_params:
     label: Dataset
     choices: data_opts()
     selected: rock
+    options:
+        maxItems:
+        - 2
   update_param: selected
 colorsId:
   show: true
-  input_type: colorPaletteInput
+  input_type: radioButtonsInput
   input_params:
     label: Paleta de color
-    colors: agg_palette()
-    max_colors: 6
-    palette: agg_palette()
+    choices: agg_palette()
+    #selected: palette_a
+  update_param: selected
+

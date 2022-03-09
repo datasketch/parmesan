@@ -9,7 +9,7 @@ ui <- panelsPage(
         id = "azul",
         body = div(
           verbatimTextOutput("test"),
-          parmesan::resetButtonUI(id = "reset_button", icon = "bar-chart-o"),
+          parmesan::resetButtonUI(id = "reset_button", icon = "close"),
           uiOutput("controls")
         )
   )
@@ -22,7 +22,7 @@ server <- function(input, output, session) {
 
   parmesan::resetButtonServer(id = "reset_button",
                               input = input,
-                              id_reset = c("plot_type", "bins"),
+                              id_reset = "all",#c("plot_type", "bins"),
                               session=session)
 
   agg_palette <- reactive({
@@ -30,7 +30,7 @@ server <- function(input, output, session) {
   })
 
   data_opts <- reactive({
-    c("rock", "pressure", "cars")
+    c("rock", "pressure", "cars", "iris")
   })
 
 
