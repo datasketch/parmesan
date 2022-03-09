@@ -65,11 +65,11 @@ updateInput_function <- function(session, df_inputs, parmesan_load = NULL, modul
     update_list$session <- session
     if (!is.null(module_id)) id_inputs <- paste0(module_id, id_inputs)
     update_list$inputId <- id_inputs
-    print("update id")
-    print(update_list$inputId)
+    #print("update id")
+    #print(update_list$inputId)
     update_function <- updateInput_namespace(input_type)
-    print("update value")
-    print(update_list$value)
+    #print("update value")
+    #print(update_list$value)
     do.call(eval(parse(text = update_function)), args = update_list)
   })
 

@@ -27,31 +27,35 @@ index_inputs <- function(session, input, parmesan = NULL, env = parent.frame()) 
 }
 
 #' @export
-indexButtonsUI <- function(id, list_inputs = NULL, dic_inputs = NULL, class_label="index-label", class_close = "index-close") {
+indexButtonsUI <- function(id,
+                           list_inputs = NULL,
+                           dic_yaml = NULL,
+                           class_label="index-label",
+                           class_close = "index-close", ...) {
 
   ns <- shiny::NS(id)
 
 
   if (is.null(list_inputs)) return()
   if (identical(list(), list_inputs)) return()
-  if (!is.null(dic_inputs)) {
-    if (ncol(dic_inputs) > 2) stop("the dictionary should only contain the id of the input and the label")
-    names(dic_inputs) <- c("id_input", "label_input")
-  }
+
 
   div(class = "index-buttons",
   purrr::map(seq_along(list_inputs), function(l) {
     id_i <- list_inputs[[l]]$id
-    #print(id_i)
     valor_i <- list_inputs[[l]]$change_by
     inputs_id <- ns(paste0("index-", id_i))
     inputs_label <- id_i
-    if (!is.null(dic_inputs)) {
-      inputs_label <- dic_inputs[grep(id_i, dic_inputs$id_input),2]
+    choices_label <- valor_i
+    if (!is.null(dic_yaml)) {
+      inputs_label <- dic_yaml[[id_i]]
+      if (is.null(inputs_label)) inputs_label <- id_i
+      choices_label <- dic_yaml[[as.character(valor_i)]]
+      if (is.null(choices_label)) choices_label <- valor_i
     }
 
     shiny::actionButton(inputId = inputs_id,
-                        label = HTML(paste("<span class=", class_label, ">",inputs_label,"</span>", valor_i, "<span class=", class_close ,">x</span>")),
+                        label = HTML(paste("<span class=", class_label, ">",inputs_label,"</span>", choices_label, "<span class=", class_close ,">x</span>")),
                         class = "index-btn"
                         )
   })
