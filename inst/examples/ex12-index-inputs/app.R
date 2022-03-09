@@ -33,6 +33,10 @@ server <- function(input, output, session) {
     c("rock", "pressure", "cars", "iris")
   })
 
+  agg_palette <- reactive({
+    c("#ffffff", "#faccda")
+  })
+
   #indexButtonsServer(session = session, input = input, id = "INDEXTEST")
   parmesan <- parmesan_load()
   parmesan_input <- parmesan_watch(input, parmesan)

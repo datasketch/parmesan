@@ -29,5 +29,12 @@ dataset:
         maxItems:
         - 2
   update_param: selected
-
-
+colorsId:
+  show: true
+  input_type: colorPaletteInput
+  input_params:
+    label: Paleta de color
+    colors: agg_palette()
+    palette: agg_palette()
+    max_colors: 6
+  update_param: colors

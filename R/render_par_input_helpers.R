@@ -43,7 +43,12 @@ is_reactive_string <- function(x){
   any(grepl("\\(\\)", x))
 }
 
+
+
 evaluate_reactive <- function(x, env, r = NULL){
+
+  if (is.null(x)) return()
+  if (is_reactive_string(x)) {
   if(is.null(r)){
     value <- do.call(remove_parenthesis(x), list(), envir = env)
   } else {
@@ -58,6 +63,8 @@ evaluate_reactive <- function(x, env, r = NULL){
       }
       return(NULL)
     })
+  }} else {
+    value <- x
   }
   value
 }
