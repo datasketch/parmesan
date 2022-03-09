@@ -36,6 +36,9 @@ shiny:
     update_param: value
     options_param:
 shinyinvoer:
+  radioButtonsInput:
+    update_param: selected
+    options_param: choices
   buttonImageInput:
     update_param: value
     options_param:

@@ -63,7 +63,8 @@ evaluate_reactive <- function(x, env, r = NULL){
       }
       return(NULL)
     })
-  }} else {
+  }
+  } else {
     value <- x
   }
   value

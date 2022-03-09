@@ -1,11 +1,13 @@
 index_inputs <- function(session, input, parmesan = NULL, env = parent.frame()) {
 
   parmesan <- parmesan
-  initial_values <- parmesan::parmesan_input_values(parmesan = parmesan)
-print(env)
+  initial_values <- parmesan::parmesan_input_values(parmesan = parmesan)%>% plyr::compact()
+  #print(initial_values)
    l <- purrr:::map(names(initial_values), function(i) {
       iv <- initial_values[[i]] # valor inicial
-      iv <- evaluate_reactive(iv, env = env)
+      iv <- evaluate_reactive(iv, env = env) %>% plyr::compact()
+
+      #print(iv)
       if (length(iv) > 1) iv <- paste0(iv, collapse = " - ")
     #   observeEvent(input[[i]], {
         if (is.null(input[[i]])) return()
@@ -72,7 +74,6 @@ parmesan:::parmesan_inputs(parmesan = parmesan_load)
     observeEvent(input[[btn]], {
       id_reset <- gsub(paste0(id, "-index-"), "", btn)
       df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
-      print(df_inputs)
       df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
       parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load, module_id = module_id)
     })
