@@ -63,7 +63,7 @@ indexButtonsUI <- function(id,
           }
 
           shiny::actionButton(inputId = inputs_id,
-                              label = HTML(paste("<div class='content-index'><span class=", class_label, ">",inputs_label,"</span><span class='index-choices'>", choices_label, img_icon, "</div>")),
+                              label = HTML(paste("<div class='content-index'><span class=", class_label, ">",inputs_label,"</span><span class='index-choices'>", choices_label, "</span>", img_icon, "</div>")),
                               class = "index-btn"
           )
         })
