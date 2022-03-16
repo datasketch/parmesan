@@ -28,6 +28,7 @@ index_inputs <- function(session, input, parmesan = NULL, env = parent.frame()) 
 
 #' @export
 indexButtonsUI <- function(id,
+                           label = NULL,
                            list_inputs = NULL,
                            dic_yaml = NULL,
                            class_label="index-label",
@@ -38,9 +39,9 @@ indexButtonsUI <- function(id,
 
   if (is.null(list_inputs)) return()
   if (identical(list(), list_inputs)) return()
-
-
-  div(class = "index-buttons",
+  tagList(
+   div(id = "labelIndex", label),
+div(class = "index-buttons",
   purrr::map(seq_along(list_inputs), function(l) {
     id_i <- list_inputs[[l]]$id
     valor_i <- list_inputs[[l]]$change_by
@@ -55,11 +56,13 @@ indexButtonsUI <- function(id,
     }
 
     shiny::actionButton(inputId = inputs_id,
-                        label = HTML(paste("<span class=", class_label, ">",inputs_label,"</span>", choices_label, "<span class=", class_close ,">x</span>")),
+                        label = HTML(paste("<span class=", class_label, ">",inputs_label,"</span><span class='index-choices'>", choices_label, "</span><span class=", class_close ,">x</span>")),
                         class = "index-btn"
                         )
   })
 )
+)
+
 }
 
 #' @export

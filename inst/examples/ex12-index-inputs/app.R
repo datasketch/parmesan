@@ -23,7 +23,9 @@ server <- function(input, output, session) {
 
   output$indexTest <- renderUI({
 
-    parmesan::indexButtonsUI(id = "INDEXTEST", list_inputs = li(), dic_yaml = yaml::read_yaml("parmesan/choices_dic.yaml"))
+
+    parmesan::indexButtonsUI(id = "INDEXTEST", label = "filtros aplicados", list_inputs = li(), dic_yaml = yaml::read_yaml("parmesan/choices_dic.yaml"))
+
   })
 
   data_opts <- reactive({
