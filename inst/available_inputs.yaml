@@ -61,3 +61,16 @@ colourPicker:
   colourInput:
     update_param: value
     options_param:
+shinyWidgets:
+  airDatepickerInput:
+    update_param: value
+    options_param:
+  awesomeRadio:
+    update_param: selected
+    options_param: choices
+  radioGroupButtons:
+    update_param: selected
+    options_param: choices
+
+
+
