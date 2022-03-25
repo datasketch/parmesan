@@ -71,6 +71,10 @@ shinyWidgets:
   radioGroupButtons:
     update_param: selected
     options_param: choices
-
-
+  prettyCheckboxGroup:
+    update_param: selected
+    options_param: choices
+  pickerInput:
+    update_param: selected
+    options_param: choices
 
