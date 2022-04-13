@@ -1,40 +1,18 @@
-plot_type:
+animalesCheck:
   show: true
-  input_type: radioButtons
+  input_type: prettyCheckboxGroup
   input_params:
-    label: Plot Type
-    choices:
-      - Plot
-      - Histogram
-    selected: Plot
+    label: animales
+    choiceNames: aniOpts()
+    choiceValues: aniVal()
+    selected: aniVal()
   update_param: selected
-bins:
+generoCheck:
   show: true
-  input_type: sliderInput
+  input_type: prettyCheckboxGroup
   input_params:
-    label: Bins
-    min: 0
-    max: 50
-    value: 10
-    step: 1
-  update_param: value
-dataset:
-  show: true
-  input_type: selectizeInput
-  input_params:
-    label: Dataset
-    choices: data_opts()
-    selected: rock
-    options:
-        maxItems:
-        - 2
+    label: genero
+    choiceNames: genOpts()
+    choiceValues: genVal()
+    selected: genVal()
   update_param: selected
-colorsId:
-  show: true
-  input_type: radioButtonsInput
-  input_params:
-    label: Paleta de color
-    choices: agg_palette()
-    #selected: palette_a
-  update_param: selected
-

@@ -57,6 +57,9 @@ shinyinvoer:
   passiveTextInput:
     update_param: value
     options_param:
+  dateRangeInput:
+    update_param: start
+    options_param:
 colourPicker:
   colourInput:
     update_param: value
