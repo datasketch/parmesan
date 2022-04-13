@@ -29,9 +29,6 @@ shiny:
   textAreaInput:
     update_param: value
     options_param:
-  dateRangeInput:
-    update_param: start
-    options_param:
   dateInput:
     update_param: value
     options_param:
@@ -57,6 +54,9 @@ shinyinvoer:
   passiveTextInput:
     update_param: value
     options_param:
+  dateRangeInput:
+    update_param: start
+    options_param:
 colourPicker:
   colourInput:
     update_param: value
@@ -71,6 +71,10 @@ shinyWidgets:
   radioGroupButtons:
     update_param: selected
     options_param: choices
-
-
+  prettyCheckboxGroup:
+    update_param: selected
+    options_param: choices
+  pickerInput:
+    update_param: selected
+    options_param: choices
 
