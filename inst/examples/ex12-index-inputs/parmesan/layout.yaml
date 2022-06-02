@@ -1,7 +1,7 @@
 controls:
   label: Controls
   inputs:
-    - animalesCheck
-    - generoCheck
-
-
+    - dataset
+    - plot_type
+    - bins
+    - colorsId

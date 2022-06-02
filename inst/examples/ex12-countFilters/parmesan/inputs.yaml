@@ -1,0 +1,18 @@
+animalesCheck:
+  show: true
+  input_type: prettyCheckboxGroup
+  input_params:
+    label: animales
+    choiceNames: aniOpts()
+    choiceValues: aniVal()
+    selected: aniVal()
+  update_param: selected
+generoCheck:
+  show: true
+  input_type: prettyCheckboxGroup
+  input_params:
+    label: genero
+    choiceNames: genOpts()
+    choiceValues: genVal()
+    selected: genVal()
+  update_param: selected

@@ -1,0 +1,7 @@
+controls:
+  label: Controls
+  inputs:
+    - animalesCheck
+    - generoCheck
+
+
