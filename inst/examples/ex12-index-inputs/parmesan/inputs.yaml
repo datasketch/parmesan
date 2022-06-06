@@ -36,4 +36,4 @@ colorsId:
     label: Paleta de color
     choices: agg_palette()
     #selected: palette_a
-  update_param: selected
+ # update_param: selected
