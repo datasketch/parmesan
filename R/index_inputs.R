@@ -1,4 +1,4 @@
-index_inputs <- function(session, input, parmesan = NULL, disincludeInputs = NULL, env = parent.frame()) {
+index_inputs <- function(session, input, parmesan = NULL, disincludeInputs = NULL, numberLabel = FALSE, env = parent.frame()) {
 
   parmesan <- parmesan
   initial_values <- parmesan::parmesan_input_values(parmesan = parmesan)%>% plyr::compact()
@@ -12,10 +12,11 @@ index_inputs <- function(session, input, parmesan = NULL, disincludeInputs = NUL
     #   observeEvent(input[[i]], {
     if (is.null(input[[i]])) return()
     input_value <- input[[i]]
-
     if (length(input_value) > 1) input_value <- paste0(input_value, collapse = " - ")
     df_change <- NULL
     ind_change <- input_value == iv#initial_values[[i]] #indicador de cambio
+    if (numberLabel) input_value <- length(input[[i]])
+
     if (!ind_change) {
       if (!ind_change) {
         df_change <- data.frame(id = i, change_by = input_value)
@@ -24,6 +25,7 @@ index_inputs <- function(session, input, parmesan = NULL, disincludeInputs = NUL
         }
       }
     }
+
     df_change
     #})
 
