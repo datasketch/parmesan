@@ -21,8 +21,8 @@ index_inputs <- function(session, input, parmesan = NULL, disincludeInputs = NUL
         df_change <- data.frame(id = i, change_by = input_value)
         if (!is.null(disincludeInputs)) {
           if (i %in% disincludeInputs) df_change <- NULL
-          }
         }
+      }
     }
     df_change
     #})
@@ -34,10 +34,14 @@ index_inputs <- function(session, input, parmesan = NULL, disincludeInputs = NUL
 #' @export
 indexButtonsUI <- function(id,
                            label = NULL,
+                           update_all = FALSE,
+                           update_label = NULL,
+                           icon_name = NULL,
                            list_inputs = NULL,
                            dic_yaml = NULL,
                            img_icon = NULL,
                            class_label="index-label",
+                           class_updateAll = NULL,
                            class_close = "index-close", ...) {
 
   ns <- shiny::NS(id)
@@ -51,8 +55,19 @@ indexButtonsUI <- function(id,
 
   if (is.null(list_inputs)) return()
   if (identical(list(), list_inputs)) return()
+
+  addInLabel <- NULL
+  if (update_all) {
+    if (is.null(update_label)) update_label <- "x"
+    addInLabel <- shiny::actionButton(inputId = ns("updateAllparmesan"),
+                                      label = update_label,
+                                      icon = icon(icon_name),
+                                      class = class_updateAll)
+  }
+
+
   tagList(
-    div(id = "labelIndex", label),
+    div(id = "labelIndex", label, addInLabel),
     div(class = "index-buttons",
         purrr::map(seq_along(list_inputs), function(l) {
           id_i <- list_inputs[[l]]$id
@@ -78,14 +93,26 @@ indexButtonsUI <- function(id,
 }
 
 #' @export
-indexButtonsServer <- function(session, input, id, parmesan_ids = NULL, parmesan_load = NULL, module_id = NULL) {
+indexButtonsServer <- function(session, input, id, id_reset = "all", parmesan_ids = NULL, parmesan_load = NULL, module_id = NULL) {
   ns <- session$ns
+
+  buttonUpdateAll <- paste0(id, "-", ns("updateAllparmesan"))
+
   buttonsId <- NULL
   if (is.null(parmesan_ids)) {
     buttonsId <- paste0(id, "-index-", parmesan::parmesan_input_ids())
   } else {
     buttonsId <- paste0(id, "-index-", parmesan_ids)
   }
+
+  observeEvent(input[[buttonUpdateAll]], {
+    id_reset <- gsub(paste0(id, "-index-"), "", buttonsId)
+    df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
+    df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
+    parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load, module_id = module_id)
+  })
+
+
 
   parmesan:::parmesan_inputs(parmesan = parmesan_load)
   purrr::map(buttonsId, function(btn) {

@@ -16,7 +16,7 @@ resetButtonServer <- function(session, input, id, id_reset = "all") {
   observeEvent(input[[buttonId]], {
 
     df_inputs <- parmesan:::initial_inputs_namespace(parmesan_inputs())
-
+    print(df_inputs)
     if (!("all" %in% id_reset)) {
       if (sum(id_reset %in% df_inputs$id) == 0) stop("input not found in parmesan list")
       df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
