@@ -27,7 +27,7 @@ dataset:
     selected: rock
     options:
         maxItems:
-        - 2
+        - 4
   update_param: selected
 colorsId:
   show: true
