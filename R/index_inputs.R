@@ -99,10 +99,8 @@ indexButtonsServer <- function(session, input, id, id_reset = "all", parmesan_id
   buttonUpdateAll <- paste0(id, "-", ns("updateAllparmesan"))
 
   observeEvent(input[[buttonUpdateAll]], {
-
     df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
-
-    #print(df_inputs)
+    print(df_inputs)
     parmesan:::updateInput_function(session, df_inputs = df_inputs)
     # if (!("all" %in% id_reset)) {
     #   if (sum(id_reset %in% df_inputs$id) == 0) stop("input not found in parmesan list")
