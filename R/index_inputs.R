@@ -21,8 +21,8 @@ index_inputs <- function(session, input, parmesan = NULL, disincludeInputs = NUL
         df_change <- data.frame(id = i, change_by = input_value)
         if (!is.null(disincludeInputs)) {
           if (i %in% disincludeInputs) df_change <- NULL
-          }
         }
+      }
     }
     df_change
     #})
@@ -98,27 +98,21 @@ indexButtonsServer <- function(session, input, id, id_reset = "all", parmesan_id
 
   buttonUpdateAll <- paste0(id, "-", ns("updateAllparmesan"))
 
-  observeEvent(input[[buttonUpdateAll]], {
-    df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
-    print(df_inputs)
-    parmesan:::updateInput_function(session, df_inputs = df_inputs)
-    # if (!("all" %in% id_reset)) {
-    #   if (sum(id_reset %in% df_inputs$id) == 0) stop("input not found in parmesan list")
-    #   df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
-    # }
-    #
-     #parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load, module_id = module_id)
-
-
-  })
-
-
   buttonsId <- NULL
   if (is.null(parmesan_ids)) {
     buttonsId <- paste0(id, "-index-", parmesan::parmesan_input_ids())
   } else {
     buttonsId <- paste0(id, "-index-", parmesan_ids)
   }
+
+  observeEvent(input[[buttonUpdateAll]], {
+    id_reset <- gsub(paste0(id, "-index-"), "", buttonsId)
+    df_inputs <- parmesan:::initial_inputs_namespace(parmesan:::parmesan_inputs(parmesan = parmesan_load))
+    df_inputs <- df_inputs %>% dplyr::filter(id %in% id_reset)
+    parmesan:::updateInput_function(session, df_inputs = df_inputs, parmesan_load, module_id = module_id)
+  })
+
+
 
   parmesan:::parmesan_inputs(parmesan = parmesan_load)
   purrr::map(buttonsId, function(btn) {
