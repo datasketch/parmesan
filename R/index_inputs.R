@@ -69,6 +69,7 @@ indexButtonsUI <- function(id,
 
 
   tagList(
+    div(class = "content-all-index",
     div(id = "labelIndex", label, addInLabel),
     div(class = "index-buttons",
         purrr::map(seq_along(list_inputs), function(l) {
@@ -89,6 +90,7 @@ indexButtonsUI <- function(id,
                               class = "index-btn"
           )
         })
+     )
     )
   )
 
